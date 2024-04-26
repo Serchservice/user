@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<!-- Custom URL scheme sample -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<!-- Your scheme -->
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>app</string>
+					<string>http</string>
+					<string>https</string>
+				</array>
+				<!-- Optional URL to distinguish your app from others in case of conflicting scheme name -->
+				<key>CFBundleURLName</key>
+				<string>com.serch.user</string>
+			</dict>
+		</array>
+		<!-- END Custom URL scheme sample -->
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Serch</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>user</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>Bluetooth Access Request - Serch</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Camera Access Request - Serch</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Always and when in use! - Serch</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Can I have location always? - Serch</string>
+		<key>NSLocationUsageDescription</key>
+		<string>Older devices need location - Serch</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Need location when in use - Serch</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Microphone Access Request - Serch</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Photos Access Request - Serch</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Face ID Authentication - Serch</string>
+		<key>UIStatusBarHidden</key>
+		<true/>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+	</dict>
+</plist>
