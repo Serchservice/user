@@ -1,7 +1,6 @@
 class Media{
   static const logo = "asset/logo/splashWhite.png";
   static const logoBlack = "asset/logo/splashBlack.png";
-  static const logoName = "asset/logo/logoname.png";
   static const tagline = "asset/logo/smeBlack.png";
   static const nameTag = "asset/logo/all.png";
 

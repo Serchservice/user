@@ -1,5 +1,3 @@
-import 'package:user/library.dart';
-
 /// Handles rerouting within the app when an error occurs
 class SerchException implements Exception {
   String message;
@@ -13,9 +11,7 @@ class SerchException implements Exception {
     this.isLocked = false,
     this.isSessionExpired = false,
     this.isPlatformNotSupported = false
-  }) {
-    Logger.log(toString(), needHeader: false);
-  }
+  });
 
   @override
   String toString() {

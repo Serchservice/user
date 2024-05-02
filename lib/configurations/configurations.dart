@@ -10,6 +10,8 @@ export 'assets/media.dart';
 /// ROUTE CONFIGURATION
 export 'routes/navigate.dart';
 export 'routes/routes.dart';
+export 'routes/links.dart';
+export 'routes/auth_routes.dart';
 
 /// THEME CONFIGURATION
 export 'theme/common_colors.dart';

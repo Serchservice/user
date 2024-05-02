@@ -9,3 +9,6 @@ export 'navigator_utility.dart';
 
 /// GOOGLE MAP UTILITIES
 export 'google_map_style_utility.dart';
+
+/// ASSET UTILITES
+export 'asset_utility.dart';

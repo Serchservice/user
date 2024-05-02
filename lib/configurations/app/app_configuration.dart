@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:camera/camera.dart';
 import 'package:user/library.dart';
 
 class AppConfiguration extends GetxController {
   AppConfiguration();
   static AppConfiguration get data => Get.find<AppConfiguration>();
   StreamSubscription<Uri>? _linkSubscription;
+
+  List<Country> countries = Database.countries;
+  List<CameraDescription> cameras = [];
 
   final AppService _appService = AppImplementation();
 
@@ -18,8 +22,16 @@ class AppConfiguration extends GetxController {
     _linkSubscription = await _appService.initializeDeepLink();
     _appService.buildDeviceInformation(
       onSuccess: (device) {
+        Database.saveDevice(device);
         Logger.log(device.toJson());
-        /// TODO:: Save device data to local storage
+      }
+    );
+    _appService.getCountries(
+      onSuccess: (result) {
+        if(result.isNotEmpty) {
+          countries = result;
+          Database.saveCountries(result);
+        }
       }
     );
 

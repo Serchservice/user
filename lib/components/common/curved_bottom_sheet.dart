@@ -25,7 +25,7 @@ class CurvedBottomSheet extends StatelessWidget {
           topRight: Radius.circular(24),
         ),
         child: Container(
-          color: backgroundColor ?? Theme.of(context).appBarTheme.backgroundColor,
+          color: backgroundColor ?? Theme.of(context).bottomAppBarTheme.color,
           padding: padding ?? EdgeInsets.symmetric(vertical: Sizing.space(15), horizontal: Sizing.space(10)),
           child: child
         )

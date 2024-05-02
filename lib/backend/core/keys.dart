@@ -24,6 +24,4 @@ class Keys {
   static final String firebaseStorageBucket = dotenv.env["FIREBASE_STORAGE_BUCKET"] ?? "";
 
   static final String baseUrl = dotenv.env["BASE_URL"] ?? "";
-
-  static final String supabaseKey = dotenv.env["SUPABASE_KEY"] ?? "";
 }
