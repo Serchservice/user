@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:user/library.dart';
 
@@ -39,28 +36,23 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userImage = avatar.contains("https://") ? CachedNetworkImageProvider(
-        avatar,
-        errorListener: (obj) => defaultImage,
-      )
-      : avatar.startsWith("/") ? FileImage(File(avatar))
-      : avatar.startsWith("data:image/") ? MemoryImage(base64Decode(avatar.split(",").last))
-      : defaultImage;
-
     return GestureDetector(
       onTap: onClick,
       child: CircleAvatar(
         radius: radius,
         backgroundColor: Theme.of(context).unselectedWidgetColor,
-        foregroundImage: userImage as ImageProvider,
-        onForegroundImageError: (exception, stackTrace) => defaultImage,
+        foregroundImage: AssetUtility.image(
+          avatar,
+          fallback: Database.preference.isDarkTheme
+            ? Media.light
+            : Media.dark
+        ),
+        onForegroundImageError: (exception, stackTrace) => AssetImage(
+          Database.preference.isDarkTheme
+            ? Media.light
+            : Media.dark
+        ),
       ),
     );
   }
-
-  static AssetImage get defaultImage => AssetImage(
-    Database.preference.isDarkTheme
-      ? Media.light
-      : Media.dark
-  );
 }

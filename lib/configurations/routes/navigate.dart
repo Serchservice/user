@@ -81,4 +81,19 @@ class Navigate<T> {
   static void till<T>(
     bool Function(Route<dynamic>) predicate, {int? id}
   ) => Get.until(predicate, id: id);
+
+  static void bottomSheet({
+    required Widget sheet,
+    required String route,
+    Object? arguments,
+    Color background = Colors.transparent,
+    bool isScrollable = false
+  }) {
+    Get.bottomSheet(
+      sheet,
+      backgroundColor: background,
+      isScrollControlled: isScrollable,
+      settings: RouteSettings(name: route, arguments: arguments)
+    );
+  }
 }

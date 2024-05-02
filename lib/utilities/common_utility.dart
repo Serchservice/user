@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:user/library.dart';
 
@@ -69,5 +70,12 @@ class CommonUtility {
     }
 
     return words.join(' ');
+  }
+
+  static void unfocus(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }

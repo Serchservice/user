@@ -8,12 +8,13 @@ class SnackBars {
     required Snackbar type,
     int duration = 5,
   }) async {
+    Get.closeCurrentSnackbar();
     Get.snackbar(
       SnackbarUtility.title(type),
       message,
       duration: Duration(seconds: duration),
       snackStyle: SnackStyle.FLOATING,
-      colorText: lightPrimaryColor,
+      colorText: lightBackgroundColor,
       backgroundColor: SnackbarUtility.color(type),
     );
   }

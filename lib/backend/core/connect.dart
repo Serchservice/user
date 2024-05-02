@@ -8,24 +8,24 @@ class Connect extends Interceptor {
 
   Dio get connect {
     var headers = Database.isLoggedIn && useToken
-      ? Map.of({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${Database.session.accessToken}'
-      })
-      : Map.of({'Accept': 'application/json'});
+        ? Map.of({
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${Database.session.accessToken}'
+        })
+        : Map.of({'Accept': 'application/json'});
 
-    if (!kIsWeb) {
-      headers.putIfAbsent("Content-Type", () => "application/json");
-    }
+      if (!kIsWeb) {
+        headers.putIfAbsent("Content-Type", () => "application/json");
+      }
 
-    return Dio(
-      BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        baseUrl: Keys.baseUrl,
-        headers: headers,
-        contentType: Headers.jsonContentType,
-      ),
-    )..interceptors.add(this);
+      return Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 30),
+          baseUrl: Keys.baseUrl,
+          headers: headers,
+          contentType: Headers.jsonContentType,
+        ),
+      )..interceptors.add(this);
   }
 
   Future<String?> refreshToken() async {
@@ -47,8 +47,7 @@ class Connect extends Interceptor {
         token = response.data!.accessToken;
       }
     }).catchError((error) {
-      Logger.log(error);
-      return null;
+      Connect.showError(error);
     });
     return token;
   }
@@ -79,6 +78,21 @@ class Connect extends Interceptor {
       });
     } else {
       handler.next(err);
+    }
+  }
+
+  static void showError(Exception e) {
+    Logger.log(e);
+    if(e is SerchException) {
+      SerchException exception = e;
+      if(exception.isLocked) {
+        Navigate.all(AccountIssueLayout.route, arguments: [exception.message]);
+      }
+    } else {
+      SnackBars.top(
+        message: "An error occurred while performing request. Try again shortly.",
+        type: Snackbar.error
+      );
     }
   }
 

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:user/library.dart';
 
 class NavigatorUtility {
   static Future<void> callNumber(String phoneNumber) async {
@@ -21,17 +20,26 @@ class NavigatorUtility {
     await launchUrl(Uri(scheme: "mailto", path: mailAddress));
   }
 
-  static void bottomSheet({
-    required Widget sheet,
-    required String route,
-    Object? arguments,
-    Color background = Colors.transparent
-  }) {
-    Get.bottomSheet(
-      sheet,
-      backgroundColor: background,
-      isScrollControlled: true,
-      settings: RouteSettings(name: route, arguments: arguments)
+  static Future<T?>? openWeb<T>({
+    required String header,
+    required String url,
+    Map<String, String>? params,
+    Object? arguments
+  }) async {
+    Map<String, String> parameters = {
+      "header": header,
+      "url": url,
+    };
+    if(params != null && params.isNotEmpty) {
+      params.forEach((key, value) {
+        parameters.putIfAbsent(key, () => value);
+      });
+    }
+
+    return Navigate.to(
+      WebLayout.route,
+      parameters: parameters,
+      arguments: arguments
     );
   }
 

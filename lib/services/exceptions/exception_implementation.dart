@@ -25,7 +25,7 @@ class ExceptionImplementation implements ExceptionService {
         handleConnectionException(exception);
         return true;
       }
-      return false;
+      return true;
     };
   }
 }

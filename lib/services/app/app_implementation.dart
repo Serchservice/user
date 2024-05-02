@@ -15,6 +15,7 @@ class AppImplementation implements AppService {
   final AppLinks _appLinks = AppLinks();
 
   final ExceptionService _exceptionService = ExceptionImplementation();
+  final Connect _connect = Connect(useToken: false);
 
   Future<String> get ipAddress async {
     var networks = await NetworkInterface.list();
@@ -133,7 +134,19 @@ class AppImplementation implements AppService {
       DeviceOrientation.portraitUp
     ]);
     _exceptionService.handleException();
-    Get.put<AppConfiguration>(AppConfiguration());
     Get.updateLocale(const Locale('en'));
+  }
+
+  @override
+  void getCountries({required Function(List<Country> countries) onSuccess}) async {
+    try {
+      var response = await _connect.get(endpoint: "/country/countries");
+      ApiResponse res = ApiResponse.fromJson(response.data);
+      List<dynamic> result = res.data;
+      List<Country> countries = result.map((e) => Country.fromJson(e)).toList();
+      onSuccess.call(countries);
+    } on Exception catch (_) {
+      //
+    }
   }
 }

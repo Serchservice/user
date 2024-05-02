@@ -46,7 +46,7 @@ class DarkTheme {
     primaryColorLight: darkBackgroundColor,
     primaryColorDark: darkPrimaryTextColor,
     // focusColor: darkPrimaryColor,
-    // splashColor: darkBackgroundColor,
+    splashColor: darkAlternateColor,
     // textSelectionTheme: TextSelectionThemeData(
     //   cursorColor: darkPrimaryColor, // Change the cursor color
     //   selectionColor: SColors.hint, // Change the highlight color

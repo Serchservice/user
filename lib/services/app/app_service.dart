@@ -14,4 +14,7 @@ abstract class AppService {
 
   /// Start app
   void start();
+
+  /// Fetch list of countries
+  void getCountries({required Function(List<Country> countries) onSuccess});
 }

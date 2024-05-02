@@ -61,4 +61,42 @@ class Database {
   static ThemeMode get themeMode => preference.theme == ThemeType.light
     ? ThemeMode.light
     : ThemeMode.dark;
+
+  static Future<Preference> savePreference(Preference device) async {
+    PreferenceDatabase db = PreferenceDatabase();
+    return db.save(device);
+  }
+
+  /// DATABASE ACTIONS - DEVICE
+  static Device get device {
+    DeviceDatabase db = DeviceDatabase();
+    return db.get();
+  }
+
+  static Future<Device> saveDevice(Device device) async {
+    DeviceDatabase db = DeviceDatabase();
+    return db.save(device);
+  }
+
+  /// DATABASE ACTIONS - ADDRESS
+  static Address get address {
+    AddressDatabase db = AddressDatabase();
+    return db.get();
+  }
+
+  static Future<Address> saveAddress(Address address) async {
+    AddressDatabase db = AddressDatabase();
+    return db.save(address);
+  }
+
+  /// DATABASE ACTIONS - COUNTRY
+  static List<Country> get countries {
+    CountryDatabase db = CountryDatabase();
+    return db.get();
+  }
+
+  static Future<List<Country>> saveCountries(List<Country> countries) async {
+    CountryDatabase db = CountryDatabase();
+    return db.save(countries);
+  }
 }

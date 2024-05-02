@@ -26,7 +26,7 @@ class LightTheme {
     textTheme: textTheme.apply(bodyColor: lightPrimaryColor),
     iconTheme: IconThemeData(color: lightPrimaryColor),
     appBarTheme: AppBarTheme(
-      color: lightSecondaryTextColor,
+      color: lightAlternateColor,
       titleTextStyle: TextStyle(
         color: lightPrimaryTextColor,
         fontFamily: mainFont.fontFamily,
@@ -46,14 +46,14 @@ class LightTheme {
     primaryColorLight: lightSecondaryTextColor,
     primaryColorDark: lightSecondaryColor,
     // focusColor: SColors.darkTheme,
-    // splashColor: SColors.lightTheme,
+    splashColor: lightAlternateColor,
     // textSelectionTheme: const TextSelectionThemeData(
     //   cursorColor: SColors.darkTheme, // Change the cursor color
     //   selectionColor: SColors.hint, // Change the highlight color
     //   selectionHandleColor: SColors.darkTheme, // Change the cursor head color
     // ),
     progressIndicatorTheme: ProgressIndicatorThemeData(color: lightPrimaryColor),
-    bottomAppBarTheme: BottomAppBarTheme(color: lightSecondaryTextColor,),
+    bottomAppBarTheme: BottomAppBarTheme(color: lightAlternateColor,),
     colorScheme: const ColorScheme.light().copyWith(
       background: lightSecondaryTextColor,
       brightness: Brightness.light,
