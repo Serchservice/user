@@ -84,10 +84,10 @@ class SignupLayout extends GetResponsiveView<SignupController> {
                     const SizedBox(height: 20),
                     SText(
                       text: "Phone Number",
-                      size: Sizing.font(14),
-                      color: Theme.of(context).scaffoldBackgroundColor
+                      size: Sizing.font(11),
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     PhoneField(
                       controller: controller.phoneNumberController,
                       onChanged: (value) {
@@ -101,10 +101,10 @@ class SignupLayout extends GetResponsiveView<SignupController> {
                     const SizedBox(height: 20),
                     SText(
                       text: "Gender",
-                      size: Sizing.font(14),
+                      size: Sizing.font(11),
                       color: Theme.of(context).scaffoldBackgroundColor
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     Obx(() => Wrap(
                       runAlignment: WrapAlignment.spaceBetween,
                       crossAxisAlignment: WrapCrossAlignment.center,

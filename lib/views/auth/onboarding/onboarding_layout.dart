@@ -83,7 +83,7 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
                         fontFamily: AppTheme.mainFont.fontFamily,
                         decoration: TextDecoration.underline
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () => NavigatorUtility.openWeb(
+                      recognizer: TapGestureRecognizer()..onTap = () => RouteNavigator.openWeb(
                         header: Links.termsHeader,
                         url: Links.termsUrl
                       ),
@@ -106,7 +106,7 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
                         decoration: TextDecoration.underline
                       ),
                       recognizer: TapGestureRecognizer()..onTap = () {
-                        NavigatorUtility.openWeb(
+                        RouteNavigator.openWeb(
                           header: Links.privacyHeader,
                           url: Links.privacyUrl
                         );

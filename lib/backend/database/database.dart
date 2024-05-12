@@ -5,24 +5,31 @@ import 'package:user/library.dart';
 /// This class is the wrapper for the local database of the user.
 ///
 /// It initializes and opens the local database.
+
+const String accountDatabase = "ACCOUNT_DATABASE";
+const String authDatabase = "AUTH_DATABASE";
+const String settingsDatabase = "SETTINGS_DATABASE";
+const String guestDatabase = "GUEST_DATABASE";
+const String accountsDatabase = "ACCOUNTS_DATABASE";
+
 class Database {
   static Future<void> initialize() async {
-    await GetStorage.init().then((value) => Logger.log("Local Database running..."));
-    await GetStorage.init(settingsDatabase).then((value) {
-      Logger.log("Local $settingsDatabase Database running...$value");
-    });
-    await GetStorage.init(authDatabase).then((value) {
-      Logger.log("Local $authDatabase Database running...$value");
-    });
-    await GetStorage.init(accountDatabase).then((value) {
-      Logger.log("Local $accountDatabase Database running...$value");
-    });
+    await GetStorage.init();
+    await GetStorage.init(settingsDatabase);
+    await GetStorage.init(authDatabase);
+    await GetStorage.init(accountDatabase);
+    await GetStorage.init(accountsDatabase);
+    await GetStorage.init(guestDatabase);
   }
 
   static Future<void> get clear async {
     await DatabaseImplementation(accountDatabase).erase();
     await DatabaseImplementation(settingsDatabase).erase();
     await DatabaseImplementation(authDatabase).erase();
+  }
+
+  static Future<void> get clearGuest async {
+    await DatabaseImplementation(guestDatabase).erase();
   }
 
   /// DATABASE ACTIONS
@@ -98,5 +105,60 @@ class Database {
   static Future<List<Country>> saveCountries(List<Country> countries) async {
     CountryDatabase db = CountryDatabase();
     return db.save(countries);
+  }
+
+  /// DATABASE ACTIONS - LOCAL NOTIFIER
+  static LocalNotifier get notifier {
+    LocalNotifierDatabase db = LocalNotifierDatabase();
+    return db.get();
+  }
+
+  static Future<LocalNotifier> saveNotifier(LocalNotifier notifier) async {
+    LocalNotifierDatabase db = LocalNotifierDatabase();
+    return db.save(notifier);
+  }
+
+  /// DATABASE ACTIONS - APP RATING
+  static AppRating get rating {
+    AppRatingDatabase db = AppRatingDatabase();
+    return db.get();
+  }
+
+  static Future<AppRating> saveAppRating(AppRating rating) async {
+    AppRatingDatabase db = AppRatingDatabase();
+    return db.save(rating);
+  }
+
+  /// DATABASE ACTIONS - APP SETTING
+  static AppSetting get setting {
+    AppSettingDatabase db = AppSettingDatabase();
+    return db.get();
+  }
+
+  static Future<AppSetting> saveAppSetting(AppSetting setting) async {
+    AppSettingDatabase db = AppSettingDatabase();
+    return db.save(setting);
+  }
+
+  /// DATABASE ACTIONS - ACCOUNT
+  static List<Account> get accounts {
+    AccountDatabase db = AccountDatabase();
+    return db.get();
+  }
+
+  static Future<List<Account>> saveAccount(List<Account> accounts) async {
+    AccountDatabase db = AccountDatabase();
+    return db.save(accounts);
+  }
+
+  /// DATABASE ACTIONS - GUEST
+  static Guest get guest {
+    GuestDatabase db = GuestDatabase();
+    return db.get();
+  }
+
+  static Future<Guest> saveGuest(Guest guest) async {
+    GuestDatabase db = GuestDatabase();
+    return db.save(guest);
   }
 }

@@ -76,7 +76,7 @@ class EmailCheckerController extends GetxController {
           return;
         }
       } on Exception catch (e) {
-        SnackBars.top(message: "An error occurred. Please try again.", type: Snackbar.error);
+        state.isVerifying.value = false;
         Connect.showError(e);
         return;
       }

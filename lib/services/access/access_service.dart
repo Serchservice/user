@@ -4,4 +4,7 @@ abstract class AccessService {
 
   /// Checks if the location permissions were granted, else, request for them
   Future<bool> hasLocation();
+
+  /// Checks if the storage permissions were granted
+  Future<bool> hasStorage();
 }

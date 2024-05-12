@@ -21,13 +21,13 @@ class Country {
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
-      name: json["name"],
-      flag: json["flag"],
-      code: json["code"],
-      dialCode: json["dialCode"],
-      minLength: json["minLength"],
-      maxLength: json["maxLength"],
-      image: json["image"]
+      name: json["name"] ?? "",
+      flag: json["flag"] ?? "",
+      code: json["code"] ?? "",
+      dialCode: json["dialCode"] ?? "",
+      minLength: json["minLength"] ?? 0,
+      maxLength: json["maxLength"] ?? 0,
+      image: json["image"] ?? ""
     );
   }
 

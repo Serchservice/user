@@ -4,10 +4,13 @@ import 'package:user/library.dart';
 class Routes {
   static List<GetPage> all = [
     ...authenticationRoutes,
+    ...centreRoutes,
+    ...guestRoutes,
 
     GetPage(
       name: HomeLayout.route,
-      page: () => const HomeLayout(),
+      page: () => HomeLayout(),
+      binding: HomeBinding(),
       transition: Transition.native,
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -33,6 +36,22 @@ class Routes {
       page: () => SharedLinkVerifierLayout(),
       binding: SharedLinkVerifierBinding(),
       transition: Transition.native,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: CameraLayout.route,
+      page: () => CameraLayout(),
+      binding: CameraBinding(),
+      transition: Transition.native,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
+      name: GalleryLayout.route,
+      page: () => GalleryLayout(),
+      binding: GalleryBinding(),
+      transition: Transition.downToUp,
       transitionDuration: const Duration(milliseconds: 800),
     ),
   ];

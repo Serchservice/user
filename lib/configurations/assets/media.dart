@@ -35,4 +35,8 @@ class Media{
   static const notLaunched = "asset/common/notLaunched.png";
   static const onboard1 = "asset/common/onboard1.png";
   static const onboard2 = "asset/common/onboard2.png";
+
+  /// THEME MODES
+  static const darkMode = "asset/theme/window_dark.png";
+  static const lightMode = "asset/theme/window_light.png";
 }

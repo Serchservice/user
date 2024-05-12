@@ -63,7 +63,7 @@ class AccountIssueLayout extends GetResponsiveView<AccountIssueController> {
                       backgroundColor: Theme.of(context).splashColor,
                       detail: button.body,
                       prefixIcon: button.icon,
-                      onPressed: () => NavigatorUtility.openWeb(
+                      onPressed: () => RouteNavigator.openWeb(
                         header: button.header,
                         url: button.path
                       ),
@@ -77,7 +77,7 @@ class AccountIssueLayout extends GetResponsiveView<AccountIssueController> {
                     textColor: Theme.of(context).primaryColorLight,
                     prefixIcon: Icons.send_time_extension_rounded,
                     prefixIconSize: Sizing.font(30),
-                    onClick: () => NavigatorUtility.mail("team@serchservice.com"),
+                    onClick: () => RouteNavigator.mail("team@serchservice.com"),
                   ),
                 ],
               ),

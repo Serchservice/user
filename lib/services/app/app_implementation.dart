@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
@@ -137,16 +138,32 @@ class AppImplementation implements AppService {
     Get.updateLocale(const Locale('en'));
   }
 
+  Future<List<Country>> countries() async {
+    try {
+      String json = await rootBundle.loadString('asset/common/countries.json');
+      List<dynamic> data = jsonDecode(json);
+      return data.map((country) => Country.fromJson(country)).toList();
+    } on Exception catch (_) {
+      return <Country>[];
+    }
+  }
+
   @override
   void getCountries({required Function(List<Country> countries) onSuccess}) async {
     try {
       var response = await _connect.get(endpoint: "/country/countries");
       ApiResponse res = ApiResponse.fromJson(response.data);
       List<dynamic> result = res.data;
-      List<Country> countries = result.map((e) => Country.fromJson(e)).toList();
-      onSuccess.call(countries);
+      if(result.isNotEmpty) {
+        List<Country> countries = result.map((e) => Country.fromJson(e)).toList();
+        onSuccess.call(countries);
+      } else {
+        List<Country> countryList = await countries();
+        onSuccess.call(countryList);
+      }
     } on Exception catch (_) {
-      //
+      List<Country> countryList = await countries();
+      onSuccess.call(countryList);
     }
   }
 }

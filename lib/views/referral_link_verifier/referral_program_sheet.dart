@@ -3,8 +3,14 @@ import 'package:user/library.dart';
 
 class ReferralProgramSheet extends StatelessWidget {
   final ReferralProgram program;
-  final Function() onContinue;
-  const ReferralProgramSheet({super.key, required this.program, required this.onContinue});
+  final Function()? onContinue;
+  final bool showButton;
+  const ReferralProgramSheet({
+    super.key,
+    required this.program,
+    this.showButton = true,
+    this.onContinue
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -123,23 +129,25 @@ class ReferralProgramSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(Sizing.space(15)),
-                  child: Center(
-                    child: LoadingButton(
-                      text: "Continue with signup",
-                      borderRadius: 24,
-                      width: MediaQuery.of(context).size.width,
-                      textSize: Sizing.font(14),
-                      buttonColor: Theme.of(context).primaryColorDark,
-                      textColor: Theme.of(context).scaffoldBackgroundColor,
-                      onClick: () {
-                        onContinue.call();
-                        Navigator.of(context).pop();
-                      },
+                if(showButton) ...[
+                  Padding(
+                    padding: EdgeInsets.all(Sizing.space(15)),
+                    child: Center(
+                      child: LoadingButton(
+                        text: "Continue with signup",
+                        borderRadius: 24,
+                        width: MediaQuery.of(context).size.width,
+                        textSize: Sizing.font(14),
+                        buttonColor: Theme.of(context).primaryColorDark,
+                        textColor: Theme.of(context).scaffoldBackgroundColor,
+                        onClick: () {
+                          onContinue?.call();
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
-                  ),
-                )
+                  )
+                ]
               ],
             ),
           ],

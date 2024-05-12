@@ -7,13 +7,13 @@ class AddressDatabase extends RepositoryService<Address, String> {
 
   @override
   Future<Optional<Address>> delete(Address item) async {
-    _service.remove("address");
+    _service.remove("Address");
     return Optional<Address>.empty();
   }
 
   @override
   Address get() {
-    String? data = _service.read("address");
+    String? data = _service.read("Address");
 
     if(data != null) {
       Map<String, dynamic> jsonData = jsonDecode(data);
@@ -25,7 +25,7 @@ class AddressDatabase extends RepositoryService<Address, String> {
 
   @override
   Future<Address> save(Address item) async {
-    await _service.write("address", jsonEncode(item.toJson()));
+    await _service.write("Address", jsonEncode(item.toJson()));
     return item;
   }
 }

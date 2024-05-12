@@ -38,6 +38,17 @@ class SignupController extends GetxController {
       referralController.text = state.referral.value;
     }
     referralController.addListener(() { });
+
+    if(Database.countries.isNotEmpty) {
+      Country country = Database.countries.firstWhere((country) {
+        return Database.address.country == country.name;
+      },
+        orElse: () => Database.countries.first
+      );
+      state.isoCode.value = country.code;
+      state.countryCode.value = country.dialCode;
+      state.country.value = country.name;
+    }
     super.onReady();
   }
 

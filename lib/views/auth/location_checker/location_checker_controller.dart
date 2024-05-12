@@ -8,7 +8,6 @@ class LocationCheckerController extends GetxController {
 
   final Connect _connect = Connect(useToken: false);
 
-  final CommonApiService _apiService = CommonApi();
   final LocationService _locationService = LocationImplementation();
   final FolderService _folderService = FolderImplementation();
   final AccessService _accessService = AccessImplementation();
@@ -118,19 +117,22 @@ class LocationCheckerController extends GetxController {
   }
 
   void navigate() async {
-    /// TODO:: Add guest account checker
-    if(Database.isLoggedIn) {
-      state.isLoading.value = true;
-      _apiService.validateSession(
-        onSuccess: (success) {
-          state.isLoading.value = false;
-          Navigate.all(HomeLayout.route);
+    if(Database.accounts.isNotEmpty) {
+      AccountPicker.open(
+        shouldNavigate: true,
+        onUserSuccess: () {
+          bool canLogin = Database.auth.hasMfa && !Database.preference.remember &&
+            (Database.preference.isMFA || Database.preference.isBoth || Database.preference.isNone);
+          if(canLogin) {
+            AuthWithMultiFactor.login();
+          } else {
+            Navigate.all(HomeLayout.route);
+          }
         },
-        onError: (error) {
-          state.isLoading.value = false;
+        onUserError: () {
           Navigate.all(EmailCheckerLayout.route);
-          SnackBars.top(message: error, type: Snackbar.error);
-        }
+        },
+        onGuestSuccess: () => Navigate.all(GuestHomeLayout.route)
       );
     } else {
       Navigate.all(OnboardingLayout.route);

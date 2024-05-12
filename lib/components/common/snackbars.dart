@@ -28,23 +28,23 @@ class SnackBars {
     bool isError = false
   }) {
     /// TODO:: Fix issue with bottom snackbar
-    // messenger.currentState?.showSnackBar(
-    //   SnackBar(
-    //     content: SText(
-    //       text: message,
-    //       color: textColor ?? Get.theme.primaryColor
-    //     ),
-    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    //     margin: const EdgeInsets.all(10),
-    //     duration: Duration(seconds: timeToLive ?? 2),
-    //     backgroundColor: isError
-    //       ? CommonColors.error
-    //       : backgroundColor ?? Get.theme.scaffoldBackgroundColor,
-    //     behavior: SnackBarBehavior.floating,
-    //     showCloseIcon: true,
-    //     closeIconColor: textColor ?? Get.theme.primaryColor,
-    //   )
-    // );
+    messenger.currentState?.showSnackBar(
+      SnackBar(
+        content: SText(
+          text: message,
+          color: textColor ?? Get.theme.primaryColor
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(10),
+        duration: Duration(seconds: timeToLive ?? 2),
+        backgroundColor: isError
+          ? CommonColors.error
+          : backgroundColor ?? Get.theme.scaffoldBackgroundColor,
+        behavior: SnackBarBehavior.floating,
+        showCloseIcon: true,
+        closeIconColor: textColor ?? Get.theme.primaryColor,
+      )
+    );
   }
 
   static Future<T?>? showTopModalSheet<T>(

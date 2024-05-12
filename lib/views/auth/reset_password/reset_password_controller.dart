@@ -59,6 +59,7 @@ class ResetPasswordController extends GetxController {
           return;
         }
       } on Exception catch (e) {
+        state.isVerifying.value = false;
         Connect.showError(e);
         return;
       }

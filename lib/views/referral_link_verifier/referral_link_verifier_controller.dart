@@ -53,6 +53,8 @@ class ReferralLinkVerifierController extends GetxController {
               "referral": program.data.referralCode,
             })
           ),
+          safeArea: false,
+          isScrollable: true,
           route: "/referral/program/${program.data.referralCode}"
         );
       } else {

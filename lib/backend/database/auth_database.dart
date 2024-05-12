@@ -2,22 +2,20 @@ import 'dart:convert';
 
 import 'package:user/library.dart';
 
-String authDatabase = "AUTH_DATABASE";
-
 class AuthDatabase extends RepositoryService<AuthResponse, Session> {
   final DatabaseService _service = DatabaseImplementation(authDatabase);
 
   @override
   Future<Optional<AuthResponse>> delete(AuthResponse item) async {
     if(get().firstName != "") {
-      _service.remove("auth");
+      _service.remove("Auth");
     }
     return Optional<AuthResponse>.empty();
   }
 
   @override
   AuthResponse get() {
-    String? data = _service.read("auth");
+    String? data = _service.read("Auth");
 
     if(data != null) {
       return AuthResponse.fromJson(jsonDecode(data));
@@ -28,7 +26,7 @@ class AuthDatabase extends RepositoryService<AuthResponse, Session> {
 
   @override
   Future<AuthResponse> save(AuthResponse item) async {
-    await _service.write("auth", jsonEncode(item.toJson()));
+    await _service.write("Auth", jsonEncode(item.toJson()));
     return item;
   }
 }
