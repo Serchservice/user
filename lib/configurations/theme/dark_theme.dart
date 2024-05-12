@@ -5,7 +5,7 @@ Color darkPrimaryColor = const Color(0xff14181b);
 Color darkSecondaryColor = const Color(0xfff1f1f1);
 Color darkAlternateColor = const Color(0xff212836);
 Color darkPrimaryTextColor = const Color(0xffffffff);
-Color darkSecondaryTextColor = const Color(0xff95A1AC);
+Color darkSecondaryTextColor = const Color(0xFF3A3F43);
 Color darkBackgroundColor = const Color(0xff050404);
 
 class DarkTheme {
@@ -22,14 +22,16 @@ class DarkTheme {
   });
 
   ThemeData get theme => ThemeData(
+    useMaterial3: true,
     visualDensity: visualDensity,
     textTheme: textTheme.apply(bodyColor: darkPrimaryColor),
     scaffoldBackgroundColor: darkBackgroundColor,
     iconTheme: IconThemeData(color: darkPrimaryColor),
     appBarTheme: AppBarTheme(
       color: darkAlternateColor,
+      surfaceTintColor: darkAlternateColor,
       titleTextStyle: TextStyle(
-        color: darkPrimaryTextColor,
+        color: darkPrimaryColor,
         fontFamily: mainFont.fontFamily,
         fontSize: 16
       ),
@@ -42,8 +44,8 @@ class DarkTheme {
         systemNavigationBarIconBrightness: Brightness.light, // Android
       )
     ),
-    primaryColor: darkPrimaryColor,
-    primaryColorLight: darkBackgroundColor,
+    primaryColor: darkPrimaryTextColor,
+    primaryColorLight: darkSecondaryColor,
     primaryColorDark: darkPrimaryTextColor,
     // focusColor: darkPrimaryColor,
     splashColor: darkAlternateColor,

@@ -87,12 +87,14 @@ class Navigate<T> {
     required String route,
     Object? arguments,
     Color background = Colors.transparent,
-    bool isScrollable = false
+    bool isScrollable = false,
+    bool safeArea = false
   }) {
     Get.bottomSheet(
       sheet,
       backgroundColor: background,
       isScrollControlled: isScrollable,
+      ignoreSafeArea: safeArea,
       settings: RouteSettings(name: route, arguments: arguments)
     );
   }

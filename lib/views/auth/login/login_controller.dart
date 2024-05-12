@@ -55,7 +55,11 @@ class LoginController extends GetxController {
         if(apiResponse.isOk) {
           AuthResponse auth = AuthResponse.fromJson(apiResponse.data);
           Database.saveAuth(auth);
-          Navigate.all(HomeLayout.route);
+          if(auth.hasMfa && !Database.preference.remember && (Database.preference.isMFA || Database.preference.isBoth || Database.preference.isNone)) {
+            AuthWithMultiFactor.login();
+          } else {
+            Navigate.all(HomeLayout.route);
+          }
         } else {
           SnackBars.top(message: apiResponse.message, type: Snackbar.error);
           return;

@@ -7,13 +7,13 @@ class DeviceDatabase extends RepositoryService<Device, String> {
 
   @override
   Future<Optional<Device>> delete(Device item) async {
-    _service.remove("device");
+    _service.remove("Device");
     return Optional<Device>.empty();
   }
 
   @override
   Device get() {
-    String? data = _service.read("device");
+    String? data = _service.read("Device");
 
     if(data != null) {
       Map<String, dynamic> jsonData = jsonDecode(data);
@@ -25,7 +25,7 @@ class DeviceDatabase extends RepositoryService<Device, String> {
 
   @override
   Future<Device> save(Device item) async {
-    await _service.write("device", jsonEncode(item.toJson()));
+    await _service.write("Device", jsonEncode(item.toJson()));
     return item;
   }
 }

@@ -13,14 +13,14 @@ class SerchCategory {
   final String image;
   final String category;
   final String information;
-  final List<Specialty> specialties;
+  final List<Specialization> specialties;
 
   SerchCategory copyWith({
     String? type,
     String? image,
     String? category,
     String? information,
-    List<Specialty>? specialties,
+    List<Specialization>? specialties,
   }) {
     return SerchCategory(
       type: type ?? this.type,
@@ -39,7 +39,7 @@ class SerchCategory {
       information: json["information"] ?? "",
       specialties: json["specialties"] == null
         ? []
-        : List<Specialty>.from(json["specialties"]!.map((x) => Specialty.fromJson(x))),
+        : List<Specialization>.from(json["specialties"]!.map((x) => Specialization.fromJson(x))),
     );
   }
 

@@ -1,26 +1,25 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 /// This class will initialize certain materials and resources for the platform.
 abstract class FolderService {
-  /// List of folders the app uses
-  List<Directory> directories(String path);
-
-  /// Create or get the path if it is already created
-  Future<String?> createOrGetPath();
-
   /// Create or get folders if it is already created
   Future<String?> createOrGetFolders();
 
-  /// Add a file to the folder
-  Future<void> addFileToFolder(String fileName, String folderName, Uint8List bytes);
+  void fetchImageData({
+    required String url,
+    required Function(Uint8List) onSuccess,
+    required Function(String) onError
+  });
 
-  /// Download a file and save it to a folder
-  Future<void> downloadFileToFolder(String fileName, String folderName, String url);
+  void download({
+    String url = "",
+    Uint8List? data,
+    required String folder,
+    required String fileName,
+    required Function(Uint8List) onSuccess,
+    required Function(String) onError
+  });
 
   /// Check if the file is in any folder
-  Future<bool> isFileInFolder(String fileName, String folderName);
-
-  /// Get a folder
-  Future<String?> getFolder(String folderName);
+  Future<bool> isInFolder(String fileName, String folderName);
 }

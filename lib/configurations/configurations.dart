@@ -12,6 +12,9 @@ export 'routes/navigate.dart';
 export 'routes/routes.dart';
 export 'routes/links.dart';
 export 'routes/auth_routes.dart';
+export 'routes/centre_routes.dart';
+export 'routes/route_navigator.dart';
+export 'routes/guest_routes.dart';
 
 /// THEME CONFIGURATION
 export 'theme/common_colors.dart';
@@ -24,3 +27,7 @@ export 'logger.dart';
 
 /// FIREBASE CONFIGURATION
 export 'default_firebase_options.dart';
+
+/// MIDDLEWARES
+export 'middlewares/auth_middleware.dart';
+export 'middlewares/session_middleware.dart';

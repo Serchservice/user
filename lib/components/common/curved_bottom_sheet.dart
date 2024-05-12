@@ -7,12 +7,14 @@ class CurvedBottomSheet extends StatelessWidget {
     this.backgroundColor,
     required this.child,
     this.padding,
+    this.borderRadius,
     this.safeArea = false
   });
 
   final Color? backgroundColor;
   final Widget child;
   final bool safeArea;
+  final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -20,7 +22,7 @@ class CurvedBottomSheet extends StatelessWidget {
     return SafeArea(
       top: safeArea,
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(
+        borderRadius: borderRadius ?? const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),

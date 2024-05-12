@@ -31,7 +31,7 @@ class Switcher extends StatelessWidget {
       //   }
       // }),
       trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if(Database.preference.isDarkTheme) {
+        if(Database.preference.isLightTheme) {
           return CommonColors.lightTheme2;
         } else {
           return CommonColors.darkTheme2;

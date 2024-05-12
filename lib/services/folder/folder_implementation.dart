@@ -1,29 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:user/library.dart';
 
 class FolderImplementation implements FolderService {
-  @override
-  Future<void> addFileToFolder(String fileName, String folderName, Uint8List bytes) async {
-    try {
-      final folder = await getFolder(folderName);
-      if(folder != null) {
-        final folderDirectory = Directory(folder);
-        if (!await folderDirectory.exists()) {
-          await folderDirectory.create(recursive: true);
-        }
-        File file = File("$folder/$fileName");
-        await file.writeAsBytes(bytes, flush: true);
-      } else {
-        throw SerchException("Folder is null");
-      }
-    } on Exception catch(e) {
-      Logger.log(e.toString(), from: "Folder Logic - Add File To Folder");
-    }
-  }
-
   @override
   Future<String?> createOrGetFolders() async {
     try {
@@ -47,7 +29,6 @@ class FolderImplementation implements FolderService {
     }
   }
 
-  @override
   Future<String?> createOrGetPath() async {
     Directory? directory;
     try {
@@ -74,7 +55,6 @@ class FolderImplementation implements FolderService {
     }
   }
 
-  @override
   List<Directory> directories(String path) => [
     Directory('$path/${Folders.audio}'),
     Directory('$path/${Folders.document}'),
@@ -83,24 +63,21 @@ class FolderImplementation implements FolderService {
   ];
 
   @override
-  Future<void> downloadFileToFolder(String fileName, String folderName, String url) async {
+  void fetchImageData({required String url, required Function(Uint8List) onSuccess, required Function(String) onError}) async {
     try {
-      final folder = await getFolder(folderName);
-      if(folder != null) {
-        final folderDirectory = Directory(folder);
-        if (!await folderDirectory.exists()) {
-          await folderDirectory.create(recursive: true);
-        }
-        File file = File("$folder/$fileName");
+      Dio dio = Dio();
+      var response = await dio.get(url, options: Options(responseType: ResponseType.bytes));
+      if (response.statusCode == 200) {
+        Uint8List imageData = Uint8List.fromList(response.data);
+        onSuccess.call(imageData);
       } else {
-        throw SerchException("Folder is null");
+        onError.call('Failed to fetch image data');
       }
-    } on Exception catch(e) {
-      Logger.log(e.toString(), from: "Folder Logic - Download file to Folder");
+    } catch (error) {
+      onError.call('Error: $error');
     }
   }
 
-  @override
   Future<String?> getFolder(String folderName) async {
     final serchDirectory = await createOrGetPath();
     final folderPath = "$serchDirectory/$folderName";
@@ -108,7 +85,7 @@ class FolderImplementation implements FolderService {
   }
 
   @override
-  Future<bool> isFileInFolder(String fileName, String folderName) async {
+  Future<bool> isInFolder(String fileName, String folderName) async {
     try {
       final folder = await getFolder(folderName);
       if(folder != null) {
@@ -124,6 +101,42 @@ class FolderImplementation implements FolderService {
     } on Exception catch(e) {
       Logger.log(e.toString(), from: "Folder Logic - Download file to Folder");
       return false;
+    }
+  }
+
+  @override
+  void download({
+    String url = "", Uint8List? data, required String folder, required String fileName,
+    required Function(Uint8List) onSuccess, required Function(String) onError
+  }) async {
+    assert(url.isNotEmpty && data == null);
+    try {
+      final folderName = await getFolder(folder);
+      if(folderName != null) {
+        final folderDirectory = Directory(folderName);
+        if (!await folderDirectory.exists()) {
+          await folderDirectory.create(recursive: true);
+        }
+
+        if(data != null) {
+          File file = File("$folderName/$fileName");
+          await file.writeAsBytes(data, flush: true);
+        } else {
+          File file = File("$folderName/$fileName");
+          fetchImageData(
+            url: url,
+            onSuccess: (data) async {
+              await file.writeAsBytes(data, flush: true);
+              onSuccess.call(data);
+            },
+            onError: onError
+          );
+        }
+      } else {
+        onError.call("Folder not found");
+      }
+    } on Exception catch(e) {
+      onError.call("Error: $e");
     }
   }
 }

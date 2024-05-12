@@ -7,13 +7,13 @@ class CountryDatabase extends RepositoryService<List<Country>, String> {
 
   @override
   Future<Optional<List<Country>>> delete(List<Country> item) async {
-    _service.remove("countries");
+    _service.remove("Country");
     return Optional<List<Country>>.empty();
   }
 
   @override
   List<Country> get() {
-    List<dynamic>? data = _service.read("countries");
+    List<dynamic>? data = _service.read("Country");
 
     if(data != null) {
       return data.map((e) => Country.fromJson(jsonDecode(e))).toList();
@@ -24,7 +24,7 @@ class CountryDatabase extends RepositoryService<List<Country>, String> {
 
   @override
   Future<List<Country>> save(List<Country> item) async {
-    await _service.write("countries", item.map((e) => jsonEncode(e.toJson())).toList());
+    await _service.write("Country", item.map((e) => jsonEncode(e.toJson())).toList());
     return item;
   }
 }

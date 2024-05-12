@@ -78,4 +78,12 @@ class CommonUtility {
       currentFocus.unfocus();
     }
   }
+
+  static void fetch({required Function action, int durationInSeconds = 10}) {
+    Stream.periodic(Duration(seconds: durationInSeconds)).listen((_) {
+      Future<void>.delayed(const Duration(milliseconds: 500), () async {
+        action.call();
+      });
+    });
+  }
 }

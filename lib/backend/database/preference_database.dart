@@ -2,20 +2,18 @@ import 'dart:convert';
 
 import 'package:user/library.dart';
 
-String settingsDatabase = "SETTINGS_DATABASE";
-
 class PreferenceDatabase extends RepositoryService<Preference, String> {
   final DatabaseService _service = DatabaseImplementation(settingsDatabase);
 
   @override
   Future<Optional<Preference>> delete(Preference item) async {
-    _service.remove("preference");
+    _service.remove("Preference");
     return Optional<Preference>.empty();
   }
 
   @override
   Preference get() {
-    String? data = _service.read("preference");
+    String? data = _service.read("Preference");
 
     if(data != null) {
       Map<String, dynamic> jsonData = jsonDecode(data);
@@ -27,7 +25,7 @@ class PreferenceDatabase extends RepositoryService<Preference, String> {
 
   @override
   Future<Preference> save(Preference item) async {
-    await _service.write("preference", jsonEncode(item.toJson()));
+    await _service.write("Preference", jsonEncode(item.toJson()));
     return item;
   }
 }

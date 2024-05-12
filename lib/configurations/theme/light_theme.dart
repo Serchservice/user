@@ -22,13 +22,15 @@ class LightTheme {
   });
 
   ThemeData get theme => ThemeData(
+    useMaterial3: true,
     visualDensity: visualDensity,
     textTheme: textTheme.apply(bodyColor: lightPrimaryColor),
     iconTheme: IconThemeData(color: lightPrimaryColor),
     appBarTheme: AppBarTheme(
       color: lightAlternateColor,
+      surfaceTintColor: lightAlternateColor,
       titleTextStyle: TextStyle(
-        color: lightPrimaryTextColor,
+        color: lightPrimaryColor,
         fontFamily: mainFont.fontFamily,
         fontSize: 16
       ),

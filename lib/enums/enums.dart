@@ -10,3 +10,6 @@ export 'device/schedule_time.dart';
 
 /// ACCOUNT ENUMS
 export 'account/gender.dart';
+
+/// OTHERS
+export 'others/media_type.dart';

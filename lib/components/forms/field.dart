@@ -31,7 +31,8 @@ class Field extends StatelessWidget {
     this.noEnabledColor = false,
     this.isBig = false,
     this.needLabel = false,
-    this.labelColor
+    this.labelColor,
+    this.padding
   });
 
   Field.password({
@@ -60,7 +61,8 @@ class Field extends StatelessWidget {
     this.noEnabledColor = false,
     this.isBig = false,
     this.needLabel = false,
-    this.labelColor
+    this.labelColor,
+    this.padding
   }) : suffixIcon = IconButton(
     onPressed: onPressed,
     icon: Icon(
@@ -96,6 +98,7 @@ class Field extends StatelessWidget {
   final bool isBig;
   final bool needLabel;
   final Color? labelColor;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +151,7 @@ class Field extends StatelessWidget {
       ],
       decoration: InputDecoration(
         hintText: hintText,
-        contentPadding: isOTP ? EdgeInsets.zero : null,
+        contentPadding: isOTP ? EdgeInsets.zero : padding,
         hintStyle: TextStyle(
           color: CommonColors.hint,
           fontSize: textSize,

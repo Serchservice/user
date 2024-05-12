@@ -5,6 +5,24 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:user/library.dart';
 
 class AccessImplementation implements AccessService {
+  /// Storage Permissions
+  final List<Permission> storagePermissions = [
+    if(Platform.isAndroid) ...[
+      if(Database.device.sdk > 32)...[
+        Permission.photos,
+        Permission.videos
+      ],
+      if(Database.device.sdk <= 32) ...[
+        Permission.storage,
+      ],
+    ],
+    if(Platform.isIOS) ...[
+      Permission.photosAddOnly,
+      Permission.photos,
+      Permission.storage
+    ],
+  ];
+
   @override
   Future<bool> hasLocation() async {
     LocationPermission permit = await Geolocator.checkPermission();
@@ -27,25 +45,6 @@ class AccessImplementation implements AccessService {
       Permission.notification,
     ];
 
-    /// Storage Permissions
-    final List<Permission> storagePermissions = [
-      if(Platform.isAndroid) ...[
-        /// TODO:: Get device data from local storage
-        // if(controller.state.androidSDK.value > 32)...[
-        //   Permission.photos,
-        //   Permission.videos
-        // ],
-        // if(controller.state.androidSDK.value <= 32) ...[
-        //   Permission.storage,
-        // ],
-      ],
-      if(Platform.isIOS) ...[
-        Permission.photosAddOnly,
-        Permission.photos,
-        Permission.storage
-      ],
-    ];
-
     var storagePermission = await [...storagePermissions].request();
     var notificationPermission = await [...notificationPermissions].request();
     var mediaPermission = await [...mediaPermissions].request();
@@ -58,5 +57,11 @@ class AccessImplementation implements AccessService {
         locationPermission == LocationPermission.whileInUse;
 
     return !(isStorageNotGranted || isMediaNotGranted || isNoticeNotGranted || !isLocationGranted);
+  }
+
+  @override
+  Future<bool> hasStorage() async {
+    var storagePermission = await [...storagePermissions].request();
+    return !storagePermission.entries.any((element) => !element.value.isGranted);
   }
 }

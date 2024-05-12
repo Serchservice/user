@@ -2,7 +2,7 @@ enum Gender {
   male("MALE", "Male"),
   female("FEMALE", "Female"),
   any("ANY", "Prefer not to say"),
-  none("None", "");
+  none("NONE", "All");
 
   final String key;
   final String value;

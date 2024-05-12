@@ -49,15 +49,17 @@ class _PhoneFieldState extends State<PhoneField> {
   @override
   void initState() {
     super.initState();
-    _selectedCountry = Country.countries.firstWhere((country) {
-      if(widget.isoCode != null) {
-        return widget.isoCode!.toUpperCase() == country.code;
-      } else {
-        return Database.address.country == country.name;
-      }
-    },
-      orElse: () => Country.countries.first
-    );
+    if(Database.countries.isNotEmpty) {
+      _selectedCountry = Database.countries.firstWhere((country) {
+        if(widget.isoCode != null) {
+          return widget.isoCode!.toUpperCase() == country.code;
+        } else {
+          return Database.address.country == country.name;
+        }
+      },
+        orElse: () => Database.countries.first
+      );
+    }
   }
 
   Future<void> _changeCountry() async {
@@ -90,10 +92,12 @@ class _PhoneFieldState extends State<PhoneField> {
       focus: widget.focusNode,
       keyboard: TextInputType.phone,
       inputAction: widget.textInputAction ?? TextInputAction.next,
-      prefixIcon: Padding(
-        padding: const EdgeInsets.all(3),
-        child: _buildFlagsButton()
-      ),
+      prefixIcon: Database.countries.isNotEmpty
+        ? Padding(
+          padding: const EdgeInsets.all(3),
+          child: _buildFlagsButton()
+        )
+        : null,
       suffixIcon: widget.suffixIcon,
       suffixIconConstraints: widget.suffixIconConstraints,
       onChanged: (value) async {
@@ -145,7 +149,7 @@ class _PhoneFieldState extends State<PhoneField> {
                 SText(
                   text: '+${_selectedCountry.dialCode}',
                   size: Sizing.font(14),
-                  color: CommonColors.darkTheme,
+                  color: Theme.of(context).primaryColor,
                 )
               ],
             ),
