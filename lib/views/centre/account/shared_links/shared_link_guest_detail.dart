@@ -61,14 +61,20 @@ class SharedLinkGuestDetail extends StatelessWidget {
             const SizedBox(height: 20),
           ],
           if(guest.statuses.isNotEmpty) ...[
-            ...guest.statuses.map((status) => _buildContent(context: context, status: status))
+            ...guest.statuses.map((status) => GuestStatusView(status: status))
           ]
         ],
       )
     );
   }
+}
 
-  Widget _buildContent({required BuildContext context, required GuestStatus status}) {
+class GuestStatusView extends StatelessWidget {
+  final GuestStatus status;
+  const GuestStatusView({super.key, required this.status});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(Sizing.space(9)),
       decoration: BoxDecoration(

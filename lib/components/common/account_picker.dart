@@ -4,7 +4,7 @@ import 'package:user/library.dart';
 class AccountPicker extends StatefulWidget {
   final Function()? onUserSuccess;
   final Function()? onUserError;
-  final Function()? onGuestSuccess;
+  final Function(Guest guest)? onGuestSuccess;
   final Function()? onGuestError;
   final bool shouldNavigate;
   const AccountPicker({
@@ -18,7 +18,7 @@ class AccountPicker extends StatefulWidget {
 
   static void open({
     Function()? onUserSuccess,
-    Function()? onGuestSuccess,
+    Function(Guest guest)? onGuestSuccess,
     Function()? onGuestError,
     Function()? onUserError,
     bool shouldNavigate = false
@@ -118,7 +118,7 @@ class _AccountPickerState extends State<AccountPicker> {
         Guest auth = Guest.fromJson(response.data);
         Database.saveGuest(auth);
         Database.savePreference(Database.preference.copyWith(active: linkId));
-        widget.onGuestSuccess?.call();
+        widget.onGuestSuccess?.call(auth);
       } else {
         SnackBars.top(message: response.message, type: Snackbar.error);
         widget.onGuestError?.call();

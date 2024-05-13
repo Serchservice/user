@@ -22,4 +22,13 @@ class GuestHomeState {
 
   /// Avatar
   RxString avatar = RxString(Database.guest.avatar);
+
+  /// Current preference
+  Rx<Preference> preference = Database.preference.obs;
+
+  /// Gues profile
+  Rx<Guest> guest = Database.guest.obs;
+
+  /// Become a user
+  RxBool isLoading = RxBool(false);
 }

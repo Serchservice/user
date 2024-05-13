@@ -59,6 +59,7 @@ class BecomeAUserSheet extends StatelessWidget {
             borderRadius: 24,
             textColor: Get.theme.primaryColorLight,
             onClick: () => controller.becomeAUser(context),
+            loading: controller.state.isVerifying.value
           ))
         ],
       )

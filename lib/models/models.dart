@@ -34,6 +34,7 @@ export 'account/rating_chart.dart';
 export 'account/referral.dart';
 export 'account/referral_data.dart';
 export 'account/account.dart';
+export 'account/dashboard.dart';
 
 /// TRANSACTION
 export 'transaction/wallet.dart';
@@ -60,3 +61,6 @@ export 'shared/shared_user.dart';
 
 /// GUEST
 export 'guest/guest.dart';
+
+/// TRIP
+export 'trip/active.dart';

@@ -132,7 +132,7 @@ class LocationCheckerController extends GetxController {
         onUserError: () {
           Navigate.all(EmailCheckerLayout.route);
         },
-        onGuestSuccess: () => Navigate.all(GuestHomeLayout.route)
+        onGuestSuccess: (guest) => Navigate.all(GuestHomeLayout.route)
       );
     } else {
       Navigate.all(OnboardingLayout.route);
