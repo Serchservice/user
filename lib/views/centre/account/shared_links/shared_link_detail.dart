@@ -108,8 +108,7 @@ class SharedLinkDetail extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(Sizing.space(6)),
               color: Theme.of(context).bottomAppBarTheme.color,
-              child: _buildInformation(
-                context: context,
+              child: SharedPersonInformation(
                 avatar: link.data.provider.avatar,
                 name: link.data.provider.name,
                 category: link.data.provider.category,
@@ -131,8 +130,7 @@ class SharedLinkDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if(link.guests.isNotEmpty) ...[
-                  ...link.guests.map((guest) => _buildInformation(
-                    context: context,
+                  ...link.guests.map((guest) => SharedPersonInformation(
                     avatar: guest.avatar,
                     name: guest.name,
                     category: guest.status,
@@ -192,48 +190,60 @@ class SharedLinkDetail extends StatelessWidget {
       ]
     );
   }
+}
 
-  Widget _buildInformation({
-    required BuildContext context,
-    required String avatar,
-    required String name,
-    required String category,
-    double? rating,
-    VoidCallback? onTap
-  }) => Material(
-    color: Colors.transparent,
-    child: InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.all(Sizing.space(6)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Avatar.small(avatar: avatar),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SText(
-                    text: name,
-                    size: Sizing.font(15),
-                    color: Theme.of(context).primaryColor
-                  ),
-                  SText(
-                    text: category,
-                    size: Sizing.font(12),
-                    color: Theme.of(context).primaryColor
-                  ),
-                ],
-              )
-            ),
-            if(rating != null) ...[
-              RatingIcon(rating: rating)
-            ]
-          ],
+class SharedPersonInformation extends StatelessWidget {
+  final String avatar;
+  final String name;
+  final String category;
+  final double? rating;
+  final VoidCallback? onTap;
+  const SharedPersonInformation({
+    super.key,
+    required this.avatar,
+    required this.name,
+    required this.category,
+    this.rating,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(Sizing.space(6)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Avatar.small(avatar: avatar),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SText(
+                      text: name,
+                      size: Sizing.font(15),
+                      color: Theme.of(context).primaryColor
+                    ),
+                    SText(
+                      text: category,
+                      size: Sizing.font(12),
+                      color: Theme.of(context).primaryColor
+                    ),
+                  ],
+                )
+              ),
+              if(rating != null) ...[
+                RatingIcon(rating: rating!)
+              ]
+            ],
+          ),
         ),
-      ),
-    )
-  );
+      )
+    );
+  }
 }

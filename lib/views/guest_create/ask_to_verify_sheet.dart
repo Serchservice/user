@@ -5,13 +5,17 @@ import 'package:user/library.dart';
 
 class AskToVerifySheet extends StatefulWidget {
   final String emailAddress;
-  const AskToVerifySheet({super.key, required this.emailAddress});
+  final Function() onSuccess;
+  const AskToVerifySheet({super.key, required this.emailAddress, required this.onSuccess});
 
   @override
   State<AskToVerifySheet> createState() => _AskToVerifySheetState();
 
-  static void open(String emailAddress) => Navigate.bottomSheet(
-    sheet: AskToVerifySheet(emailAddress: emailAddress),
+  static void open({required String emailAddress, required Function() onSuccess}) => Navigate.bottomSheet(
+    sheet: AskToVerifySheet(
+      emailAddress: emailAddress,
+      onSuccess: onSuccess,
+    ),
     route: "/auth/guest/verify/ask",
     isScrollable: true
   );
@@ -47,7 +51,11 @@ class _AskToVerifySheetState extends State<AskToVerifySheet> {
       if(apiResponse.isOk) {
         SnackBars.top(message: apiResponse.message, type: Snackbar.success);
         Navigate.back();
-        VerifyTokenSheet.open(emailAddress: widget.emailAddress, name: apiResponse.data);
+        VerifyTokenSheet.open(
+          emailAddress: widget.emailAddress,
+          name: apiResponse.data,
+          onSuccess: widget.onSuccess
+        );
       } else {
         SnackBars.top(message: apiResponse.message, type: Snackbar.error);
         return;

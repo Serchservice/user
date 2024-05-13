@@ -95,7 +95,10 @@ class GuestCreateController extends GetxController {
             if(guest.confirmed) {
               Navigate.all(GuestHomeLayout.route);
             } else {
-              AskToVerifySheet.open(guest.emailAddress);
+              AskToVerifySheet.open(
+                emailAddress: guest.emailAddress,
+                onSuccess: () => Navigate.all(GuestHomeLayout.route),
+              );
             }
           } else {
             SnackBars.top(message: apiResponse.message, type: Snackbar.error);

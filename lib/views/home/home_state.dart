@@ -31,4 +31,22 @@ class HomeState {
 
   /// List of SpeakWithSerch Messages
   RxList<SpeakWithSerch> speakWithSerch = <SpeakWithSerch>[].obs;
+
+  /// List of SerchCategories
+  RxList<SerchCategory> categories = <SerchCategory>[].obs;
+
+  /// List of Popular SerchCategories
+  RxList<SerchCategory> popularCategories = <SerchCategory>[].obs;
+
+  /// Is fetching categories
+  RxBool isFetchingCategories = RxBool(true);
+
+  /// Is fetching popular categories
+  RxBool isFetchingPopularCategories = RxBool(true);
+
+  /// Dashboard Details
+  Rx<Dashboard> dashboard = Dashboard.empty().obs;
+
+  /// Fetching dashboard
+  RxBool isFetchingDashboard = RxBool(true);
 }

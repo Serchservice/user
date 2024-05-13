@@ -80,6 +80,7 @@ class _BookmarkSheetState extends State<BookmarkSheet> {
       safeArea: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           ...buttons.map((button) => NavigatorButton(
             header: button.header,

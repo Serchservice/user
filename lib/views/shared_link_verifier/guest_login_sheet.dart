@@ -58,6 +58,12 @@ class _GuestLoginSheetState extends State<GuestLoginSheet> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CurvedBottomSheet(
       child: Column(

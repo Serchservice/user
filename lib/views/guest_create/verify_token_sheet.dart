@@ -6,13 +6,27 @@ import 'package:user/library.dart';
 class VerifyTokenSheet extends StatefulWidget {
   final String emailAddress;
   final String name;
-  const VerifyTokenSheet({super.key, required this.emailAddress, required this.name});
+  final Function() onSuccess;
+  const VerifyTokenSheet({
+    super.key,
+    required this.emailAddress,
+    required this.name,
+    required this.onSuccess
+  });
 
   @override
   State<VerifyTokenSheet> createState() => _VerifyTokenSheetState();
 
-  static void open({required String emailAddress, required String name}) => Navigate.bottomSheet(
-    sheet: VerifyTokenSheet(emailAddress: emailAddress, name: name),
+  static void open({
+    required String emailAddress,
+    required String name,
+    required Function() onSuccess
+  }) => Navigate.bottomSheet(
+    sheet: VerifyTokenSheet(
+      emailAddress: emailAddress,
+      name: name,
+      onSuccess: onSuccess,
+    ),
     route: "/auth/guest/verify",
     isScrollable: true
   );
@@ -113,7 +127,7 @@ class _VerifyTokenSheetState extends State<VerifyTokenSheet> {
       setState(() => isVerifying = false);
       var apiResponse = ApiResponse.fromJson(response.data);
       if(apiResponse.isOk) {
-        Navigate.all(GuestHomeLayout.route);
+        widget.onSuccess.call();
       } else {
         SnackBars.top(message: apiResponse.message, type: Snackbar.error);
         return;
