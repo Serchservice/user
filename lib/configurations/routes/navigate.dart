@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Navigate<T> {
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   /// To go back to previous `[PAGE]` => `Get.back`
   static void back<T>({
     T? result,

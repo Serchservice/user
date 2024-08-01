@@ -1,10 +1,12 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
     id "com.google.firebase.crashlytics"
-    id "dev.flutter.flutter-gradle-plugin"
 }
+
+apply from: project(':app').file('api_keys.gradle')
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -51,6 +53,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // multiDexEnabled true
     }
 
     buildTypes {
@@ -58,6 +61,8 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            shrinkResources true
+            minifyEnabled true
         }
     }
 }
@@ -66,4 +71,8 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.1.1')
+    implementation 'com.google.firebase:firebase-analytics'
+//    implementation 'com.android.support:multidex:1.0.3' //to solve the multidex error
+}

@@ -7,6 +7,7 @@ Color lightAlternateColor = const Color(0xfff1f1f1);
 Color lightPrimaryTextColor = const Color(0xff14181b);
 Color lightSecondaryTextColor = const Color(0xff57636c);
 Color lightBackgroundColor = const Color(0xffffffff);
+Color lightSelectionColor = const Color(0xffe3e3e3);
 
 class LightTheme {
   VisualDensity visualDensity;
@@ -49,16 +50,26 @@ class LightTheme {
     primaryColorDark: lightSecondaryColor,
     // focusColor: SColors.darkTheme,
     splashColor: lightAlternateColor,
-    // textSelectionTheme: const TextSelectionThemeData(
-    //   cursorColor: SColors.darkTheme, // Change the cursor color
-    //   selectionColor: SColors.hint, // Change the highlight color
-    //   selectionHandleColor: SColors.darkTheme, // Change the cursor head color
-    // ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: lightPrimaryColor, // Change the cursor color
+      selectionColor: lightSelectionColor, // Change the highlight color
+      selectionHandleColor: lightPrimaryColor, // Change the cursor head color
+    ),
     progressIndicatorTheme: ProgressIndicatorThemeData(color: lightPrimaryColor),
     bottomAppBarTheme: BottomAppBarTheme(color: lightAlternateColor,),
     colorScheme: const ColorScheme.light().copyWith(
-      background: lightSecondaryTextColor,
+      surface: lightSelectionColor,
       brightness: Brightness.light,
     ),
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: lightAlternateColor,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if(states.contains(WidgetState.selected)) {
+          return TextStyle(color: lightPrimaryTextColor, fontSize: 12);
+        } else {
+          return TextStyle(color: lightSecondaryColor, fontSize: 12);
+        }
+      }),
+    )
   );
 }

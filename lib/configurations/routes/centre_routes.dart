@@ -51,10 +51,18 @@ List<GetPage> centreRoutes = [
   ),
 
   GetPage(
-    name: TransactionLayout.route,
-    page: () => TransactionLayout(),
-    binding: TransactionBinding(),
-    transition: Transition.native,
+    name: WalletSettingsLayout.route,
+    page: () => WalletSettingsLayout(),
+    binding: WalletSettingsBinding(),
+    transition: Transition.downToUp,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
+    name: UpdateBankDetailsLayout.route,
+    page: () => UpdateBankDetailsLayout(),
+    binding: UpdateBankDetailsBinding(),
+    transition: Transition.circularReveal,
     transitionDuration: const Duration(milliseconds: 500),
   ),
 

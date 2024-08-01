@@ -43,10 +43,10 @@ class Country {
     };
   }
 
-  static List<Country> get countries => AppConfiguration.data.countries;
+  static List<Country> get countries => MainConfiguration.data.countries;
 
   bool matchesCountry(String value) {
-    return value.toLowerCase() == name.toLowerCase();
+    return name.toLowerCase() == value.toLowerCase() || name.toLowerCase().contains(value.toLowerCase());
   }
 
   factory Country.primary() {
@@ -59,5 +59,11 @@ class Country {
       maxLength: 11,
       image: "https://wyvcjsumdfoamsmdzsna.supabase.co/storage/v1/object/public/flag/ng.png"
     );
+  }
+
+  static Country find(String name) {
+    return countries.firstWhere((country) {
+      return country.name.toLowerCase() == name;
+    }, orElse: () => countries.first);
   }
 }

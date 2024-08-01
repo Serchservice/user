@@ -35,8 +35,21 @@ class Media{
   static const notLaunched = "asset/common/notLaunched.png";
   static const onboard1 = "asset/common/onboard1.png";
   static const onboard2 = "asset/common/onboard2.png";
+  static const visaCard = "asset/common/visa-credit-card.png";
+  static const masterCard = "asset/common/mastercard.png";
+  static const chipCard = "asset/common/chip.png";
+  static const driveTo = "asset/common/drive-to.png";
+  static const speakTo = "asset/common/speak-to.png";
+  static const request = "asset/common/request.png";
 
   /// THEME MODES
   static const darkMode = "asset/theme/window_dark.png";
   static const lightMode = "asset/theme/window_light.png";
+
+  /// CONVERSATION
+  static const videoCall = "asset/conversation/video-call.png";
+  static const voiceCall = "asset/conversation/phone-voice.png";
+  static const tip2fixCall = "asset/conversation/diy.png";
+  static const voiceChat = "asset/conversation/voice.png";
+  static const videoChat = "asset/conversation/video-chat.png";
 }

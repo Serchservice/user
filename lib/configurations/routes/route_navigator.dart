@@ -94,5 +94,90 @@ class RouteNavigator {
     );
   }
 
-  /// TODO:: Add call and chat router
+  static void openChat({String roommate = "", bool removeRoute = false, ChatRoom? room}) {
+    if(removeRoute) {
+      Navigate.offTill(
+          ChatLayout.route,
+          ModalRoute.withName(HomeLayout.route),
+          parameters: {"roommate": roommate}
+      );
+    } else if(room != null) {
+      Navigate.to(
+          ChatLayout.route,
+          parameters: {"roommate": room.roommate, "room": room.room},
+          arguments: {"room": room.toJson()}
+      );
+    } else {
+      Navigate.to(
+        ChatLayout.route,
+        parameters: {"roommate": roommate}
+      );
+    }
+  }
+
+  static void openRequestAction({SerchCategory? category, required SerchCategory request}) {
+    Navigate.to(
+      RequestActionLayout.route,
+      parameters: {"type": request.type, "category": request.category,},
+      arguments: {"category": category?.toJson(), "request": request.toJson()}
+    );
+  }
+  
+  static void makeCall({
+    bool removeCurrentRoute = true,
+    required String name,
+    required String avatar,
+    required String user,
+    required CallType type
+  }) {
+    ActiveCallResponse call = ActiveCallResponse.call(name: name, avatar: avatar, user: user, type: type);
+    if(removeCurrentRoute) {
+      Navigate.offTill(
+        CallLayout.route,
+        ModalRoute.withName(HomeLayout.route),
+        parameters: {"user": user, "type": type.type},
+        arguments: {"call": call.toJson(), "start": true, "answer": false}
+      );
+    } else {
+      Navigate.to(
+        CallLayout.route,
+        parameters: {"user": user, "type": type.type},
+        arguments: {"call": call.toJson(), "start": true, "answer": false}
+      );
+    }
+  }
+
+  static void answerCall({bool removeCurrentRoute = true, required ActiveCallResponse call}) {
+    if(removeCurrentRoute) {
+      Navigate.offTill(
+        CallLayout.route,
+        ModalRoute.withName(HomeLayout.route),
+        parameters: {"user": call.user, "type": call.type.type},
+        arguments: {"call": call.toJson(), "start": false, "answer": true}
+      );
+    } else {
+      Navigate.to(
+        CallLayout.route,
+        parameters: {"user": call.user, "type": call.type.type},
+        arguments: {"call": call.toJson(), "start": false, "answer": true}
+      );
+    }
+  }
+
+  static void goToCall({bool removeCurrentRoute = true, required ActiveCallResponse call}) {
+    if(removeCurrentRoute) {
+      Navigate.offTill(
+        CallLayout.route,
+        ModalRoute.withName(HomeLayout.route),
+        parameters: {"user": call.user, "type": call.type.type},
+        arguments: {"call": call.toJson(), "start": false, "answer": false}
+      );
+    } else {
+      Navigate.to(
+        CallLayout.route,
+        parameters: {"user": call.user, "type": call.type.type},
+        arguments: {"call": call.toJson(), "start": false, "answer": false}
+      );
+    }
+  }
 }

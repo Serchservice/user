@@ -1,0 +1,54 @@
+import 'package:user/library.dart';
+
+class RequestSearch {
+  final SerchCategory? request;
+  final SerchCategory? category;
+  final SelectedMedia? audio;
+  final Specialization? special;
+  final String description;
+  final String car;
+  final Address address;
+  final List<ShoppingItem> shoppingItems;
+
+  RequestSearch({
+    this.description = "", this.audio, this.request,
+    this.category, this.car = "", this.special,
+    required this.address, this.shoppingItems = const []
+  });
+
+  factory RequestSearch.fromJson(Map<String, dynamic> json) {
+    List<ShoppingItem> items = [];
+    if(json["shopping_items"] != null) {
+      List<dynamic> itemList = json["shopping_items"];
+      items = itemList.map((data) => ShoppingItem.fromJson(data)).toList();
+    }
+
+    return RequestSearch(
+      description: json["description"] ?? "",
+      audio: json["audio"] != null ? SelectedMedia.fromJson(json["audio"]) : null,
+      request: json["request"] != null ? SerchCategory.fromJson(json["request"]) : null,
+      category: json["category"] != null ? SerchCategory.fromJson(json["category"]) : null,
+      special: json["special"] != null ? Specialization.fromJson(json["special"]) : null,
+      car: json["car"] ?? "",
+      address: Address.fromJson(json["address"]),
+      shoppingItems: items
+    );
+  }
+
+  bool get isSearch => special != null;
+
+  bool get isSpeakTo => request != null && request!.isSpeak;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "description": description,
+      "audio": audio?.toJson(),
+      "request": request?.toJson(),
+      "category": category?.toJson(),
+      "special": special?.toJson(),
+      "car": car,
+      "address": address.toJson(),
+      "shopping_items": shoppingItems.map((data) => data.toJson()).toList()
+    };
+  }
+}
