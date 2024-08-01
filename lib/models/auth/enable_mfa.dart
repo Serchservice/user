@@ -1,5 +1,5 @@
-class EnableMfa {
-  EnableMfa({
+class EnableMfaResponse {
+  EnableMfaResponse({
     required this.secret,
     required this.qrCode,
   });
@@ -7,25 +7,25 @@ class EnableMfa {
   final String secret;
   final String qrCode;
 
-  EnableMfa copyWith({
+  EnableMfaResponse copyWith({
     String? secret,
     String? qrCode,
   }) {
-    return EnableMfa(
+    return EnableMfaResponse(
       secret: secret ?? this.secret,
       qrCode: qrCode ?? this.qrCode,
     );
   }
 
-  factory EnableMfa.fromJson(Map<String, dynamic> json) {
-    return EnableMfa(
+  factory EnableMfaResponse.fromJson(Map<String, dynamic> json) {
+    return EnableMfaResponse(
       secret: json["secret"] ?? "",
       qrCode: json["qr_code"] ?? "",
     );
   }
 
-  factory EnableMfa.empty() {
-    return EnableMfa(
+  factory EnableMfaResponse.empty() {
+    return EnableMfaResponse(
       secret: "",
       qrCode: "",
     );

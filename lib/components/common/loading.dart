@@ -35,11 +35,19 @@ class Loading extends StatelessWidget {
     double? value, StrokeCap? stroke,
     String? route
   }) => Get.dialog(
-    Loading(
-      color: color,
-      size: size,
-      value: value,
-      stroke: stroke,
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Center(
+          child: Loading(
+            color: color,
+            size: size,
+            value: value,
+            stroke: stroke,
+          ),
+        ),
+      ],
     ),
     routeSettings: RouteSettings(name: route ?? "/loading"),
     barrierDismissible: false

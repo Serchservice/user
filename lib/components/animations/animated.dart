@@ -36,7 +36,7 @@ class Animated extends StatelessWidget {
       closedShape: RoundedRectangleBorder(
         borderRadius: borderRadius ?? BorderRadius.circular(24)
       ),
-      closedColor: color ?? Theme.of(context).colorScheme.background,
+      closedColor: color ?? Theme.of(context).colorScheme.surface,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return child;
       },

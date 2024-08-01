@@ -1,35 +1,58 @@
-import 'package:user/library.dart';
-
 class SerchCategory {
   SerchCategory({
     required this.type,
     required this.image,
     required this.category,
-    required this.specialties,
-    required this.information
+    required this.information,
+    required this.canDrive,
+    required this.canSearchSkill
   });
 
   final String type;
   final String image;
   final String category;
   final String information;
-  final List<Specialization> specialties;
+  final bool canSearchSkill;
+  final bool canDrive;
 
   SerchCategory copyWith({
     String? type,
     String? image,
     String? category,
     String? information,
-    List<Specialization>? specialties,
+    bool? canSearchSkill,
+    bool? canDrive,
   }) {
     return SerchCategory(
       type: type ?? this.type,
       image: image ?? this.image,
       category: category ?? this.category,
       information: information ?? this.information,
-      specialties: specialties ?? this.specialties,
+      canSearchSkill: canSearchSkill ?? this.canSearchSkill,
+      canDrive: canDrive ?? this.canDrive,
     );
   }
+
+  factory SerchCategory.quick({required String header, required String image, required String mode}) {
+    return SerchCategory(
+      type: header,
+      image: image,
+      category: mode,
+      information: "",
+      canDrive: false,
+      canSearchSkill: false
+    );
+  }
+
+  bool get isDrive => category == "DRIVE";
+  bool get isSpeak => category == "SPEAK";
+  bool get isRequest => category == "REQUEST";
+  bool get isPersonalShopper => category == "PERSONAL_SHOPPER";
+  bool get isMechanic => category == "MECHANIC";
+  bool get isPlumber => category == "PLUMBER";
+  bool get isElectrician => category == "ELECTRICIAN";
+  bool get isHouseKeeper => category == "HOUSE_KEEPING";
+  bool get isCarpenter => category == "CARPENTER";
 
   factory SerchCategory.fromJson(Map<String, dynamic> json) {
     return SerchCategory(
@@ -37,10 +60,20 @@ class SerchCategory {
       image: json["image"] ?? "",
       category: json["category"] ?? "",
       information: json["information"] ?? "",
-      specialties: json["specialties"] == null
-        ? []
-        : List<Specialization>.from(json["specialties"]!.map((x) => Specialization.fromJson(x))),
+      canDrive: json["can_drive"],
+      canSearchSkill: json["can_search_skill"],
     );
+  }
+
+  factory SerchCategory.empty() {
+    return SerchCategory.fromJson({
+      "type": "",
+      "image": "",
+      "category": "",
+      "information": "",
+      "can_search_skill": false,
+      "can_drive": false,
+    });
   }
 
   Map<String, dynamic> toJson() => {
@@ -48,7 +81,8 @@ class SerchCategory {
     "image": image,
     "category": category,
     "information": information,
-    "specialties": specialties.map((x) => x.toJson()).toList(),
+    "can_search_skill": canSearchSkill,
+    "can_drive": canDrive,
   };
 }
 
@@ -58,14 +92,6 @@ class SerchCategory {
 	"image": "string",
 	"category": "MECHANIC",
   "information": "",
-	"specialties": [
-		{
-			"id": 0,
-			"special": "string",
-			"difficulty": "string",
-			"timeline": "string",
-			"category": "MECHANIC",
-			"price_range": "string"
-		}
-	]
+  "can_search_skill": false,
+  "can_drive": false,
 }*/

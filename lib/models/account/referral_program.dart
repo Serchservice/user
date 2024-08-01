@@ -1,29 +1,31 @@
-import 'package:user/library.dart';
-
 class ReferralProgram {
   ReferralProgram({
     required this.name,
     required this.avatar,
     required this.role,
-    required this.data,
+    required this.referralCode,
+    required this.referLink,
   });
 
   final String name;
   final String avatar;
   final String role;
-  final ReferralProgramData data;
+  final String referralCode;
+  final String referLink;
 
   ReferralProgram copyWith({
     String? name,
     String? avatar,
     String? role,
-    ReferralProgramData? data,
+    String? referralCode,
+    String? referLink,
   }) {
     return ReferralProgram(
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
       role: role ?? this.role,
-      data: data ?? this.data,
+      referralCode: referralCode ?? this.referralCode,
+      referLink: referLink ?? this.referLink,
     );
   }
 
@@ -32,7 +34,8 @@ class ReferralProgram {
       name: json["name"] ?? "",
       avatar: json["avatar"] ?? "",
       role: json["role"] ?? "",
-      data: ReferralProgramData.fromJson(json["data"]),
+      referralCode: json["referralCode"] ?? "",
+      referLink: json["referLink"] ?? "",
     );
   }
 
@@ -40,7 +43,8 @@ class ReferralProgram {
     "name": name,
     "avatar": avatar,
     "role": role,
-    "data": data.toJson(),
+    "referralCode": referralCode,
+    "referLink": referLink,
   };
 }
 
@@ -49,12 +53,6 @@ class ReferralProgram {
 	"name": "string",
 	"avatar": "string",
 	"role": "string",
-	"data": {
-		"referralCode": "string",
-		"referLink": "string",
-		"credits": 0,
-		"description": "string",
-		"credit": 0,
-		"reward": "REFER_TIERED"
-	}
+	"referralCode": "string",
+	"referLink": "string",
 }*/

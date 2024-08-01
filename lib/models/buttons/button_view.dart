@@ -41,6 +41,9 @@ class ButtonView {
   /// Screen as the path
   final String path;
 
+  /// Function callback
+  final VoidCallback? onClick;
+
   ButtonView({
     this.icon = Icons.copy,
     this.index = 0,
@@ -48,6 +51,7 @@ class ButtonView {
     this.body = "",
     this.number = 0.0,
     this.color = CommonColors.lightTheme,
-    this.path = "/"
+    this.path = "/",
+    this.onClick
   });
 }

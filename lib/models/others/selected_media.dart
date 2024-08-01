@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:user/library.dart';
@@ -56,18 +57,30 @@ class SelectedMedia{
     return jsonEncode(media.toJson());
   }
 
-  factory SelectedMedia.fromJson(String data) {
-    Map<String, dynamic> json = jsonDecode(data);
+  factory SelectedMedia.fromJson(dynamic data) {
+    if(data is String) {
+      Map<String, dynamic> json = jsonDecode(data);
 
-    return SelectedMedia(
-      path: json["path"],
-      duration: json["duration"],
-      size: json["size"],
-      data: json["data"],
-      callbackUrl: json["callback_url"],
-      isCamera: json["is_camera"],
-      media: (json["media"] as String).toMediaType()
-    );
+      return SelectedMedia(
+        path: json["path"],
+        duration: json["duration"],
+        size: json["size"],
+        data: json["data"],
+        callbackUrl: json["callback_url"],
+        isCamera: json["is_camera"],
+        media: (json["media"] as String).toMediaType()
+      );
+    } else {
+      return SelectedMedia(
+        path: data["path"],
+        duration: data["duration"],
+        size: data["size"],
+        data: data["data"],
+        callbackUrl: data["callback_url"],
+        isCamera: data["is_camera"],
+        media: (data["media"] as String).toMediaType()
+      );
+    }
   }
 
   static String toDuration(Duration duration) {
@@ -89,5 +102,45 @@ class SelectedMedia{
       formattedDuration = '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     }
     return formattedDuration;
+  }
+
+  Future<String> getBase64() async {
+    Uint8List fileBytes = await File(path).readAsBytes();
+    return base64Encode(fileBytes);
+  }
+
+  Future<String> getBase64WithPrefix() async {
+    String base64String = await getBase64();
+    String mimeType = _getMimeType(path);
+
+    return 'data:$mimeType;base64,$base64String';
+  }
+
+  String _getMimeType(String filePath) {
+    final extension = filePath.split('.').last.toLowerCase();
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      case 'bmp':
+        return 'image/bmp';
+      case 'webp':
+        return 'image/webp';
+      case 'mp4':
+        return 'video/mp4';
+      case 'avi':
+        return 'video/x-msvideo';
+      case 'mov':
+        return 'video/quicktime';
+      case 'mkv':
+        return 'video/x-matroska';
+    // Add more cases as needed
+      default:
+        return 'application/octet-stream';
+    }
   }
 }

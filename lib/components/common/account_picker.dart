@@ -3,24 +3,28 @@ import 'package:user/library.dart';
 
 class AccountPicker extends StatefulWidget {
   final Function()? onUserSuccess;
-  final Function()? onUserError;
+  final Function(bool)? onUserError;
   final Function(Guest guest)? onGuestSuccess;
-  final Function()? onGuestError;
+  final Function(bool)? onGuestError;
   final bool shouldNavigate;
+  final bool isLogin;
+
   const AccountPicker({
     super.key,
     this.onUserSuccess,
     this.onGuestSuccess,
     this.onGuestError,
     this.onUserError,
-    this.shouldNavigate = false
+    this.shouldNavigate = false,
+    this.isLogin = false
   });
 
   static void open({
     Function()? onUserSuccess,
     Function(Guest guest)? onGuestSuccess,
-    Function()? onGuestError,
-    Function()? onUserError,
+    Function(bool)? onGuestError,
+    Function(bool)? onUserError,
+    bool isLogin = false,
     bool shouldNavigate = false
   }) => Navigate.bottomSheet(
     sheet: AccountPicker(
@@ -28,7 +32,8 @@ class AccountPicker extends StatefulWidget {
       onGuestSuccess: onGuestSuccess,
       onGuestError: onGuestError,
       onUserError: onUserError,
-      shouldNavigate: shouldNavigate
+      shouldNavigate: shouldNavigate,
+      isLogin: isLogin,
     ),
     route: "/accounts/select",
     isScrollable: true,
@@ -40,7 +45,7 @@ class AccountPicker extends StatefulWidget {
 
 class _AccountPickerState extends State<AccountPicker> {
   List<Account> accounts = Database.accounts;
-  final CommonApiService _apiService = CommonApi();
+  final AuthValidatorService _apiService = AuthValidator();
   bool isLoading = false;
   String selected = "";
 
@@ -58,23 +63,51 @@ class _AccountPickerState extends State<AccountPicker> {
         }
       },
       onError: (error) {
-        SnackBars.top(message: error, type: Snackbar.error);
+        notify.error(message: error);
       }
     );
   }
 
   void switchToUser(String id) async {
-    final Connect connect = Connect();
-    try {
+    if(Database.preference.active == id || Database.preference.active == "user") {
       setState(() {
         isLoading = true;
         selected = id;
       });
-      var res = await connect.post(endpoint: "/switch/user", body: {
+      _apiService.validateSession(
+        onSuccess: (result) {
+          setState(() {
+            isLoading = false;
+            selected = "";
+          });
+          if(widget.isLogin) {
+            widget.onUserSuccess?.call();
+          } else {
+            Navigate.all(HomeLayout.route);
+          }
+        },
+        onError: (error) {
+          setState(() {
+            isLoading = false;
+            selected = "";
+          });
+          if(widget.isLogin) {
+            widget.onUserError?.call(false);
+          } else {
+            Navigate.all(EmailCheckerLayout.route);
+          }
+        }
+      );
+    } else {
+      final ConnectService connect = Connect();
+      setState(() {
+        isLoading = true;
+        selected = id;
+      });
+      var response = await connect.post(endpoint: "/switch/user", body: {
         "id": Database.guest.id,
         "device": Database.device.toJson(),
       });
-      ApiResponse response = ApiResponse.fromJson(res.data);
       setState(() {
         isLoading = false;
         selected = "";
@@ -85,31 +118,25 @@ class _AccountPickerState extends State<AccountPicker> {
         Database.savePreference(Database.preference.copyWith(active: id));
         widget.onUserSuccess?.call();
       } else {
-        SnackBars.top(message: response.message, type: Snackbar.error);
-        widget.onUserError?.call();
+        notify.error(message: response.message);
+        widget.onUserError?.call(response.isGuestOnTrip);
       }
-    } on Exception catch(e) {
-      setState(() {
-        isLoading = false;
-        selected = "";
-      });
-      Connect.showError(e);
-      widget.onUserError?.call();
     }
   }
 
-  void switchToGuest(String linkId) async {
-    final Connect connect = Connect();
-    setState(() {
-      isLoading = true;
-      selected = linkId;
-    });
-    try {
-      var res = await connect.post(endpoint: "/switch", body: {
-        "id": Database.guest.id,
+  void switchToGuest({required String linkId, required String guestId}) async {
+    if(Database.preference.active == linkId) {
+      widget.onGuestSuccess?.call(Database.guest);
+    } else {
+      final ConnectService connect = Connect(useToken: Database.isUserLoggedIn);
+      setState(() {
+        isLoading = true;
+        selected = linkId;
+      });
+      var response = await connect.post(endpoint: "/switch", body: {
+        "id": guestId,
         "link_id": linkId
       });
-      ApiResponse response = ApiResponse.fromJson(res.data);
       setState(() {
         isLoading = false;
         selected = "";
@@ -120,16 +147,9 @@ class _AccountPickerState extends State<AccountPicker> {
         Database.savePreference(Database.preference.copyWith(active: linkId));
         widget.onGuestSuccess?.call(auth);
       } else {
-        SnackBars.top(message: response.message, type: Snackbar.error);
-        widget.onGuestError?.call();
+        notify.error(message: response.message);
+        widget.onGuestError?.call(response.isGuestOnTrip);
       }
-    } on Exception catch(e) {
-      setState(() {
-        isLoading = false;
-        selected = "";
-      });
-      Connect.showError(e);
-      widget.onGuestError?.call();
     }
   }
 
@@ -138,6 +158,8 @@ class _AccountPickerState extends State<AccountPicker> {
     return CurvedBottomSheet(
       padding: EdgeInsets.zero,
       safeArea: true,
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -157,7 +179,8 @@ class _AccountPickerState extends State<AccountPicker> {
             ...accounts.map((account) {
               bool active = Database.preference.active.isEmpty
                 ? account.category.toLowerCase() == "user"
-                : (Database.preference.active == account.id || Database.preference.active == account.linkId);
+                : (Database.preference.active == "user" && account.category.toLowerCase() == "user")
+                || (Database.preference.active == account.id || Database.preference.active == account.linkId);
 
               return Material(
                 color: active
@@ -171,13 +194,19 @@ class _AccountPickerState extends State<AccountPicker> {
                       if(account.category.toLowerCase() == "user") {
                         switchToUser(account.id);
                       } else {
-                        switchToGuest(account.linkId);
+                        switchToGuest(
+                          linkId: account.linkId,
+                          guestId: account.id
+                        );
                       }
                     } else {
                       if(account.category.toLowerCase() == "user") {
                         switchToUser(account.id);
                       } else {
-                        switchToGuest(account.linkId);
+                        switchToGuest(
+                          linkId: account.linkId,
+                          guestId: account.id
+                        );
                       }
                     }
                   },
@@ -213,7 +242,7 @@ class _AccountPickerState extends State<AccountPicker> {
                             ],
                           )
                         ),
-                        _buildNotification(
+                        _buildNotifier(
                           context: context,
                           isActive: active,
                           isLoading: (account.id == selected || account.linkId == selected) && isLoading
@@ -247,7 +276,7 @@ class _AccountPickerState extends State<AccountPicker> {
     );
   }
 
-  Widget _buildNotification({
+  Widget _buildNotifier({
     required BuildContext context,
     required bool isActive,
     required bool isLoading

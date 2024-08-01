@@ -69,7 +69,7 @@ class Field extends StatelessWidget {
       icon ?? Icons.lock_rounded,
       size: iconSize ?? Sizing.font(24),
     ),
-    color: Get.theme.colorScheme.background
+    color: Get.theme.colorScheme.surface
   );
 
   final FontWeight? inputTextWeight;
@@ -167,7 +167,7 @@ class Field extends StatelessWidget {
           borderSide: BorderSide(
             width: 2,
             color: noEnabledColor
-              ? Theme.of(context).colorScheme.background
+              ? Theme.of(context).colorScheme.surface
               : textColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
           ),
@@ -177,7 +177,7 @@ class Field extends StatelessWidget {
           borderSide: BorderSide(
             width: 2,
             color: noEnabledColor
-              ? Theme.of(context).colorScheme.background
+              ? Theme.of(context).colorScheme.surface
               : textColor ?? Theme.of(context).primaryColor,
             style: BorderStyle.solid,
           ),

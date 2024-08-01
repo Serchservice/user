@@ -1,5 +1,5 @@
-class MfaRecoveryCode {
-  MfaRecoveryCode({
+class MfaRecoveryCodeResponse {
+  MfaRecoveryCodeResponse({
     required this.code,
     required this.isUsed,
   });
@@ -7,18 +7,18 @@ class MfaRecoveryCode {
   final String code;
   final bool isUsed;
 
-  MfaRecoveryCode copyWith({
+  MfaRecoveryCodeResponse copyWith({
     String? code,
     bool? isUsed,
   }) {
-    return MfaRecoveryCode(
+    return MfaRecoveryCodeResponse(
       code: code ?? this.code,
       isUsed: isUsed ?? this.isUsed,
     );
   }
 
-  factory MfaRecoveryCode.fromJson(Map<String, dynamic> json) {
-    return MfaRecoveryCode(
+  factory MfaRecoveryCodeResponse.fromJson(Map<String, dynamic> json) {
+    return MfaRecoveryCodeResponse(
       code: json["code"] ?? "",
       isUsed: json["is_used"] ?? false,
     );

@@ -16,35 +16,35 @@ class Switcher extends StatelessWidget {
     return Switch(
       value: value,
       onChanged: onChanged,
-      trackOutlineColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+      trackOutlineColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
         if (value) {
           return CommonColors.green;
         } else {
           return Colors.green.withOpacity(.48);
         }
       }),
-      // trackOutlineWidth: MaterialStateProperty.resolveWith<double?>((Set<MaterialState> states) {
+      // trackOutlineWidth: WidgetStateProperty.resolveWith<double?>((Set<WidgetState> states) {
       //   if (value) {
       //     return 22.0;
       //   } else {
       //     return 15.0; // Use the default width.
       //   }
       // }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+      trackColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
         if(Database.preference.isLightTheme) {
           return CommonColors.lightTheme2;
         } else {
           return CommonColors.darkTheme2;
         }
       }),
-      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+      thumbColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
         if (value) {
           return CommonColors.success;
         } else {
           return Theme.of(context).primaryColor;
         }
       }),
-      thumbIcon: MaterialStateProperty.resolveWith<Icon?>((Set<MaterialState> states) {
+      thumbIcon: WidgetStateProperty.resolveWith<Icon?>((Set<WidgetState> states) {
         if (value) {
           return Icon(Icons.check, size: Sizing.space(15));
         } else {

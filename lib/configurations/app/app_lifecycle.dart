@@ -43,6 +43,6 @@ class AppLifeCycle extends WidgetsBindingObserver {
   }
 
   Future<void> init() async {
-    Logger.log("Listening from AppLifeCycle");
+    log("Listening from AppLifeCycle");
   }
 }

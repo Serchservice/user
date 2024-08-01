@@ -39,7 +39,7 @@ class ButtonSelector extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected
             ? selectedBgColor ?? Theme.of(context).primaryColor
-            : unSelectedBgColor ?? Theme.of(context).colorScheme.background,
+            : unSelectedBgColor ?? Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(borderRadius ?? 14),
         ),
         child: SText.center(
@@ -47,7 +47,7 @@ class ButtonSelector extends StatelessWidget {
           size: textSize ?? Sizing.font(16),
           weight: weight ?? FontWeight.normal,
           color: selected
-            ? unSelectedBgColor ?? Theme.of(context).colorScheme.background
+            ? unSelectedBgColor ?? Theme.of(context).colorScheme.surface
             : selectedBgColor ?? Theme.of(context).primaryColor
         ),
       ),

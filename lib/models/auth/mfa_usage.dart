@@ -1,5 +1,5 @@
-class MfaUsage {
-  MfaUsage({
+class MfaUsageResponse {
+  MfaUsageResponse({
     required this.used,
     required this.unused,
     required this.total,
@@ -9,20 +9,20 @@ class MfaUsage {
   final int unused;
   final int total;
 
-  MfaUsage copyWith({
+  MfaUsageResponse copyWith({
     int? used,
     int? unused,
     int? total,
   }) {
-    return MfaUsage(
+    return MfaUsageResponse(
       used: used ?? this.used,
       unused: unused ?? this.unused,
       total: total ?? this.total,
     );
   }
 
-  factory MfaUsage.fromJson(Map<String, dynamic> json) {
-    return MfaUsage(
+  factory MfaUsageResponse.fromJson(Map<String, dynamic> json) {
+    return MfaUsageResponse(
       used: json["used"] ?? 0,
       unused: json["unused"] ?? 0,
       total: json["total"] ?? 0,

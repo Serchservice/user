@@ -1,33 +1,31 @@
-import 'package:user/library.dart';
-
 class Referral {
   Referral({
     required this.referId,
     required this.name,
     required this.avatar,
     required this.role,
-    required this.data,
+    required this.info,
   });
 
   final String referId;
   final String name;
   final String avatar;
   final String role;
-  final ReferralData? data;
+  final String info;
 
   Referral copyWith({
     String? referId,
     String? name,
     String? avatar,
     String? role,
-    ReferralData? data,
+    String? info,
   }) {
     return Referral(
       referId: referId ?? this.referId,
       name: name ?? this.name,
       avatar: avatar ?? this.avatar,
       role: role ?? this.role,
-      data: data ?? this.data,
+      info: info ?? this.info,
     );
   }
 
@@ -37,7 +35,7 @@ class Referral {
       name: json["name"] ?? "",
       avatar: json["avatar"] ?? "",
       role: json["role"] ?? "",
-      data: json["data"] == null ? null : ReferralData.fromJson(json["data"]),
+      info: json["info"] ?? "",
     );
   }
 
@@ -46,7 +44,7 @@ class Referral {
     "name": name,
     "avatar": avatar,
     "role": role,
-    "data": data?.toJson(),
+    "info": info,
   };
 }
 
@@ -56,8 +54,5 @@ class Referral {
 	"name": "string",
 	"avatar": "string",
 	"role": "string",
-	"data": {
-		"info": "string",
-		"label": "string"
-	}
+	"info": "string"
 }*/

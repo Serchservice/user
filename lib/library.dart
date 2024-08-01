@@ -1,31 +1,12 @@
-/// BACKEND LIBRARY
-export './backend/backend.dart';
+library;
 
-/// COMPONENTS LIBRARY
-export './components/components.dart';
-
-/// CONFIGURATION LIBRARY
-export './configurations/configurations.dart';
-
-/// ENUM LIBRARY
-export './enums/enums.dart';
-
-/// EXCEPTION LIBRARY
-export './exceptions/exceptions.dart';
-
-/// APP LIBRARY
-export './library.dart';
-
-/// MODEL LIBRARY
-export './models/models.dart';
-
-/// SERVICE LIBRARY
-export './services/services.dart';
-
-/// UTILITY LIBRARY
-export './utilities/utilities.dart';
-
-/// PAGES AND VIEW LIBRARY
-export './views/views.dart';
+export 'backend/library.dart';
+export 'components/library.dart';
+export 'configurations/library.dart';
+export 'database/library.dart';
+export 'enums/library.dart';
+export 'models/library.dart';
+export 'utilities/library.dart';
+export 'app/library.dart';
 
 export 'main.dart';

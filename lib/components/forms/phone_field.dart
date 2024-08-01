@@ -59,6 +59,20 @@ class _PhoneFieldState extends State<PhoneField> {
       },
         orElse: () => Database.countries.first
       );
+    } else {
+      final AppService appService = AppImplementation();
+      appService.getCountries(onSuccess: (countries) {
+        Database.saveCountries(countries);
+        _selectedCountry = countries.firstWhere((country) {
+          if(widget.isoCode != null) {
+            return widget.isoCode!.toUpperCase() == country.code;
+          } else {
+            return Database.address.country == country.name;
+          }
+        },
+          orElse: () => countries.first
+        );
+      });
     }
   }
 
@@ -94,7 +108,7 @@ class _PhoneFieldState extends State<PhoneField> {
       inputAction: widget.textInputAction ?? TextInputAction.next,
       prefixIcon: Database.countries.isNotEmpty
         ? Padding(
-          padding: const EdgeInsets.all(3),
+          padding: const EdgeInsets.only(right:3),
           child: _buildFlagsButton()
         )
         : null,
@@ -120,42 +134,50 @@ class _PhoneFieldState extends State<PhoneField> {
     );
   }
 
-  Material _buildFlagsButton() {
+  Widget _buildFlagsButton() {
     BoxDecoration decoration = BoxDecoration(
       border: Border(
         right: BorderSide(color: Theme.of(context).primaryColor)
+      ),
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(10),
+        bottomLeft: Radius.circular(10)
       )
     );
 
-    return Material(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: InkWell(
+    return Padding(
+      padding: const EdgeInsets.only(left: 2),
+      child: Material(
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: decoration.borderRadius as BorderRadius?,
-        onTap: _changeCountry,
-        child: DecoratedBox(
-          decoration: decoration,
-          child: Padding(
-            padding: EdgeInsets.all(Sizing.space(9)),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                  image: AssetUtility.image(_selectedCountry.image),
-                  width: 28,
-                ),
-                const SizedBox(width: 8),
-                SText(
-                  text: '+${_selectedCountry.dialCode}',
-                  size: Sizing.font(14),
-                  color: Theme.of(context).primaryColor,
-                )
-              ],
+        child: InkWell(
+          borderRadius: decoration.borderRadius as BorderRadius?,
+          onTap: _changeCountry,
+          child: DecoratedBox(
+            decoration: decoration,
+            child: Padding(
+              padding: EdgeInsets.all(Sizing.space(9)),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Image(
+                    image: AssetUtility.image(_selectedCountry.image),
+                    width: 28,
+                  ),
+                  const SizedBox(width: 8),
+                  SText(
+                    text: '+${_selectedCountry.dialCode}',
+                    size: Sizing.font(14),
+                    color: Theme.of(context).primaryColor,
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }
