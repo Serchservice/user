@@ -30,6 +30,9 @@ List<GetPage> authenticationRoutes = [
     name: LocationCheckerLayout.route,
     page: () => LocationCheckerLayout(),
     binding: LocationCheckerBinding(),
+    middlewares: [
+      AuthMiddleware(priority: 10)
+    ],
     transition: Transition.circularReveal,
     transitionDuration: const Duration(milliseconds: 800),
   ),

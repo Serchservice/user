@@ -2,19 +2,19 @@ import 'package:user/library.dart';
 import 'package:flutter/material.dart';
 
 class ShopView extends StatefulWidget {
-  final Shop shop;
+  final SearchShopResponse response;
   final double longitude;
   final double latitude;
 
-  const ShopView({required this.shop, super.key, required this.longitude, required this.latitude});
+  const ShopView({required this.response, super.key, required this.longitude, required this.latitude});
 
   @override
   State<ShopView> createState() => _ShopViewState();
 
-  static void open({required Shop shop, required double latitude, required double longitude}) {
+  static void open({required SearchShopResponse response, required double latitude, required double longitude}) {
     Navigate.bottomSheet(
-      sheet: ShopView(shop: shop, latitude: latitude, longitude: longitude),
-      route: "/dashboard/request/result/view?shop=${shop.id}"
+      sheet: ShopView(response: response, latitude: latitude, longitude: longitude),
+      route: "/dashboard/request/result/view?shop=${response.shop.id}"
     );
   }
 }
@@ -43,33 +43,35 @@ class _ShopViewState extends State<ShopView> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Avatar.small(avatar: widget.shop.logo),
+                  Avatar.small(avatar: widget.response.shop.logo),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SText(
-                          text: widget.shop.name,
+                          text: widget.response.shop.name,
                           color: Theme.of(context).primaryColor,
                           size: Sizing.font(16),
                           weight: FontWeight.bold,
                           flow: TextOverflow.ellipsis
                         ),
-                        RatingIcon(rating: widget.shop.rating),
+                        RatingIcon(rating: widget.response.shop.rating),
                       ],
                     ),
                   ),
                   const SizedBox(width: 10),
                   CircledButton(
                     title: "Drive to",
-                    icon: Icons.drive_eta_rounded,
-                    onClick: () {}
+                    asset: Media.mapRight,
+                    onClick: () => NavigationOptionSheet.open(widget.response),
+                    backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
                   ),
                   CircledButton(
                     title: "Call",
                     icon: Icons.call,
-                    onClick: () => RouteNavigator.callNumber(widget.shop.phone)
+                    onClick: () => RouteNavigator.callNumber(widget.response.shop.phone),
+                    backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
                   ),
                 ],
               )
@@ -81,7 +83,7 @@ class _ShopViewState extends State<ShopView> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CategoryImage(image: widget.shop.image, height: 50, width: 50),
+                  CategoryImage(image: widget.response.shop.image, height: 50, width: 50),
                   const SizedBox(height: 10),
                   Expanded(child: _buildStatus(context))
                 ],
@@ -109,9 +111,9 @@ class _ShopViewState extends State<ShopView> {
             IndexedStack(
               index: current,
               children: [
-                ShopViewWeekdays(weekdays: widget.shop.weekdays),
-                ShopViewServices(services: widget.shop.services),
-                ShopViewProfile(shop: widget.shop),
+                ShopViewWeekdays(weekdays: widget.response.shop.weekdays),
+                ShopViewServices(services: widget.response.shop.services),
+                ShopViewProfile(shop: widget.response.shop),
               ]
             )
           ],
@@ -121,7 +123,7 @@ class _ShopViewState extends State<ShopView> {
   }
 
   Widget _buildStatus(BuildContext context) {
-    if(widget.shop.current != null) {
+    if(widget.response.shop.current != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -130,7 +132,7 @@ class _ShopViewState extends State<ShopView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SText(
-                  text: widget.shop.current!.day,
+                  text: widget.response.shop.current!.day,
                   color: Theme.of(context).primaryColor,
                   size: Sizing.font(14),
                 ),
@@ -139,7 +141,7 @@ class _ShopViewState extends State<ShopView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SText.center(
-                      text: widget.shop.current!.opening,
+                      text: widget.response.shop.current!.opening,
                       size: Sizing.font(11),
                       color: Theme.of(context).primaryColor
                     ),
@@ -151,7 +153,7 @@ class _ShopViewState extends State<ShopView> {
                     ),
                     const SizedBox(width: 5),
                     SText.center(
-                      text: widget.shop.current!.closing,
+                      text: widget.response.shop.current!.closing,
                       size: Sizing.font(11),
                       color: Theme.of(context).primaryColor
                     ),
@@ -161,14 +163,14 @@ class _ShopViewState extends State<ShopView> {
             ),
           ),
           const SizedBox(width: 10),
-          Switcher(onChanged: (value) { }, value: widget.shop.open)
+          Switcher(onChanged: (value) { }, value: widget.response.shop.open)
         ],
       );
     } else {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Switcher(onChanged: (value) { }, value: widget.shop.open)
+          Switcher(onChanged: (value) { }, value: widget.response.shop.open)
         ],
       );
     }

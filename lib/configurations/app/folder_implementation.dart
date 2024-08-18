@@ -33,19 +33,23 @@ class FolderImplementation implements FolderService {
     Directory? directory;
     try {
       if (Platform.isAndroid) {
-        /// getExternalStorageDirectory
-        directory = await getApplicationDocumentsDirectory();
-        String serchPath = "";
-        List<String> folders = directory.path.split("/");
-        for (int x = 1; x < folders.length; x++) {
-          String folder = folders[x];
-          if (folder != "Android") {
-            serchPath += "/$folder";
-          } else {
-            break;
+        directory = await getExternalStorageDirectory();
+        if(directory != null) {
+          String serchPath = "";
+          List<String> folders = directory.path.split("/");
+          for (int x = 1; x < folders.length; x++) {
+            String folder = folders[x];
+            if (folder != "Android") {
+              serchPath += "/$folder";
+            } else {
+              break;
+            }
           }
+          return "$serchPath/${Folders.parent}";
+        } else {
+          directory = await getApplicationDocumentsDirectory();
+          return "${directory.path}/${Folders.parent}";
         }
-        return "$serchPath/${Folders.parent}";
       } else {
         directory = await getApplicationDocumentsDirectory();
         return "${directory.path}/${Folders.parent}";

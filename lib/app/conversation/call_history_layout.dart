@@ -93,7 +93,7 @@ class CallHistoryLayout extends StatelessWidget {
     });
   }
 
-  Widget _buildItem({required BuildContext context, required Call call}) {
+  Widget _buildItem({required BuildContext context, required CallResponse call}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(

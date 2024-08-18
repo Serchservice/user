@@ -21,7 +21,6 @@ export 'common/avatar.dart';
 export 'common/rating_icon.dart';
 export 'common/category_image.dart';
 export 'common/share_sheet.dart';
-export 'common/account_picker.dart';
 export 'common/dashed_divider.dart';
 export 'common/report_sheet.dart';
 export 'common/search_filter.dart';
@@ -37,4 +36,5 @@ export 'rating_sheet/rating_sheet_controller.dart';
 export 'rating_sheet/rating_sheet_state.dart';
 
 export 'stepping/stepping.dart';
+export 'stepping/step_item.dart';
 export 'stepping/stepping_list.dart';

@@ -27,7 +27,8 @@ class MainLayout extends StatelessWidget {
     this.goDark = false,
     this.shouldWillPop = false,
     this.onWillPop,
-    this.theme
+    this.theme,
+    this.shouldOverride = false
   });
 
   final Widget child;
@@ -43,18 +44,23 @@ class MainLayout extends StatelessWidget {
   final bool extendBody;
   final bool extendBehindAppbar;
   final bool goDark;
+  final bool shouldOverride;
   final bool shouldWillPop;
   final ThemeType? theme;
-  final Function(bool)? onWillPop;
+  final Function(bool, dynamic)? onWillPop;
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        statusBarColor: goDark
+        statusBarColor: shouldOverride
+          ? backgroundColor
+          : goDark
           ? darkBackgroundColor
           : Theme.of(context).appBarTheme.systemOverlayStyle?.systemNavigationBarColor,
-        systemNavigationBarColor: goDark
+        systemNavigationBarColor: shouldOverride
+          ? backgroundColor
+          : goDark
           ? darkBackgroundColor
           : Theme.of(context).appBarTheme.systemOverlayStyle?.systemNavigationBarColor,
         statusBarIconBrightness: goDark
@@ -85,7 +91,7 @@ class MainLayout extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     if(shouldWillPop && needSafeArea && floater != null) {
       return PopScope(
-        onPopInvoked: onWillPop,
+        onPopInvokedWithResult: onWillPop,
         child: SafeArea(
           child: Stack(
             fit: StackFit.expand,
@@ -109,11 +115,11 @@ class MainLayout extends StatelessWidget {
     }
 
     if(shouldWillPop && needSafeArea) {
-      return PopScope(onPopInvoked: onWillPop, child: SafeArea(child: child));
+      return PopScope(onPopInvokedWithResult: onWillPop, child: SafeArea(child: child));
     }
 
     if(shouldWillPop) {
-      return PopScope(onPopInvoked: onWillPop, child: child);
+      return PopScope(onPopInvokedWithResult: onWillPop, child: child);
     }
 
     if(floater != null && needSafeArea) {

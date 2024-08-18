@@ -6,14 +6,20 @@ class ConversationNotifier extends StatelessWidget {
   const ConversationNotifier({super.key});
 
   static void open() {
-    Navigate.bottomSheet(
-      sheet: const ConversationNotifier(),
-      route: "/conversation/notice"
-    );
+    Navigate.bottomSheet(sheet: const ConversationNotifier(), route: "/conversation/notice");
   }
 
   @override
   Widget build(BuildContext context) {
+    List<String> notifications = [
+      "You can only see chats and calls made for the current day, month and year. This simply means that "
+          "the chats and calls displayed are any conversation you've had for today, "
+          "${DateFormat('EEEE MMMM d, y').format(DateTime.now())}.",
+      "You might see any older conversations for any conversation you've had today, depending on whether "
+          "you've had a conversation with the user/provider",
+      "When you bookmark a provider, the chat logs remain in your history for easy communication and faster response time"
+    ];
+
     return CurvedBottomSheet(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -26,8 +32,8 @@ class ConversationNotifier extends StatelessWidget {
               alignment: Alignment.center,
               width: 60,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorLight,
-                borderRadius: BorderRadius.circular(16)
+                  color: Theme.of(context).primaryColorLight,
+                  borderRadius: BorderRadius.circular(16)
               ),
             ),
           ),
@@ -40,14 +46,11 @@ class ConversationNotifier extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          SText.center(
-            text: "You can only see chats and calls made for the current day, month and year. This simply means that "
-            "the chats and calls displayed are any conversation you've had for today, "
-            "${DateFormat('EEEE MMMM d, y').format(DateTime.now())}.\n\n"
-            "However, you might see any older conversations for any conversation you've had today, depending on whether "
-            "you've had a conversation with the user/provider",
-            color: Theme.of(context).primaryColor
-          ),
+          ...notifications.map((notification) {
+            bool isBottom = notification == notifications[notifications.length - 1];
+
+            return StepItem(title: notification, showBottom: !isBottom);
+          })
         ],
       )
     );

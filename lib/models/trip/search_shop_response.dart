@@ -36,6 +36,15 @@ class SearchShopResponse {
     );
   }
 
+  factory SearchShopResponse.empty() {
+    return SearchShopResponse(
+      user: "",
+      distance: 0.0,
+      shop: Shop.empty(),
+      distanceInKm: "",
+    );
+  }
+
   Map<String, dynamic> toJson() => {
     "user": user,
     "distance": distance,

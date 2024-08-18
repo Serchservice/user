@@ -55,6 +55,9 @@ class ActiveTripViewController extends GetxController {
 
   void updateTrip(TripResponse trip) {
     state.trip.value = trip;
+    state.isSharedOnTheWay.value = trip.shared != null
+      && trip.shared!.timelines.any((t) => t.isOnTheWay && !t.isOver);
+    state.isProviderOnTheWay.value = trip.timelines.any((t) => t.isOnTheWay && t.isOver);
 
     if(trip.isClosed) {
       Navigate.back();
@@ -68,6 +71,7 @@ class ActiveTripViewController extends GetxController {
     RatingSheet.open(onSuccess: (string, rating) => Navigate.back(), trip: state.trip.value);
     _homeController.event.removeTripEventById(state.trip.value.id);
     _homeController.activity.removeFromActiveTrips(trip);
+    Get.delete<ActiveTripViewController>();
   }
 
   void loadAudio() async {

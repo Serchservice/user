@@ -35,6 +35,28 @@ class RequestSearch {
     );
   }
 
+  RequestSearch copyWith({
+    SerchCategory? request,
+    SerchCategory? category,
+    SelectedMedia? audio,
+    Specialization? special,
+    String? description,
+    String? car,
+    Address? address,
+    List<ShoppingItem>? shoppingItems,
+  }) {
+    return RequestSearch(
+      request: request ?? this.request,
+      category: category ?? this.category,
+      audio: audio ?? this.audio,
+      special: special ?? this.special,
+      description: description ?? this.description,
+      car: car ?? this.car,
+      address: address ?? this.address,
+      shoppingItems: shoppingItems ?? this.shoppingItems,
+    );
+  }
+
   bool get isSearch => special != null;
 
   bool get isSpeakTo => request != null && request!.isSpeak;

@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications/android_foreground_service.dart';
@@ -30,74 +27,12 @@ class NotificationBuildImplementation implements NotificationBuildService {
     if(message.notification != null) {
       if(message.data.containsKey(notifyKey) && message.data[notifyKey] == chatSNT) {
         buildChat(isBackground: isBackground, message: message);
-      } else if(message.data.containsKey(notifyKey) && message.data[notifyKey] == callSNT) {
-        buildCall(isBackground: isBackground, message: message);
       } else if(message.data.containsKey(notifyKey) && message.data[notifyKey] == scheduleSNT) {
         buildSchedule(isBackground: isBackground, message: message);
       } else if(message.data.containsKey(notifyKey) && message.data[notifyKey] == tripSNT) {
         buildConnect(isBackground: isBackground, message: message);
-      }
-    }
-  }
-
-  @override
-  void buildCall({required RemoteMessage message, bool isBackground = false}) async {
-    if(message.notification != null) {
-      NotificationMessage<ActiveCallResponse> notification = NotificationMessage(
-          token: message.from ?? "",
-          notification: Notification.fromJson(message.notification!.toMap()),
-          data: ActiveCallResponse.fromJson(message.data)
-      );
-
-      if(notification.data != null) {
-        int id = createUniqueId();
-        config.addNotification(notification.data!.channel, id);
-
-        NotificationContent content = NotificationContent(
-          id: id,
-          channelKey: Channel.callKey,
-          title: notification.notification.title,
-          body: notification.notification.body,
-          category: NotificationCategory.Call,
-          largeIcon: notification.notification.image,
-          wakeUpScreen: true,
-          fullScreenIntent: true,
-          autoDismissible: false,
-          backgroundColor: const Color(0xff050404),
-          payload: notification.data?.toStringedJson()
-        );
-
-        List<NotificationActionButton> actionButtons = [
-          NotificationActionButton(
-            key: answerCallKey,
-            label: 'Accept',
-            actionType: ActionType.Default,
-            color: CommonColors.success,
-            autoDismissible: true
-          ),
-          NotificationActionButton(
-            key: declineCallKey,
-            label: 'Decline',
-            actionType: ActionType.SilentAction,
-            isDangerousOption: true,
-            autoDismissible: true
-          ),
-        ];
-
-        if(Platform.isAndroid) {
-          await AndroidForegroundService.startAndroidForegroundService(
-            content: content,
-            actionButtons: actionButtons,
-            foregroundServiceType: ForegroundServiceType.phoneCall,
-            foregroundStartMode: ForegroundStartMode.stick
-          );
-        } else {
-          await AwesomeNotifications().createNotification(
-            content: content,
-            actionButtons: actionButtons,
-            schedule: NotificationInterval(interval: 5)
-          );
-        }
+      } else {
+        buildOthers(message: message, isBackground: isBackground);
       }
     }
   }
@@ -309,97 +244,32 @@ class NotificationBuildImplementation implements NotificationBuildService {
   }
 
   @override
-  void buildCallTracker(ActiveCallResponse call) async {
-    NotificationMessage<ActiveCallResponse> notification = NotificationMessage(
-        token: "",
-        notification: Notification(
-          title: "Calling (${call.type.type}) - ${call.name}",
-          body: "${call.status.type}...",
-          image: call.avatar
-        ),
-        data: call
-    );
-
+  void buildOthers({required RemoteMessage message, bool isBackground = false}) async {
     int id = createUniqueId();
-    config.addNotification(notification.data!.channel, id);
+    config.addNotification(message.hashCode.toString(), id);
 
-    NotificationContent content = NotificationContent(
-      id: id,
-      channelKey: Channel.callKey,
-      title: notification.notification.title,
-      body: notification.notification.body,
-      category: NotificationCategory.Call,
-      largeIcon: notification.notification.image,
-      autoDismissible: false,
-      backgroundColor: const Color(0xff050404),
-      payload: notification.data?.toStringedJson()
-    );
-
-    List<NotificationActionButton> actionButtons = [
-      NotificationActionButton(
-        key: endCallKey,
-        label: 'End',
-        actionType: ActionType.DismissAction,
-        isDangerousOption: true,
-        autoDismissible: true
-      ),
-    ];
-
-    await AwesomeNotifications().createNotification(
-      content: content,
-      actionButtons: actionButtons,
-      schedule: NotificationInterval(interval: 5)
-    );
-  }
-
-  @override
-  void endCallTracker(ActiveCallResponse call) async {
-    int? id = config.findNotification(call.channel);
-    if(id != null) {
-      // AwesomeNotifications().dismiss(id);
-    }
-  }
-
-  @override
-  void updateCallTracker(ActiveCallResponse call) async {
-    int? id = config.findNotification(call.channel);
-    if(id != null) {
-      NotificationMessage<ActiveCallResponse> notification = NotificationMessage(
-          token: "",
-          notification: Notification(
-              title: "(${call.type.type}) with ${call.name}",
-              body: "${call.status.type}...",
-              image: call.avatar
-          ),
-          data: call
-      );
-
-      NotificationContent content = NotificationContent(
-          id: id,
-          channelKey: Channel.callKey,
-          title: notification.notification.title,
-          body: notification.notification.body,
-          category: NotificationCategory.Call,
-          largeIcon: notification.notification.image,
-          autoDismissible: false,
-          backgroundColor: const Color(0xff050404),
-          payload: notification.data?.toStringedJson()
-      );
-
-      List<NotificationActionButton> actionButtons = [
-        NotificationActionButton(
-            key: endCallKey,
-            label: 'End',
-            actionType: ActionType.DismissAction,
-            isDangerousOption: true,
-            autoDismissible: true
-        ),
-      ];
-
+    if(isBackground) {
       await AwesomeNotifications().createNotification(
-          content: content,
-          actionButtons: actionButtons,
-          schedule: NotificationInterval(interval: 5)
+        content: NotificationContent(
+          id: id,
+          channelKey: Channel.otherKey,
+          title: message.notification?.title,
+          body: message.notification?.body,
+          showWhen: true,
+          wakeUpScreen: true,
+          category: NotificationCategory.Message,
+          payload: message.data.cast(),
+          roundedLargeIcon: true,
+          color: lightAlternateColor,
+          notificationLayout: NotificationLayout.Messaging,
+        ),
+      );
+    } else {
+      notify.inApp(
+          message: message.notification?.body ?? "An important update just occurred with your account.",
+          avatar: Media.logoBlack,
+          name: message.notification?.title ?? "Update!",
+          onTap: (item) => Navigate.to(HomeLayout.route,)
       );
     }
   }

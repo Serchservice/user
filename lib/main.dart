@@ -4,86 +4,110 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:toastification/toastification.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart';
+import 'package:stream_video_push_notification/stream_video_push_notification.dart';
 
 import 'library.dart';
 
-Future<void> backgroundHandler(RemoteMessage message) async {
-  FirebaseMessagingService messaging = FirebaseMessagingImplementation();
-  messaging.background(message);
+@pragma("vm:entry-point")
+Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+  _initializeApp().then((v) {
+    FirebaseMessagingService messaging = FirebaseMessagingImplementation();
+
+    StreamVideo videoClient = _loadVideoClient();
+    Get.put(CallConfiguration(videoClient: videoClient));
+
+    FlutterNativeSplash.remove();
+    messaging.background(message);
+
+    StreamVideo.reset();
+  });
 }
 
-final ExceptionService _exceptionService = ExceptionImplementation();
-final NotificationService _notification = NotificationImplementation();
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+Future<void> _initializeApp() async {
   await dotenv.load(fileName: ".env");
-
-  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-
+  _loadPlatformChannel();
   await Database.initialize();
 
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.edgeToEdge,
-    overlays: [
-      SystemUiOverlay.bottom,
-      SystemUiOverlay.top,
-    ]
-  );
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.portraitUp
-  ]);
+  MainConfiguration.bind();
 
-  Get.put<MainConfiguration>(MainConfiguration());
-
-  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  _exceptionService.handleException();
-  _notification.init();
   Get.updateLocale(const Locale('en'));
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
-  runApp(const Main());
+  final ExceptionService exceptionService = ExceptionImplementation();
+  final NotificationService notification = NotificationImplementation();
+
+  exceptionService.handleException();
+  notification.init();
 }
 
-final GlobalKey<ScaffoldMessengerState> messenger = GlobalKey<ScaffoldMessengerState>();
+void _loadPlatformChannel() {
+  const platform = MethodChannel('com.serch.user/apiKey');
+  platform.setMethodCallHandler((call) async {
+    if (call.method == 'getMapApiKey') {
+      return Keys.googleMapApiKey;
+    }
+    return null;
+  });
+}
 
-class Main extends StatelessWidget {
-  const Main({super.key});
+StreamVideo _loadVideoClient() {
+  final Connect connect = Connect();
 
-  @override
-  Widget build(BuildContext context) {
-    return ToastificationWrapper(
-      child: GetMaterialApp(
-        navigatorKey: Navigate.navigatorKey,
-        defaultTransition: Transition.fade,
-        theme: MainTheme.light,
-        darkTheme: MainTheme.dark,
-        themeMode: Database.themeMode,
-        title: "Serch",
-        color: CommonColors.darkTheme,
-        debugShowCheckedModeBanner: false,
-        unknownRoute: GetPage(
-          name: PageNotFoundLayout.route,
-          page: () => const PageNotFoundLayout(),
-          transition: Transition.size,
-          transitionDuration: const Duration(milliseconds: 500),
-        ),
-        useInheritedMediaQuery: true,
-        getPages: Routes.all,
-        initialRoute: LocationCheckerLayout.route,
-        routingCallback: MainConfiguration.data.updateRoute,
-        builder: (context, child) {
-          return ToastificationConfigProvider(
-            config: const ToastificationConfig(
-              alignment: Alignment.center,
-              animationDuration: Duration(milliseconds: 500),
-            ),
-            child: child!,
-          );
-        },
-      ),
+  return StreamVideo(
+    Keys.streamApiKey,
+    user: User(info: Database.auth.toUserInfo()),
+    options: const StreamVideoOptions(
+      logPriority: Priority.info,
+      muteAudioWhenInBackground: true,
+      muteVideoWhenInBackground: true,
+    ),
+    pushNotificationManagerProvider: StreamVideoPushNotificationManager.create(
+        iosPushProvider: CallPushProviderSetup.iosConfig,
+        androidPushProvider: CallPushProviderSetup.androidConfig,
+        pushParams: CallPushProviderSetup.videoPushParams
+    ),
+    tokenLoader: (token) async {
+      final ApiResponse response = await connect.get(endpoint: "/call/authentication");
+      if(response.isSuccessful) {
+        return response.data;
+      } else {
+        return "";
+      }
+    },
+    onTokenUpdated: (token) async {},
+  );
+}
+
+@pragma('vm:entry-point')
+Future<void> backgroundCallHandler() async {
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+  _initializeApp().then((v) {
+    StreamVideo videoClient = _loadVideoClient();
+    FlutterNativeSplash.remove();
+    Get.put(CallConfiguration(videoClient: videoClient));
+  });
+}
+
+extension on AuthResponse {
+  UserInfo toUserInfo() {
+    return UserInfo(
+      id: id,
+      role: role,
+      name: name,
+      image: avatar,
     );
   }
+}
+
+Future<void> main() async {
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+  await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
+  _initializeApp().then((v) => runApp(const Main()));
 }

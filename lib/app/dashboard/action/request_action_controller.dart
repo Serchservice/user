@@ -291,12 +291,13 @@ class RequestActionController extends GetxController {
     }
   }
 
+  SerchCategory get selectedCategory => state.initial.value.category.isNotEmpty
+      ? state.initial.value : state.selected.value;
+
   bool get showButton => state.category.value.isRequest
-    ? state.selected.value.category.isNotEmpty
-      && state.location.value.place.isNotEmpty
+    ? selectedCategory.category.isNotEmpty && state.location.value.place.isNotEmpty
       && (state.media.value.path.isNotEmpty || description.text.isNotEmpty)
-    : state.selected.value.category.isNotEmpty
-      && state.location.value.place.isNotEmpty;
+    : selectedCategory.category.isNotEmpty && state.location.value.place.isNotEmpty;
 
   void search() async {
     if(state.location.value.latitude == 0.0) {
@@ -304,23 +305,23 @@ class RequestActionController extends GetxController {
       return;
     }
 
-    if(state.selected.value.category.isEmpty) {
+    if(selectedCategory.category.isEmpty) {
       notify.error(message: "You must select service category in order to continue");
       return;
     }
 
     if(state.category.value.isRequest) {
-      if(car.text.isEmpty && state.selected.value.isMechanic) {
+      if(car.text.isEmpty && selectedCategory.isMechanic) {
         notify.error(message: "You need to tell us the car model");
         return;
       }
 
-      if(state.selected.value.isPersonalShopper && state.items.isEmpty) {
+      if(selectedCategory.isPersonalShopper && state.items.isEmpty) {
         notify.error(message: "You need to add some items to your cart");
         return;
       }
 
-      if(description.text.isEmpty && state.media.value.path.isEmpty && !state.selected.value.isPersonalShopper) {
+      if(description.text.isEmpty && state.media.value.path.isEmpty && !selectedCategory.isPersonalShopper) {
         notify.error(message: "You need to either describe the problem or use audio");
         return;
       }
@@ -332,7 +333,7 @@ class RequestActionController extends GetxController {
       description: description.text,
       audio: state.media.value,
       car: car.text,
-      category: state.selected.value,
+      category: selectedCategory,
       request: state.category.value
     );
 
@@ -350,11 +351,7 @@ class RequestActionController extends GetxController {
           "address": state.location.value.place,
           "latitude": state.location.value.latitude,
           "longitude": state.location.value.longitude,
-          // "provider": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          // "guest": "string",
-          "category": state.initial.value.category.isNotEmpty
-            ? state.initial.value.category
-            : state.selected.value.category,
+          "category": selectedCategory.category,
           "audio": {
             "path": state.media.value.path,
             "media": state.media.value.media.type,
@@ -362,7 +359,6 @@ class RequestActionController extends GetxController {
           },
           "problem": description.text.trim(),
           "car": car.text.trim(),
-          // "amount": 0,
           "place_id": state.location.value.id,
         }
       );

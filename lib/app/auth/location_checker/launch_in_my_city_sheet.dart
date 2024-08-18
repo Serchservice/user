@@ -11,32 +11,41 @@ class LaunchInMyCitySheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return CurvedBottomSheet(
       padding: EdgeInsets.all(Sizing.space(23)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(child: Image.asset(Media.notLaunched)),
-          Obx(() => SText.center(
-            text: controller.state.isContinue.value
-              ? "$place You can continue or close the app and follow our launch news."
-              : "$place. Notify us about this by clicking the button below.",
-            color: Theme.of(context).primaryColor,
-            size: Sizing.font(16),
-          )),
-          const SizedBox(height: 40),
-          Obx(() => LoadingButton(
-            text: controller.state.isContinue.value
-              ? "Continue with authentication"
-              : "Add my location to the next launch",
-            buttonColor: Theme.of(context).primaryColor,
-            borderRadius: 24,
-            width: MediaQuery.of(context).size.width,
-            textColor: Theme.of(context).scaffoldBackgroundColor,
-            loading: controller.state.isLoading.value,
-            onClick: () => controller.state.isContinue.value
-              ? controller.navigate()
-              : controller.requestLaunchInMyLocation(),
-          ))
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(child: Image.asset(Media.notLaunched)),
+            Obx(() => SText.center(
+              text: controller.state.isContinue.value
+                ? "$place You can continue or close the app and follow our launch news."
+                : "$place. Notify us about this by clicking the button below.",
+              color: Theme.of(context).primaryColor,
+              size: Sizing.font(16),
+            )),
+            const SizedBox(height: 40),
+            Obx(() => LoadingButton(
+              text: controller.state.isContinue.value
+                ? "Continue with authentication"
+                : "Add my location to the next launch",
+              buttonColor: Theme.of(context).primaryColor,
+              borderRadius: 24,
+              width: MediaQuery.of(context).size.width,
+              textColor: Theme.of(context).scaffoldBackgroundColor,
+              loading: controller.state.isLoading.value,
+              onClick: () => controller.state.isContinue.value
+                ? controller.navigate()
+                : controller.requestLaunchInMyLocation(),
+            )),
+            const SizedBox(height: 20),
+            SText(
+              text: "You can skip location check on your next login. Do it here: Centre -> Preferences",
+              size: Sizing.font(12),
+              weight: FontWeight.bold,
+              color: Theme.of(context).primaryColorLight
+            ),
+          ],
+        ),
       )
     );
   }

@@ -12,7 +12,7 @@ class WalletLayout extends GetResponsiveView<WalletController> {
       ButtonView(header: "Fund", icon: Icons.add_rounded),
       ButtonView(header: "Withdraw", icon: Icons.send_rounded),
       ButtonView(header: "View info", icon: Icons.wallet_rounded),
-      ButtonView(header: "Transactions", icon: Icons.history_rounded),
+      ButtonView(header: "History", icon: Icons.history_rounded),
     ];
 
     return MainLayout(
@@ -28,95 +28,10 @@ class WalletLayout extends GetResponsiveView<WalletController> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Obx(() {
-              if(controller.state.isFetchingWallet.value) {
-                return LoadingShimmer(
-                  content: Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.all(Sizing.space(15)),
-                    padding: const EdgeInsets.all(12.0),
-                    height: 200,
-                    decoration: BoxDecoration(
-                        color: CommonColors.shimmerHigh,
-                        borderRadius: BorderRadius.circular(12)
-                    )
-                  )
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Container(
-                    padding: EdgeInsets.all(Sizing.space(12)),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: CommonColors.darkTheme2
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(Media.wallet, width: 30, height: 30),
-                            const SizedBox(width: 8),
-                            SText(
-                              text: controller.state.wallet.value.wallet,
-                              size: Sizing.font(16),
-                              weight: FontWeight.bold,
-                              color: CommonColors.lightTheme
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 40),
-                        Center(
-                          child: SText(
-                            text: "Withdrawal Balance",
-                            size: Sizing.font(16),
-                            color: CommonColors.hint
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Center(
-                          child: SText(
-                            text: controller.state.wallet.value.balance,
-                            size: Sizing.font(24),
-                            weight: FontWeight.bold,
-                            color: CommonColors.lightTheme
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SText(
-                          text: "Deposit",
-                          size: Sizing.font(14),
-                          color: CommonColors.hint
-                        ),
-                        const SizedBox(height: 5),
-                        SText(
-                          text: controller.state.wallet.value.deposit,
-                          size: Sizing.font(14),
-                          weight: FontWeight.bold,
-                          color: CommonColors.lightTheme
-                        ),
-                        const SizedBox(height: 10),
-                        SText(
-                          text: "Uncleared Balance",
-                          size: Sizing.font(14),
-                          color: CommonColors.hint
-                        ),
-                        const SizedBox(height: 5),
-                        SText(
-                          text: controller.state.wallet.value.uncleared,
-                          size: Sizing.font(14),
-                          weight: FontWeight.bold,
-                          color: CommonColors.lightTheme
-                        ),
-                      ],
-                    )
-                  ),
-                );
-              }
-            }),
+            Obx(() => WalletView(
+              isLoading: controller.state.isFetchingWallet.value,
+              wallet: controller.state.wallet.value,
+            )),
             Obx(() {
               if(controller.state.isFetchingWallet.value) {
                 return LoadingShimmer(

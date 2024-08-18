@@ -136,30 +136,13 @@ class RouteNavigator {
         CallLayout.route,
         ModalRoute.withName(HomeLayout.route),
         parameters: {"user": user, "type": type.type},
-        arguments: {"call": call.toJson(), "start": true, "answer": false}
+        arguments: {"call": call.toJson(), "start": true}
       );
     } else {
       Navigate.to(
         CallLayout.route,
         parameters: {"user": user, "type": type.type},
-        arguments: {"call": call.toJson(), "start": true, "answer": false}
-      );
-    }
-  }
-
-  static void answerCall({bool removeCurrentRoute = true, required ActiveCallResponse call}) {
-    if(removeCurrentRoute) {
-      Navigate.offTill(
-        CallLayout.route,
-        ModalRoute.withName(HomeLayout.route),
-        parameters: {"user": call.user, "type": call.type.type},
-        arguments: {"call": call.toJson(), "start": false, "answer": true}
-      );
-    } else {
-      Navigate.to(
-        CallLayout.route,
-        parameters: {"user": call.user, "type": call.type.type},
-        arguments: {"call": call.toJson(), "start": false, "answer": true}
+        arguments: {"call": call.toJson(), "start": true}
       );
     }
   }
@@ -170,13 +153,13 @@ class RouteNavigator {
         CallLayout.route,
         ModalRoute.withName(HomeLayout.route),
         parameters: {"user": call.user, "type": call.type.type},
-        arguments: {"call": call.toJson(), "start": false, "answer": false}
+        arguments: {"call": call.toJson(), "start": false}
       );
     } else {
       Navigate.to(
-        CallLayout.route,
-        parameters: {"user": call.user, "type": call.type.type},
-        arguments: {"call": call.toJson(), "start": false, "answer": false}
+          CallLayout.route,
+          parameters: {"user": call.user, "type": call.type.type},
+          arguments: {"call": call.toJson(), "start": false}
       );
     }
   }

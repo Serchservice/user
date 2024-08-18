@@ -10,6 +10,16 @@ class MainConfiguration extends GetxController {
 
   static MainConfiguration get data => Get.find<MainConfiguration>();
 
+  static void bind() {
+    try {
+      if(!MainConfiguration.data.initialized) {
+        Get.put<MainConfiguration>(MainConfiguration());
+      }
+    } catch (_) {
+      Get.put<MainConfiguration>(MainConfiguration());
+    }
+  }
+
   final AppService _appService = AppImplementation();
 
   StreamSubscription<Uri>? _linkSubscription;
@@ -28,8 +38,6 @@ class MainConfiguration extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
-
     _linkSubscription = await _appService.initializeDeepLink();
     _appService.buildDeviceInformation(
       onSuccess: (device) {
@@ -54,6 +62,8 @@ class MainConfiguration extends GetxController {
     );
     WidgetsBinding.instance.addObserver(appLifeCycle);
     appLifeCycle.init();
+
+    super.onInit();
   }
 
   @override

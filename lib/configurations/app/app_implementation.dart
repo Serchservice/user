@@ -10,7 +10,6 @@ import 'package:user/library.dart';
 
 class AppImplementation implements AppService {
   final AppLinks _appLinks = AppLinks();
-  final ConnectService _connect = Connect(useToken: false);
 
   Future<String> get ipAddress async {
     var networks = await NetworkInterface.list();
@@ -123,19 +122,7 @@ class AppImplementation implements AppService {
 
   @override
   void getCountries({required Function(List<Country> countries) onSuccess}) async {
-    var response = await _connect.get(endpoint: "/company/countries");
-    if(response.isSuccessful && response.data != null) {
-      List<dynamic> result = response.data;
-      if(result.isNotEmpty) {
-        List<Country> countries = result.map((e) => Country.fromJson(e)).toList();
-        onSuccess.call(countries);
-      } else {
-        List<Country> countryList = await countries();
-        onSuccess.call(countryList);
-      }
-    } else {
-      List<Country> countryList = await countries();
-      onSuccess.call(countryList);
-    }
+    List<Country> countryList = await countries();
+    onSuccess.call(countryList);
   }
 }

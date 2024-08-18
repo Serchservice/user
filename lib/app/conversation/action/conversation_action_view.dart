@@ -24,6 +24,7 @@ class ConversationActionView extends StatelessWidget {
     return CurvedBottomSheet(
       borderRadius: BorderRadius.zero,
       padding: EdgeInsets.zero,
+      safeArea: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       child: GetBuilder<ConversationActionViewController>(
         init: ConversationActionViewController(provider: provider, search: search),

@@ -133,8 +133,15 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
             ),
             const SizedBox(height: 20),
             Obx(() {
-              if(controller.state.category.value.isRequest && controller.state.selected.value.category.isNotEmpty) {
-                if(controller.state.selected.value.isPersonalShopper) {
+              bool showContent = controller.state.initial.value.category.isNotEmpty
+                || controller.state.selected.value.category.isNotEmpty;
+              bool isPersonalShopper = controller.state.initial.value.isPersonalShopper
+                  || controller.state.selected.value.isPersonalShopper;
+              SerchCategory category = controller.state.initial.value.category.isNotEmpty
+                ? controller.state.initial.value : controller.state.selected.value;
+
+              if(controller.state.category.value.isRequest && showContent) {
+                if(isPersonalShopper) {
                   return _buildShopping(context);
                 } else {
                   return Container(
@@ -142,7 +149,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
                     padding: EdgeInsets.all(Sizing.space(8)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _buildExtraSteps(context, controller.state.selected.value)
+                      children: _buildExtraSteps(context, category)
                     ),
                   );
                 }

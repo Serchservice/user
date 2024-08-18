@@ -19,6 +19,8 @@ class Preference {
   final bool hasRequestedCountry;
   final bool remember;
   final String active;
+  final bool skipLocationCheck;
+  final bool useLastLoggedInAccountAsDefault;
 
   const Preference({
     this.chatNotification = PreferenceOption.none,
@@ -34,7 +36,9 @@ class Preference {
     this.security = SecurityType.none,
     this.hasRequestedCountry = false,
     this.remember = false,
-    this.active = ""
+    this.active = "",
+    this.skipLocationCheck = false,
+    this.useLastLoggedInAccountAsDefault = false
   });
 
   bool get is30Secs => scheduleTime == ScheduleTime.thirtyMinutes;
@@ -64,7 +68,9 @@ class Preference {
     SecurityType? security,
     bool? hasRequestedCountry,
     bool? remember,
-    String? active
+    bool? skipLocationCheck,
+    String? active,
+    bool? useLastLoggedInAccountAsDefault
   }) {
     return Preference(
       chatNotification: chatNotification ?? this.chatNotification,
@@ -81,6 +87,8 @@ class Preference {
       hasRequestedCountry: hasRequestedCountry ?? this.hasRequestedCountry,
       remember: remember ?? this.remember,
       active: active ?? this.active,
+      skipLocationCheck: skipLocationCheck ?? this.skipLocationCheck,
+      useLastLoggedInAccountAsDefault: useLastLoggedInAccountAsDefault ?? this.useLastLoggedInAccountAsDefault
     );
   }
 
@@ -114,8 +122,10 @@ class Preference {
       hasBiometrics: map["has_biometrics"] ?? false,
       warnMeOnPersonalInformationSharing: map["warn_me_on_personal_information_sharing"] ?? false,
       remember: map["remember"] ?? false,
+      skipLocationCheck: map["skip_location_check"] ?? false,
       hasRequestedCountry: map["has_requested_country"] ?? false,
-      active: map["active"] ?? ""
+      active: map["active"] ?? "",
+      useLastLoggedInAccountAsDefault: map["use_last_logged_in_account_as_default"] ?? false,
     );
   }
 
@@ -133,6 +143,8 @@ class Preference {
     "security": security.type,
     "remember": remember,
     "has_requested_country": hasRequestedCountry,
-    "active": active
+    "skip_location_check": skipLocationCheck,
+    "active": active,
+    "use_last_logged_in_account_as_default": useLastLoggedInAccountAsDefault
   };
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:user/library.dart';
 
 class Navigate<T> {
   static final navigatorKey = GlobalKey<NavigatorState>();
@@ -23,6 +24,13 @@ class Navigate<T> {
   ) async => await Get.toNamed(
     page, arguments: arguments, parameters: parameters
   );
+
+  /// Navigate to new page `[PAGE]` => `Get.toNamed`
+  static Future<T?>? toPage<T>({
+    required Widget widget,
+    required String route,
+    dynamic arguments,
+  }) async => await Get.to(() => widget, routeName: route, arguments: arguments, curve: Curves.bounceIn);
 
   /// Leave the current page to another page `[PAGE]` => `Get.off`
   static Future<T?>? off<T>(
@@ -48,6 +56,20 @@ class Navigate<T> {
       Map<String, String>? parameters,
     }
   ) async => await Get.offNamedUntil(page, predicate, id: id, arguments: arguments, parameters: parameters);
+
+  /// Leave all pages till the `[PREDICATE]` is true and push `[PAGE]` to the stack => `Get.offNamedUntil`
+  ///
+  /// [predicate] can be used like this: `Get.offNamedUntil(page, ModalRoute.withName('/home'))` to pop routes in
+  /// stack until home, or like this: `Get.offNamedUntil((route) => !Get.isDialogOpen())`, to make sure the dialog is closed
+  static Future<T?>? offUntilPage<T>({
+    required Widget widget,
+    required String route,
+    Map<String, String>? parameters,
+    RoutePredicate? predicate
+  }) async => await Get.offUntil(
+    GetPageRoute(page: () => widget, routeName: route, parameter: parameters),
+    predicate ?? ModalRoute.withName(HomeLayout.route)
+  );
 
   /// Leave all pages till the `[PREDICATE]` is true, which is optional, and push `[PAGE]` to the stack => `Get.offAllNamed`
   ///

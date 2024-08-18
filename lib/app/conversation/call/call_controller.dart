@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart' as stream;
 import 'package:user/library.dart';
 
 class CallController extends GetxController {
@@ -15,89 +15,304 @@ class CallController extends GetxController {
   final ConnectService _connect = Connect();
   final SocketService _socket = Socket();
   final HomeController _homeController = HomeController.data;
-  final NotificationBuildService _notification = NotificationBuildImplementation();
 
-  final player = AudioPlayer();
-  late final RtcEngine engine;
+  final TextEditingController amount = TextEditingController();
+
+  late stream.Call streamCall;
+  StreamSubscription<dynamic>? streamSubscription;
+  final AudioPlayer _player = AudioPlayer();
+
+  DateTime? _startedAt;
+  Duration _duration = Duration.zero;
+  Timer? _timer;
 
   @override
   void onInit() {
     state.call.value = ActiveCallResponse.fromJson(args["call"]);
-    // _homeController.event.addCallEvent(this);
-    // _notification.buildCallTracker(state.call.value);
 
-    if(state.call.value.isCalling) {
-      playRingingTone();
+    if(args["search"] != null) {
+      state.search.value = RequestSearch.fromJson(args["search"]);
     }
+
     super.onInit();
-  }
-
-  void playRingingTone() {
-    player.setLoopMode(LoopMode.one);
-    player.setVolume(2.0);
-    if(state.call.value.isCaller) {
-      log("Caller");
-      player.setAudioSource(AudioSource.asset(Media.outgoingRingtone));
-    } else {
-      log("Called");
-      player.setAudioSource(AudioSource.asset(Media.incomingRingtone));
-    }
-    player.play();
   }
 
   @override
   void onReady() {
-    bool shouldAnswer = args["answer"];
-    if(shouldAnswer) {
-      answer();
-      _initializeEngine(state.call.value.app, state.call.value.channel);
-      _socket.initialize(
-        callback: (frame) {
-          if (frame.body != null) {
-            workWithData(jsonDecode(frame.body!));
-          }
-        },
-        endpoint: "/ws:serch",
-        subscribeDestination: "/platform/${state.call.value.channel}/${Database.auth.id}"
-      );
+    bool shouldStart = args["start"];
+    if(shouldStart) {
+      createCall();
     }
 
-    bool shouldStart = args["start"];
-    if(state.call.value.isCaller && shouldStart) {
-      start();
+    if(args["stream"] != null) {
+      streamCall = args["stream"];
+      _initSocket(streamCall.callCid.id);
+      state.isInitialized.value = true;
+      eventListener();
     }
+
+    amount.addListener(() {
+      if(amount.text.trim().isNotEmpty) {
+        state.amount.value = amount.text.trim();
+      }
+    });
+
+    updateCall(state.call.value);
+
+    if(state.call.value.channel.isNotEmpty) {
+      _initSocket(state.call.value.channel);
+    }
+
+    if(!state.call.value.isVoice) {
+      fetchWallet();
+      streamSubscription = CommonUtility.fetch(action: () => fetchWallet(), durationInSeconds: 60);
+    }
+
     super.onReady();
   }
 
-  void workWithData(dynamic data) {
+  void updateCall(ActiveCallResponse call, {bool removeEmpty = true}) {
+    state.call.value = call;
+    _homeController.event.addCallEvent(this);
+
+    if(removeEmpty) {
+      _homeController.event.removeCallEventByChannel("");
+    }
+    // _notification.buildCallTracker(state.call.value);
+  }
+
+  void createCall() async {
+    updateCall(state.call.value.copyWith(status: CallStatus.calling), removeEmpty: false);
+    log(state.call.value.type.value);
+    var response = await _connect.post(
+        endpoint: "/call/start",
+        body: {"user": state.call.value.user, "type": state.call.value.type.value}
+    );
+
+    if(response.isOk) {
+      ActiveCallResponse call = ActiveCallResponse.fromJson(response.data);
+      updateCall(call);
+      _playRingtone();
+      _initializeEngine();
+      _initSocket(call.channel);
+    } else {
+      notify.error(message: response.message);
+      _leave();
+    }
+  }
+
+  void _playRingtone() {
+    _player.setAsset(Media.outgoingRingtone);
+    _player.setVolume(0.1);
+    _player.setLoopMode(LoopMode.one);
+    _player.play();
+  }
+
+  void _stopRingtone() {
+    _player.stop();
+  }
+
+  void toggleRingingMic() async {
+    if (state.isAudioMuted.value) {
+      streamCall.setMicrophoneEnabled(enabled: false);
+      updateAudio(false);
+    } else {
+      if (!streamCall.hasPermission(stream.CallPermission.sendAudio)) {
+        streamCall.requestPermissions([stream.CallPermission.sendAudio]);
+      }
+      streamCall.setMicrophoneEnabled(enabled: true);
+      updateAudio(true);
+    }
+  }
+
+  void updateAudio(bool value) {
+    state.isAudioMuted.value = value;
+  }
+
+  void toggleRingingSpeaker() async {
+    if (state.isOnSpeaker.value) {
+      _player.setVolume(0.1);
+      updateSpeaker(false);
+    } else {
+      _player.setVolume(1.0);
+      updateSpeaker(true);
+    }
+  }
+
+  void updateSpeaker(bool value) {
+    state.isOnSpeaker.value = value;
+  }
+
+  void _initializeEngine() async  {
+    if(state.call.value.isVoice) {
+      streamCall = stream.StreamVideo.instance.makeCall(
+        callType: stream.StreamCallType.custom("voice"),
+        id: state.call.value.channel,
+      );
+
+      final result = await streamCall.getOrCreate(
+        ringing: true,
+        memberIds: [state.call.value.user],
+        custom: {"image": state.call.value.image, "category": state.call.value.category}
+      );
+      if (result.isSuccess) {
+        state.isInitialized.value = true;
+      }
+    } else {
+      streamCall = stream.StreamVideo.instance.makeCall(
+        callType: stream.StreamCallType.custom("tip2fix"),
+        id: state.call.value.channel,
+      );
+
+      final result = await streamCall.getOrCreate(
+        ringing: true,
+        memberIds: [state.call.value.user],
+        custom: {"image": state.call.value.image, "category": state.call.value.category}
+      );
+      if (result.isSuccess) {
+        state.isInitialized.value = true;
+      }
+    }
+
+    if(state.isInitialized.value) {
+      eventListener();
+    }
+  }
+
+  void eventListener() {
+    streamCall.callEvents.on<stream.StreamCallAcceptedEvent>((event) {
+      log("Accepted event ${event.createdAt}");
+      _stopRingtone();
+    });
+
+    streamCall.callEvents.on<stream.StreamCallRejectedEvent>((event) {
+      if(event.rejectedBy.id != Database.auth.id) {
+        _updateStatus(CallStatus.declined);
+      } else {
+        _updateStatus(CallStatus.missed);
+      }
+    });
+
+    streamCall.callEvents.on<stream.StreamCallRingingEvent>((event) {
+      log("Ringing event ${event.sessionId}");
+    });
+
+    streamCall.callEvents.on<stream.StreamCallEndedEvent>((event) {
+      log("Ended event ${event.endedBy}");
+      if(state.call.value.isRinging) {
+        _updateStatus(CallStatus.missed);
+      } else if(state.call.value.isOnCall) {
+        _updateStatus(CallStatus.closed);
+      }
+    });
+
+    streamCall.callEvents.on<stream.StreamCallDisconnectedEvent>((event) {
+      log("Disconnected event ${event.closeReason}");
+      if(state.call.value.isRinging) {
+        _updateStatus(CallStatus.missed);
+      } else if(state.call.value.isOnCall) {
+        _updateStatus(CallStatus.closed);
+      }
+    });
+
+    streamCall.state.valueStream.listen((event) {
+      log(event.status);
+
+      if(event.status.isDisconnected && state.call.value.isRinging) {
+        _updateStatus(CallStatus.missed);
+      } else if(event.status.isDisconnected && state.call.value.isOnCall) {
+        _updateStatus(CallStatus.closed);
+      } else if(event.status.isActive || (event.status.isConnected && !state.call.value.isRinging)) {
+        _stopRingtone();
+        _buildTimer(event);
+      }
+    });
+  }
+
+  void _buildTimer(stream.CallState event) {
+    if(event.status.isConnected) {
+      _startedAt ??= DateTime.now();
+
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        _duration = DateTime.now().difference(_startedAt!);
+        final int totalMinutes = _duration.inMinutes;
+        final int seconds = _duration.inSeconds.remainder(60);
+
+        if (_duration.inHours > 0) {
+          final int hours = _duration.inHours;
+          final int minutes = totalMinutes.remainder(60);
+
+          state.duration.value = '${hours.toString().padLeft(2, '0')}:'
+              '${minutes.toString().padLeft(2, '0')}:'
+              '${seconds.toString().padLeft(2, '0')}';
+        } else {
+          state.duration.value = '${totalMinutes.toString().padLeft(2, '0')}:'
+              '${seconds.toString().padLeft(2, '0')}';
+        }
+
+        int minutesToNextHour = 60 - (_duration.inMinutes % 60);
+        if (minutesToNextHour <= 10) {
+          _calculateSession(_duration.inMinutes);
+        }
+      });
+    } else {
+      if(_timer != null) {
+        _timer?.cancel();
+      }
+
+      state.duration.value = event.status.toStatusString();
+    }
+  }
+
+  void _calculateSession(int duration) async {
+    _socket.send(destination: "/call/session", message: {
+      "channel": state.call.value.channel,
+      "duration": duration
+    });
+  }
+
+  void _initSocket(String channel) {
+    _socket.initialize(
+      callback: (frame) {
+        if (frame.body != null) {
+          _workWithData(jsonDecode(frame.body!));
+        }
+      },
+      endpoint: "/ws:serch",
+      subscribeDestination: "/platform/$channel/${Database.auth.id}"
+    );
+  }
+
+  void _workWithData(dynamic data) {
     if(data is String) {
       notify.tip(message: data, color: CommonColors.error);
     } else {
       ActiveCallResponse call = ActiveCallResponse.fromJson(data);
-      state.call.value = call;
-      // _notification.updateCallTracker(call);
-      if(call.error != null && call.errorCode != null) {
-        notify.tip(message: call.error!, color: CommonColors.error);
+      updateCall(call);
+      if(call.error != null && call.errorCode != null && call.error != "null") {
+        if(state.call.value.isOnCall) {
+          CallNotifierSheet.open(channel: state.call.value.channel, message: call.error!, asset: asset);
+        } else {
+          notify.tip(message: call.error!, color: CommonColors.error);
+        }
       } else {
         if(call.status == CallStatus.onCall) {
-          stopRingingTone();
           return;
         }
 
         if(call.status == CallStatus.declined) {
-          disposeEngines();
+          _disposeEngines();
           Navigate.back();
-          // _homeController.event.removeCallEventByChannel(call.channel);
           return;
         }
 
         if(call.status == CallStatus.disconnected) {
-          leave();
+          _leave();
           return;
         }
 
         if(call.status == CallStatus.closed) {
-          disposeEngines();
+          _disposeEngines();
           Navigate.back(closeOverlays: true);
           return;
         }
@@ -105,271 +320,109 @@ class CallController extends GetxController {
     }
   }
 
-  void start() async {
-    state.call.value = state.call.value.copyWith(status: CallStatus.calling);
-    var response = await _connect.post(endpoint: "/call/start", body: {
-      "user": state.call.value.user,
-      "type": state.call.value.type.value
-    });
-
-    if(response.isOk) {
-      ActiveCallResponse call = ActiveCallResponse.fromJson(response.data);
-      state.call.value = call;
-      _initializeEngine(call.app, call.channel);
-      _socket.initialize(
-        callback: (frame) {
-          if (frame.body != null) {
-            workWithData(jsonDecode(frame.body!));
-          }
-        },
-        endpoint: "/ws:serch",
-        subscribeDestination: "/platform/${call.channel}/${Database.auth.id}"
-      );
-    } else {
-      notify.error(message: response.message);
-      state.call.value = state.call.value.copyWith(status: CallStatus.disconnected);
-      leave();
-    }
-  }
-
-  void answer() async {
-    _socket.send(destination: "/call/answer", message: {
-      "channel": state.call.value.channel
-    });
-  }
-
-  void decline() async {
-    _socket.send(destination: "/call/decline", message: {
-      "channel": state.call.value.channel
-    });
-  }
-
-  void end({bool closeOverlays = false}) async {
-    if(state.call.value.isCalling) {
-      /// Call endpoint to end call that is not in a ringing state
-      updateStatus(CallStatus.missed);
-      disposeEngines();
-      Navigate.back();
-      // _notification.endCallTracker(state.call.value);
-    } else {
-      _socket.send(destination: "/call/end", message: {
-        "channel": state.call.value.channel
-      });
-    }
-  }
-
-  void updateStatus(CallStatus status) {
-    _socket.send(destination: "/call/update", message: {
-      "channel": state.call.value.channel,
-      "status": status.value
-    });
-  }
-
-  void leave() {
+  void _leave() {
     Future.delayed(const Duration(seconds: 2), () {
-      _socket.disconnect();
-      // _notification.endCallTracker(state.call.value);
-      // _homeController.event.removeCallEventByChannel(state.call.value.channel);
+      _disposeEngines();
       Navigate.till(ModalRoute.withName(HomeLayout.route));
     });
   }
 
-  void stopRingingTone() {
-    player.stop();
-    player.dispose();
-  }
+  void answer() async {
+    var acceptResult = await streamCall.accept();
 
-  void _initializeEngine(String appId, String channel) async  {
-    engine = createAgoraRtcEngine();
-    await engine.initialize(RtcEngineContext(appId: appId)).then((value) async {
-      state.isInitialized.value = true;
-      /// Set the audio route to speaker when the call is not yet picked and the user is the one being called
-      if(!state.call.value.isCaller && state.call.value.isRinging) {
-        // await engine.setDefaultAudioRouteToSpeakerphone(true);
-      }
-    });
-
-    // var play = await engine.media;
-
-    if(!state.call.value.isVoice) {
-      await engine.enableVideo();
+    // Return if cannot accept call
+    if(acceptResult.isFailure) {
+      notify.error(message: "Error occurred while accepting call");
+      CrashlyticsEngine.logError(acceptResult.getErrorOrNull()?.message.toString() ?? acceptResult.toString(), "ACCEPT CALL");
+      log('Error accepting call: ${state.call.value.channel}');
+      return;
     }
-    await engine.startPreview().then((value) {
-      state.isPreviewReady.value = true;
+
+    socket.send(destination: "/call/answer", message: {
+      "channel": streamCall.callCid.id,
     });
-
-    /// Event handlers
-    engine.registerEventHandler(RtcEngineEventHandler(
-      onLeaveChannel: (connection, stats) async {
-        leaveChannel();
-      },
-      onJoinChannelSuccess: (connection, elapsed) async {
-        calculateCallTime(elapsed);
-        if(state.call.value.isVoice) {
-          /// Don't show the video
-          engine.muteLocalVideoStream(true);
-        }
-
-        if(!state.call.value.isCaller) {
-          stopRingingTone();
-        }
-        Logger.log(" : Call Elapsed. Connection: ${connection.toJson()}. Duration: $elapsed");
-      },
-      onConnectionLost: (connection) {
-        state.call.value = state.call.value.copyWith(status: CallStatus.reconnecting);
-      },
-      onConnectionBanned: (connection) {
-        state.call.value = state.call.value.copyWith(status: CallStatus.reconnecting);
-      },
-      onConnectionInterrupted: (connection) {
-        state.call.value = state.call.value.copyWith(status: CallStatus.reconnecting);
-      },
-      onRtcStats: (connection, stats) async {
-        if(state.call.value.isCaller) {
-          disconnectAfterTimeout(stats.duration);
-        } else {
-          leaveAfterTimeout();
-        }
-
-        if(state.call.value.isOnCall && !state.call.value.isVoice) {
-          /// Start counting the call session.
-          calculateSession(stats.duration ?? 0);
-        }
-      },
-      onRejoinChannelSuccess: (connection, elapsed) {
-        state.call.value = state.call.value.copyWith(status: CallStatus.onCall);
-      },
-      onUserJoined: (connection, remoteUid, elapsed) async {
-        if(state.call.value.isCaller) {
-          stopRingingTone();
-          state.call.value = state.call.value.copyWith(status: CallStatus.onCall);
-          calculateCallTime(elapsed);
-        }
-        Logger.log(" : User joined. Connection: ${connection.toJson()}. Duration: $elapsed");
-      },
-      onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-        _fetchToken(channel, false);
-      },
-      onRequestToken: (RtcConnection connection) {
-        _fetchToken(channel, true);
-      },
-    ));
-
-    await _fetchToken(channel, true);
   }
 
-  Future<void> _fetchToken(String channelName, bool needJoinChannel) async {
-    ApiResponse response = await _connect.get(endpoint: "/call/auth?channel=$channelName");
-    if(response.isSuccessful) {
-      if (needJoinChannel) {
-        await engine.joinChannelWithUserAccount(
-          token: response.data,
-          channelId: channelName,
-          userAccount: Database.auth.id,
-          options: const ChannelMediaOptions(
-            channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-            clientRoleType: ClientRoleType.clientRoleBroadcaster,
-          ),
-        );
-      } else {
-        await engine.renewToken(response.data);
-      }
-    } else {
-      notify.tip(message: response.message, color: CommonColors.error);
+  void decline() async {
+    final result = await streamCall.reject(reason: stream.CallRejectReason.decline());
+    stream.StreamVideo.instance.pushNotificationManager?.endAllCalls();
+
+    if (result is stream.Failure) {
+      notify.error(message: "Error occurred while rejecting call");
+      CrashlyticsEngine.logError(result.getErrorOrNull()?.message.toString() ?? result.error.message, "REJECT CALL");
+      log('Error rejecting call: ${result.error}');
     }
+
+    _updateStatus(CallStatus.declined);
   }
 
-  void leaveAfterTimeout() {
-    if(state.call.value.isMissed) {
-      updateStatus(CallStatus.missed);
-      disposeEngines();
+  void end({bool closeOverlays = false}) async {
+    if(state.call.value.isCalling) {
+      _updateStatus(CallStatus.missed);
       Navigate.back();
-    }
-  }
-
-  void leaveChannel() async {
-    if(state.call.value.isOnCall) {
-      updateStatus(CallStatus.closed);
-    } else if(state.call.value.isRinging) {
-      updateStatus(CallStatus.missed);
-    }
-  }
-
-  String formatNumberToTime(int number) {
-    String numberStr = number.toString();
-    if (number < 10) {
-      numberStr = '0$numberStr';
-    }
-    return numberStr;
-  }
-
-  void calculateCallTime(int duration) {
-    int hours = duration ~/ 3600; // Calculate the hours
-    int remainingSeconds = duration % 3600; // Calculate the remaining seconds after subtracting hours
-
-    int minutes = remainingSeconds ~/ 60; // Calculate the minutes
-    int seconds = remainingSeconds % 60; // Calculate the remaining seconds after subtracting minutes
-
-    state.hours.value = formatNumberToTime(hours);
-    state.minutes.value = formatNumberToTime(minutes);
-    state.seconds.value = formatNumberToTime(seconds);
-
-    if(state.hours.value.isEmpty) {
-      state.time.value = "${state.minutes.value}:${state.seconds.value}";
     } else {
-      state.time.value = "${state.hours.value}:${state.minutes.value}:${state.seconds.value}";
+      _socket.send(destination: "/call/end", message: {
+        "channel": state.call.value.channel,
+        "time": state.duration.value
+      });
+      _disposeEngines();
+      streamCall.leave();
     }
   }
 
-  void disconnectAfterTimeout(int? duration) async {
-    if(duration == state.timeout.value && (state.call.value.isCalling || state.call.value.isRinging)) {
-      disposeEngines();
-      updateStatus(CallStatus.missed);
-    }
-  }
+  void _updateStatus(CallStatus status) {
+    if(_socket.stompClient.connected) {
+      _socket.send(destination: "/call/update", message: {
+        "channel": state.call.value.channel,
+        "status": status.value
+      });
 
-  void calculateSession(int duration) async {
-    _socket.send(destination: "/call/session", message: {
-      "channel": state.call.value.channel,
-      "duration": duration
-    });
-  }
-
-  /// Function to mute/un-mute the microphone
-  Future<void> toggleMute() async {
-    var status = await Permission.microphone.status;
-    if(state.isAudioMuted.value && status.isDenied) {
-      await Permission.microphone.request();
+      if(status == CallStatus.missed || status == CallStatus.declined || status == CallStatus.closed) {
+        _disposeEngines();
+      }
     }
-    state.isAudioMuted.value = !state.isAudioMuted.value;
-    await engine.muteLocalAudioStream(state.isAudioMuted.value);
-  }
-
-  /// Function to toggle enable/disable the camera
-  Future<void> toggleCamera() async {
-    var status = await Permission.camera.status;
-    if(state.isVideoMuted.value && status.isDenied) {
-      await Permission.camera.request();
-    }
-    state.isAudioMuted.value = !state.isAudioMuted.value;
-    await engine.muteLocalVideoStream(state.isVideoMuted.value);
-  }
-
-  /// Function to switch between front and rear camera
-  Future<void> switchCamera() async {
-    var status = await Permission.camera.status;
-    if(status.isDenied) {
-      await Permission.camera.request();
-    }
-    await engine.switchCamera();
   }
 
   /// Function to dispose the RTC engine.
-  void disposeEngines() async {
-    await engine.stopPreview();
-    await engine.leaveChannel();
-    await engine.release();
-    _socket.disconnect();
-    stopRingingTone();
+  void _disposeEngines() async {
+    try {
+      if (_socket.stompClient.isActive && _socket.stompClient.connected) {
+        _socket.disconnect();
+      }
+    } catch (_) { }
+
+    _timer?.cancel();
+    _player.dispose();
+    amount.dispose();
+    streamSubscription?.cancel();
+    _homeController.event.removeCallEventByChannel(state.call.value.channel);
+    _homeController.call.fetchCalls(showLoader: false);
+
+    try {
+      Get.delete<CallController>(force: true);
+    } catch (_) { }
   }
+
+  void goBack(bool value, Object? result) {
+    log("Go back called here");
+    if(state.call.value.isCalling) {
+      _disposeEngines();
+    }
+
+    // end();
+  }
+
+  String get asset => state.call.value.isVoice ? Media.voiceChat : Media.videoChat;
+
+  void fetchWallet() async {
+    state.isFetchingWallet.value = true;
+    var response = await _connect.get(endpoint: "/wallet");
+    if(response.isSuccessful) {
+      Wallet wallet = Wallet.fromJson(response.data);
+      state.wallet.value = wallet;
+      state.isFetchingWallet.value = false;
+    }
+  }
+
+  void invite() async {}
 }

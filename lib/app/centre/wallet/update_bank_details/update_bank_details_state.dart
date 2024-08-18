@@ -14,6 +14,9 @@ class UpdateBankDetailsState {
   /// List of banks
   RxList<Bank> banks = RxList<Bank>();
 
+  /// List of banks
+  RxList<Bank> filteredBanks = RxList<Bank>();
+
   /// Selected bank
   Rx<Bank> bank = Bank(name: "", code: "").obs;
 

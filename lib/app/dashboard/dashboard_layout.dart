@@ -25,7 +25,7 @@ class DashboardLayout extends GetResponsiveView<HomeController> {
             name: controller.state.firstName.value,
             image: controller.state.image.value,
             onSerch: () => Navigate.to(AppInformationLayout.route),
-            onAccounts: () => AccountPicker.open(
+            onAccounts: () => AccountPickerLayout.open(
               onGuestSuccess: (guest) => Navigate.all(GuestHomeLayout.route)
             ),
           ),

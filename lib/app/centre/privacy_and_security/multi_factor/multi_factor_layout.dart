@@ -117,9 +117,12 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                     text: "Disable",
                     width: MediaQuery.of(context).size.width,
                     loading: controller.state.isDisabling.value,
-                    onClick: () => DisableMultiFactor.open(
-                      onSuccess: () => controller.state.hasAuth.value = false
-                    ),
+                    onClick: () async {
+                      bool? result = await Navigate.to(MfaAuthLayout.disableRoute);
+                      if(result != null && result) {
+                        controller.state.hasAuth.value = false;
+                      }
+                    },
                   )
                 ],
               ),

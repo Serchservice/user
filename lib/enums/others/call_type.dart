@@ -16,6 +16,8 @@ extension ConvertCallType on String {
         return CallType.voice;
       case "t2f":
         return CallType.tip2fix;
+      case "tip2fix":
+        return CallType.tip2fix;
       default:
         return CallType.voice;
     }

@@ -10,6 +10,7 @@ class Wallet {
     required this.uncleared,
     required this.payday,
     required this.payoutOnPayday,
+    required this.nextPayday,
   });
 
   final String wallet;
@@ -22,6 +23,7 @@ class Wallet {
   final String uncleared;
   final int payday;
   final bool payoutOnPayday;
+  final String nextPayday;
 
   Wallet copyWith({
     String? wallet,
@@ -34,6 +36,7 @@ class Wallet {
     String? uncleared,
     int? payday,
     bool? payoutOnPayday,
+    String? nextPayday,
   }) {
     return Wallet(
       wallet: wallet ?? this.wallet,
@@ -46,6 +49,7 @@ class Wallet {
       uncleared: uncleared ?? this.uncleared,
       payday: payday ?? this.payday,
       payoutOnPayday: payoutOnPayday ?? this.payoutOnPayday,
+      nextPayday: nextPayday ?? this.nextPayday,
     );
   }
 
@@ -61,6 +65,7 @@ class Wallet {
       uncleared: json["uncleared"] ?? "",
       payday: json["payday"] ?? 0,
       payoutOnPayday: json["payout_on_payday"] ?? false,
+      nextPayday: json["next_payday"] ?? "",
     );
   }
 
@@ -75,7 +80,8 @@ class Wallet {
       "payout": "",
       "uncleared": "",
       "payday": 0,
-      "payout_on_payday": true
+      "payout_on_payday": true,
+      "next_payday": "",
     });
   }
 
@@ -90,6 +96,7 @@ class Wallet {
     "uncleared": uncleared,
     "payday": payday,
     "payout_on_payday": payoutOnPayday,
+    "next_payday": nextPayday,
   };
 }
 
@@ -104,5 +111,7 @@ class Wallet {
 	"payout": "string",
 	"uncleared": "string",
 	"payday": 0,
-	"payout_on_payday": true
-}*/
+	"payout_on_payday": true,
+    "next_payday": 0
+}
+*/

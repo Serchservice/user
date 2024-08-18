@@ -66,7 +66,7 @@ class SharedLinksLayout extends GetResponsiveView<SharedLinksController> {
                 Opacity(
                   opacity: 0.2,
                   child: Image.asset(
-                    Media.locationWorld,
+                    Media.world,
                     width: 200
                   ),
                 ),

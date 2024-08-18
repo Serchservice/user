@@ -52,4 +52,7 @@ class GuestHomeState {
 
   /// List of active events
   RxList<ActiveEvent> events = RxList([]);
+
+  /// Checks if the details panel is minimized
+  RxBool isMinimized = RxBool(false);
 }

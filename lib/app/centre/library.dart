@@ -58,6 +58,7 @@ export 'wallet/transactions/transaction_box.dart';
 
 export 'wallet/widgets/fund_wallet_sheet.dart';
 export 'wallet/widgets/withdraw_wallet_sheet.dart';
+export 'wallet/widgets/wallet_view.dart';
 
 export 'wallet/wallet_layout.dart';
 export 'wallet/wallet_controller.dart';
@@ -72,13 +73,16 @@ export 'privacy_and_security/privacy_and_security_binding.dart';
 
 /// MULTI FACTOR
 export 'privacy_and_security/multi_factor/enable_multi_factor.dart';
-export 'privacy_and_security/multi_factor/disable_multi_factor.dart';
-export 'privacy_and_security/multi_factor/auth_with_multi_factor.dart';
-
 export 'privacy_and_security/multi_factor/multi_factor_layout.dart';
 export 'privacy_and_security/multi_factor/multi_factor_controller.dart';
 export 'privacy_and_security/multi_factor/multi_factor_state.dart';
 export 'privacy_and_security/multi_factor/multi_factor_binding.dart';
+
+/// MULTI FACTOR AUTHENTICATION
+export 'privacy_and_security/mfa_auth/mfa_auth_layout.dart';
+export 'privacy_and_security/mfa_auth/mfa_auth_controller.dart';
+export 'privacy_and_security/mfa_auth/mfa_auth_state.dart';
+export 'privacy_and_security/mfa_auth/mfa_auth_binding.dart';
 
 /// CHANGE PASSWORD
 export 'privacy_and_security/change_password/change_password_layout.dart';
@@ -93,9 +97,10 @@ export 'privacy_and_security/biometrics/biometrics_state.dart';
 export 'privacy_and_security/biometrics/biometrics_binding.dart';
 
 /// BIOMETRICS AUTHENTICATION
-export 'privacy_and_security/biometrics_sheet/biometrics_sheet.dart';
-export 'privacy_and_security/biometrics_sheet/biometrics_sheet_controller.dart';
-export 'privacy_and_security/biometrics_sheet/biometrics_sheet_state.dart';
+export 'privacy_and_security/biometrics_auth/biometrics_auth_layout.dart';
+export 'privacy_and_security/biometrics_auth/biometrics_auth_controller.dart';
+export 'privacy_and_security/biometrics_auth/biometrics_auth_state.dart';
+export 'privacy_and_security/biometrics_auth/biometrics_auth_binding.dart';
 
 /// RATING
 export 'rating/tabs/rating_summary.dart';
@@ -124,9 +129,9 @@ export 'bookmark/bookmark_state.dart';
 export 'bookmark/bookmark_binding.dart';
 
 /// ACCOUNT
-export 'account/signout.dart';
-export 'account/delete_account.dart';
-export 'account/edit_profile.dart';
+export 'account/widgets/signout.dart';
+export 'account/widgets/delete_account.dart';
+export 'account/widgets/edit_profile.dart';
 
 export 'account/account_layout.dart';
 export 'account/account_controller.dart';

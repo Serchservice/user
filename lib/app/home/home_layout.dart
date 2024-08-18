@@ -35,31 +35,40 @@ class HomeLayout extends GetResponsiveView<HomeController> {
       ),
     ];
 
-    return GetBuilder<HomeController>(
+    return GetX<HomeController>(
       builder: (controller) {
+        int current = controller.state.routeIndex.value;
+
         return MainLayout(
           theme: controller.state.theme.value,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           bottomNavbar: NavigationBar(
-            selectedIndex: controller.state.routeIndex.value,
+            selectedIndex: current,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             onDestinationSelected: (index) => controller.selectRoute(index),
             indicatorColor: Theme.of(context).primaryColorDark,
             destinations: tabs.map((tab) => NavigationDestination(
-              icon: Icon(
-                tab.icon,
-                color: Theme.of(context).primaryColor
-              ),
-              selectedIcon: Icon(
-                tab.active,
-                color: Theme.of(context).scaffoldBackgroundColor
-              ),
+              icon: Icon(tab.icon, color: Theme.of(context).primaryColor),
+              selectedIcon: Icon(tab.active, color: Theme.of(context).scaffoldBackgroundColor),
               label: tab.title
             )).toList()
           ),
-          floater: buildEventLayout(context, controller.state.events),
+            floater: controller.state.isMinimized.value ? null : controller.buildEventLayout(),
+            floaterPosition: 20,
+            floatingButton: controller.state.isMinimized.value && controller.state.events.isNotEmpty
+              ? FloatingActionButton(
+                onPressed: controller.state.isMinimized.toggle,
+                tooltip: "Show active events",
+                backgroundColor: CommonColors.success,
+                child: const Icon(
+                  Icons.open_in_full_rounded,
+                  color: CommonColors.lightTheme
+                ),
+              )
+              : null,
+            floatingLocation: FloatingActionButtonLocation.startFloat,
           child: IndexedStack(
-            index: controller.state.routeIndex.value,
+            index: current,
             children: [
               DashboardLayout(),
               ConversationLayout(),
@@ -72,8 +81,3 @@ class HomeLayout extends GetResponsiveView<HomeController> {
     );
   }
 }
-/// BottomNavigation(
-          //   backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-          //   tabs: tabs,
-          //   onTap: (index) => controller.selectRoute(index),
-          // )

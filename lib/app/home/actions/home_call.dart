@@ -15,7 +15,7 @@ class HomeCall implements HomeCallService {
     if(response.isOk) {
       controller.state.isFetchingCalls.value = false;
       List<dynamic> data = response.data;
-      List<Call> calls = data.map((e) => Call.fromJson(e)).toList();
+      List<CallResponse> calls = data.map((e) => CallResponse.fromJson(e)).toList();
       controller.state.calls.value = calls;
       controller.state.filteredCalls.value = calls;
     } else {

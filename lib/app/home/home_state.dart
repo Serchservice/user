@@ -84,10 +84,10 @@ class HomeState {
   RxBool isFetchingCalls = RxBool(true);
 
   /// List of calls
-  RxList<Call> calls = <Call>[].obs;
+  RxList<CallResponse> calls = <CallResponse>[].obs;
 
   /// List of filtered calls
-  RxList<Call> filteredCalls = <Call>[].obs;
+  RxList<CallResponse> filteredCalls = <CallResponse>[].obs;
 
   /// Current active filter index
   RxInt activeActivityFilter = RxInt(0);
@@ -193,4 +193,7 @@ class HomeState {
 
   /// Fetching trips
   RxBool isFetchingTrips = RxBool(true);
+
+  /// Checks if the details panel is minimized
+  RxBool isMinimized = RxBool(false);
 }

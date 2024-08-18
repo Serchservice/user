@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
@@ -62,6 +63,7 @@ class HomeController extends GetxController {
     activity.fetchInvites(showLoader: true);
     activity.fetchTrips(showLoader: true);
     shared.fetch(showLoader: true);
+
     super.onInit();
   }
 
@@ -128,5 +130,72 @@ class HomeController extends GetxController {
   void selectRoute(int index) {
     state.routeIndex.value = index;
     update();
+  }
+
+  Widget? buildEventLayout() {
+    if(state.events.isNotEmpty) {
+      double space = Sizing.space(8);
+
+      return Container(
+        constraints: BoxConstraints(maxHeight: Get.height / 2),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  LoadingButton(
+                    text: state.isMinimized.value ? "View details" : "Minimize details",
+                    buttonColor: Get.theme.colorScheme.surface,
+                    textColor: Get.theme.primaryColor,
+                    textSize: 12,
+                    borderRadius: 30,
+                    padding: EdgeInsets.all(Sizing.space(6)),
+                    onClick: state.isMinimized.toggle,
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              ...state.events.map((event) {
+                bool isLast = state.events.length - 1 == state.events.indexOf(event);
+
+                return Padding(
+                  padding: isLast
+                    ? EdgeInsets.symmetric(horizontal: space)
+                    : EdgeInsets.only(bottom: space, left: space, right: space),
+                  child: Swiper(
+                    onLeftSwipe: (details) {
+                      if(event.trip != null) {
+                        this.event.removeTripEventById(event.trip!.id);
+                      } else if(event.call != null) {
+                        this.event.removeCallEventByChannel(event.call!.state.call.value.channel);
+                      }
+                    },
+                    iconOnLeftSwipe: CupertinoIcons.trash,
+                    iconOnRightSwipe: CupertinoIcons.trash,
+                    iconSize: 16,
+                    iconColor: CommonColors.error,
+                    onRightSwipe: (details) {
+                      if(event.trip != null) {
+                        this.event.removeTripEventById(event.trip!.id);
+                      } else if(event.call != null) {
+                        this.event.removeCallEventByChannel(event.call!.state.call.value.channel);
+                      }
+                    },
+                    child: event
+                  )
+                );
+              }).toList()
+            ],
+          ),
+        ),
+      );
+    } else {
+      return null;
+    }
   }
 }

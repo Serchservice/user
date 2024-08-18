@@ -5,6 +5,7 @@ class ActiveResultView extends StatelessWidget {
   final Active? active;
   final SearchShopResponse? shop;
   final List<ButtonView> buttons;
+  final Function(ButtonView, Active?, SearchShopResponse?) actOnView;
   final bool isBest;
   final double latitude;
   final double longitude;
@@ -16,7 +17,8 @@ class ActiveResultView extends StatelessWidget {
     required this.buttons,
     this.isBest = false,
     required this.latitude,
-    required this.longitude
+    required this.longitude,
+    required this.actOnView
   }) : assert((shop == null && active != null) || (shop != null && active == null));
 
   @override
@@ -29,7 +31,7 @@ class ActiveResultView extends StatelessWidget {
           color: isBest ? CommonColors.green : Theme.of(context).colorScheme.surface,
           child: InkWell(
             onTap: shop != null
-              ? () => ShopView.open(shop: shop!.shop, latitude: latitude, longitude: longitude)
+              ? () => ShopView.open(response: shop!, latitude: latitude, longitude: longitude)
               : active != null
                 ? () => ActiveProviderView.open(active: active!)
                 : null,
@@ -61,25 +63,7 @@ class ActiveResultView extends StatelessWidget {
                   _buildButtons(
                     context: context,
                     buttons: buttons,
-                    onClick: (view) {
-                      if(view.index == 0) {
-                        ScheduleTimePicker.open(
-                          id: active!.id,
-                          name: active!.name,
-                          onSchedule: (schedule) {
-                            Navigate.offTill(HomeLayout.route, ModalRoute.withName(HomeLayout.route));
-                          }
-                        );
-                      } else if(view.index == 1) {
-                        RouteNavigator.openChat(roommate: active!.id, removeRoute: true);
-                      } else if(view.index == 2) {
-                        if(active != null) {
-                          CallOptionSheet.open(name: active!.name, id: active!.id, avatar: active!.avatar);
-                        } else {
-                          RouteNavigator.callNumber(shop!.shop.phone);
-                        }
-                      }
-                    }
+                    onClick: (view) => actOnView.call(view, active, shop)
                   ),
                 ],
               ),

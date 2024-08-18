@@ -49,7 +49,7 @@ class ResetPasswordConfirmationLayout extends GetResponsiveView<ResetPasswordCon
                             prefixIcon: controller.state.isResending.value
                               ? null
                               : Icons.refresh_rounded,
-                            textSize: Sizing.font(14),
+                            textSize: Sizing.font(12),
                             buttonColor: Theme.of(context).scaffoldBackgroundColor,
                             textColor: Theme.of(context).primaryColor,
                             onClick: () => controller.resend(),

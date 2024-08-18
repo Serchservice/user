@@ -6,7 +6,7 @@ plugins {
     id "com.google.firebase.crashlytics"
 }
 
-apply from: project(':app').file('api_keys.gradle')
+apply from: project(':app').file('keys.gradle')
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')

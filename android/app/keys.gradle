@@ -1,0 +1,18 @@
+def googleMapsApiKey = project.hasProperty('GOOGLE_MAPS_API_KEY_ANDROID')
+        ? project.GOOGLE_MAPS_API_KEY_ANDROID
+        : System.getenv("GOOGLE_MAPS_API_KEY_ANDROID") ?: ""
+
+android {
+    defaultConfig {
+        resValue "string", "google_maps_api_key", googleMapsApiKey
+    }
+
+//    productFlavors {
+//        dev {
+//            resValue "string", "google_maps_api_key", System.getenv("DEV_GOOGLE_MAPS_API_KEY") ?: ""
+//        }
+//        prod {
+//            resValue "string", "google_maps_api_key", System.getenv("PROD_GOOGLE_MAPS_API_KEY") ?: ""
+//        }
+//    }
+}

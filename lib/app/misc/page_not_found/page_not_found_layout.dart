@@ -71,7 +71,7 @@ class PageNotFoundLayout extends StatelessWidget {
                           textColor: Theme.of(context).primaryColor,
                           onClick: () {
                             if(value.index == 2) {
-                              AccountPicker.open(
+                              AccountPickerLayout.open(
                                 shouldNavigate: true,
                                 onUserSuccess: () {
                                   if(HomeController.data.initialized) {

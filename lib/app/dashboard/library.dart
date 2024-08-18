@@ -14,6 +14,11 @@ export 'active_result/shop_view/shop_view_weekdays.dart';
 
 export 'active_result/active_provider_view/active_provider_view.dart';
 
+/// OPTIONS
+export 'active_result/navigation/navigation_option_sheet_controller.dart';
+export 'active_result/navigation/navigation_option_sheet.dart';
+export 'active_result/navigation/navigation_option_sheet_state.dart';
+
 export 'dashboard_layout.dart';
 export 'widgets/dashboard_header.dart';
 export 'widgets/dashboard_category_option_selector.dart';

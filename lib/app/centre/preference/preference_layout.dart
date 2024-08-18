@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
@@ -30,25 +31,54 @@ class PreferenceLayout extends GetResponsiveView<PreferenceController> {
         List<ButtonView> communications = [
           ButtonView(
             header: "Personal Information Sharing",
-            body: "Control if you want Serch to warn you whenever you want to share any personal detail",
+            body: "Control if you want Serch to warn you whenever you want to share any personal detail while chatting",
             icon: Icons.account_box_rounded,
             index: 0,
           ),
         ];
 
-        List<ButtonView> trips = [
+        List<ButtonView> personalizations = [
           ButtonView(
-            header: "Gender Selection",
-            body: "Filter what genders you want for trip",
-            icon: Icons.chat_rounded,
+            header: "Location Check",
+            body: "Skip location check anytime you want to use the platform",
+            icon: Icons.add_location_alt_rounded,
             index: 0,
-            path: controller.state.genderSelection.value.value
           ),
+          ButtonView(
+            header: "Default account",
+            body: controller.state.preference.value.useLastLoggedInAccountAsDefault
+              ? "Current account: ${controller.state.preference.value.active}"
+              : "Use my last logged in account as default for next login",
+            icon: Icons.manage_accounts_rounded,
+            index: 1,
+          ),
+        ];
+
+        List<ButtonView> trips = [
           ButtonView(
             header: "Auto Connection",
             body: "Select if you want Serch to match you with a provider automatically for every request",
             icon: Icons.account_box_rounded,
-            index: 1,
+            index: 0,
+          ),
+          // ButtonView(
+          //   header: "Gender Selection",
+          //   body: "Filter what gender you prefer for service trips",
+          //   icon: Icons.chat_rounded,
+          //   index: 1,
+          //   path: controller.state.genderSelection.value.value
+          // ),
+          ButtonView(
+            header: "Certified Providers",
+            body: "Show only certified providers on my search",
+            icon: CupertinoIcons.doc_append,
+            index: 2,
+          ),
+          ButtonView(
+            header: "Verified Providers",
+            body: "Show only verified providers on my search",
+            icon: CupertinoIcons.checkmark_shield_fill,
+            index: 3,
           ),
         ];
 
@@ -111,45 +141,89 @@ class PreferenceLayout extends GetResponsiveView<PreferenceController> {
                   }
                 )
               ),
-              // Divider(color: Theme.of(context).primaryColor),
+              if(trips.isNotEmpty) ...[
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: SText(
+                    text: "Trip",
+                    color: Theme.of(context).primaryColor,
+                    size: Sizing.font(16),
+                    weight: FontWeight.bold
+                  ),
+                ),
+                const SizedBox(height: 5),
+                ...trips.map((trip) {
+                  if(trip.index == 0) {
+                    return PreferenceSwitcher(
+                      view: trip,
+                      onChange: (value) {
+                        controller.state.preference.value = controller.state.preference.value.copyWith(
+                            autoConnectMeWithProvider: value
+                        );
+                        Database.savePreference(controller.state.preference.value);
+                      },
+                      value: controller.state.preference.value.autoConnectMeWithProvider,
+                    );
+                  } else if(trip.index == 1) {
+                    return PreferenceNavigator(
+                      view: trip,
+                      onTap: () => PreferenceSelector.open(
+                        header: trip.header,
+                        isGender: true,
+                        selectedGender: controller.state.genderSelection.value,
+                        onChanged: (gender, theme, preference, schedule, security) {
+                          controller.state.genderSelection.value = gender;
+                          Database.saveAppSetting(Database.setting.copyWith(gender: gender));
+                        }
+                      )
+                    );
+                  } else {
+                    return PreferenceSwitcher(
+                      view: trip,
+                      onChange: (value) {
+                        if(trip.index == 2) {
+                          controller.updateShowOnlyCertified(value);
+                        } else {
+                          controller.updateShowOnlyVerified(value);
+                        }
+                      },
+                      value: trip.index == 2
+                        ? controller.state.settings.value.showOnlyCertified
+                        : controller.state.settings.value.showOnlyVerified,
+                    );
+                  }
+                }),
+              ],
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: SText(
-                  text: "Trip",
+                  text: "Personalization",
                   color: Theme.of(context).primaryColor,
                   size: Sizing.font(16),
                   weight: FontWeight.bold
                 ),
               ),
               const SizedBox(height: 5),
-              ...trips.map((trip) {
-                if(trip.index == 0) {
-                  return PreferenceNavigator(
-                    view: trip,
-                    onTap: () => PreferenceSelector.open(
-                      header: trip.header,
-                      isGender: true,
-                      selectedGender: controller.state.genderSelection.value,
-                      onChanged: (gender, theme, preference, schedule, security) {
-                        controller.state.genderSelection.value = gender;
-                        Database.saveAppSetting(Database.setting.copyWith(gender: gender));
-                      }
-                    )
-                  );
-                } else {
-                  return PreferenceSwitcher(
-                    view: trip,
-                    onChange: (value) {
-                      controller.state.preference.value = controller.state.preference.value.copyWith(
-                        autoConnectMeWithProvider: value
-                      );
-                      Database.savePreference(controller.state.preference.value);
-                    },
-                    value: controller.state.preference.value.autoConnectMeWithProvider,
-                  );
-                }
-              }),
+              ...personalizations.map((personalization) => PreferenceSwitcher(
+                view: personalization,
+                onChange: (value) {
+                  if(personalization.index == 0) {
+                    controller.state.preference.value = controller.state.preference.value.copyWith(
+                        skipLocationCheck: value
+                    );
+                  } else {
+                    controller.state.preference.value = controller.state.preference.value.copyWith(
+                        useLastLoggedInAccountAsDefault: value
+                    );
+                  }
+                  Database.savePreference(controller.state.preference.value);
+                },
+                value: personalization.index == 0
+                  ? controller.state.preference.value.skipLocationCheck
+                  : controller.state.preference.value.useLastLoggedInAccountAsDefault,
+              )),
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),

@@ -89,6 +89,20 @@ class WalletSettingsLayout extends GetResponsiveView<WalletSettingsController> {
                             color: CommonColors.lightTheme
                           )),
                           const SizedBox(height: 10),
+                          SText(
+                            text: "Payout every ${controller.walletController.state.wallet.value.payday} day/s",
+                            size: Sizing.font(14),
+                            color: CommonColors.hint
+                          ),
+                          const SizedBox(height: 10),
+                          if(controller.walletController.state.wallet.value.nextPayday.isNotEmpty) ...[
+                            SText(
+                              text: "Next payday is ${controller.walletController.state.wallet.value.nextPayday}",
+                              size: Sizing.font(14),
+                              color: CommonColors.hint
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                           Center(
                             child: SText(
                               text: "Tap to edit",

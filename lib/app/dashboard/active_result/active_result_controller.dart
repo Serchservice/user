@@ -47,9 +47,33 @@ class ActiveResultController extends GetxController {
   ];
 
   List<ButtonView> driveButtons = [
-    ButtonView(header: "Drive", index: 3, icon: Icons.drive_eta_rounded),
+    ButtonView(header: "Drive to shop", index: 3, icon: Icons.drive_eta_rounded),
     ButtonView(header: "Call", index: 2, icon: Icons.call_rounded)
   ];
+
+  void actOnView(ButtonView view, Active? active, SearchShopResponse? shop) {
+    if(active != null) {
+      if(view.index == 0) {
+        ScheduleTimePicker.open(
+          id: active.id,
+          name: active.name,
+          onSchedule: (schedule) {
+            Navigate.offTill(HomeLayout.route, ModalRoute.withName(HomeLayout.route));
+          }
+        );
+      } else if(view.index == 1) {
+        RouteNavigator.openChat(roommate: active.id, removeRoute: true);
+      } else {
+        CallOptionSheet.open(name: active.name, id: active.id, avatar: active.avatar);
+      }
+    } else if(shop != null) {
+      if(view.index == 2) {
+        RouteNavigator.callNumber(shop.shop.phone);
+      } else {
+        NavigationOptionSheet.open(shop);
+      }
+    }
+  }
 
   @override
   void onReady() {

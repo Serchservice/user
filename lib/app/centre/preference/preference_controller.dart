@@ -7,6 +7,7 @@ class PreferenceController extends GetxController {
   final state = PreferenceState();
 
   final ConnectService _connect = Connect();
+  final HomeController home = HomeController.data;
 
   @override
   void onInit() {
@@ -24,7 +25,31 @@ class PreferenceController extends GetxController {
     }
   }
 
-  final HomeController home = HomeController.data;
+  void updateShowOnlyCertified(bool value) async {
+    state.settings.value = state.settings.value.copyWith(showOnlyCertified: value);
+    var response = await _connect.patch(endpoint: "/account/settings/update", body: {
+      "show_only_certified": value
+    });
+
+    if(response.isOk) {
+      AppSetting setting = AppSetting.fromJson(response.data);
+      Database.saveAppSetting(setting);
+      state.settings.value = setting;
+    }
+  }
+
+  void updateShowOnlyVerified(bool value) async {
+    state.settings.value = state.settings.value.copyWith(showOnlyVerified: value);
+    var response = await _connect.patch(endpoint: "/account/settings/update", body: {
+      "show_only_verified": value
+    });
+
+    if(response.isOk) {
+      AppSetting setting = AppSetting.fromJson(response.data);
+      Database.saveAppSetting(setting);
+      state.settings.value = setting;
+    }
+  }
 
   void updateTheme(ThemeType theme) {
     if(theme == ThemeType.light) {

@@ -50,7 +50,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
       child: _buildBody(
         context: context,
         child: Obx(() {
-          if(controller.state.search.value.providers.isEmpty) {
+          if(controller.state.search.value.providers.isEmpty && controller.state.search.value.best == null) {
             return Center(
               child: SText(
                 text: controller.noResult(),
@@ -61,28 +61,41 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
           } else if(controller.state.search.value.best != null) {
             return SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: SText(
+                      text: "Best Match",
+                      size: Sizing.font(12),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                   ActiveResultView(
                     active: controller.state.search.value.best!,
                     buttons: controller.requestButtons,
                     isBest: true,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,
+                    actOnView: controller.actOnView,
                   ),
-                  const SizedBox(height: 20),
-                  ListView.builder(
-                    itemCount: controller.state.sortedProviders.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ActiveResultView(
-                        active: controller.state.sortedProviders[index],
-                        buttons: controller.requestButtons,
-                        latitude: controller.state.searchQuery.value.address.latitude,
-                        longitude: controller.state.searchQuery.value.address.longitude,
-                      );
-                    }
-                  )
+                  if(controller.state.search.value.providers.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    ListView.builder(
+                      itemCount: controller.state.sortedProviders.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return ActiveResultView(
+                          active: controller.state.sortedProviders[index],
+                          buttons: controller.requestButtons,
+                          latitude: controller.state.searchQuery.value.address.latitude,
+                          longitude: controller.state.searchQuery.value.address.longitude,
+                          actOnView: controller.actOnView,
+                        );
+                      }
+                    )
+                  ]
                 ],
               )
             );
@@ -96,6 +109,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                   buttons: controller.requestButtons,
                   latitude: controller.state.searchQuery.value.address.latitude,
                   longitude: controller.state.searchQuery.value.address.longitude,
+                  actOnView: controller.actOnView,
                 );
               }
             );
@@ -151,6 +165,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                   buttons: controller.driveButtons,
                   latitude: controller.state.searchQuery.value.address.latitude,
                   longitude: controller.state.searchQuery.value.address.longitude,
+                  actOnView: controller.actOnView,
                 );
               }
             );
@@ -206,6 +221,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                     isBest: true,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,
+                    actOnView: controller.actOnView,
                   ),
                   const SizedBox(height: 20),
                   ListView.builder(
@@ -220,12 +236,14 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                           active: item, buttons: controller.requestButtons,
                           latitude: controller.state.searchQuery.value.address.latitude,
                           longitude: controller.state.searchQuery.value.address.longitude,
+                          actOnView: controller.actOnView,
                         );
                       } else if(item is SearchShopResponse && (controller.state.filter.value == 0 || controller.state.filter.value == 1)) {
                         return ActiveResultView(
                           shop: item, buttons: controller.driveButtons,
                           latitude: controller.state.searchQuery.value.address.latitude,
                           longitude: controller.state.searchQuery.value.address.longitude,
+                          actOnView: controller.actOnView,
                         );
                       } else {
                         return Container();
@@ -247,12 +265,14 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                     active: item, buttons: controller.requestButtons,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,
+                    actOnView: controller.actOnView,
                   );
                 } else if(item is SearchShopResponse && (controller.state.filter.value == 0 || controller.state.filter.value == 1)) {
                   return ActiveResultView(
                     shop: item, buttons: controller.driveButtons,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,
+                    actOnView: controller.actOnView,
                   );
                 } else {
                   return Container();

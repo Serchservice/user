@@ -18,6 +18,14 @@ class Routes {
     ),
 
     GetPage(
+      name: AccountPickerLayout.route,
+      page: () => AccountPickerLayout(),
+      binding: AccountPickerBinding(),
+      transition: Transition.native,
+      transitionDuration: const Duration(milliseconds: 800),
+    ),
+
+    GetPage(
       name: WebLayout.route,
       page: () => const WebLayout(),
       binding: WebBinding(),

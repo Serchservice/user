@@ -1,6 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get/instance_manager.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:user/library.dart';
 
 class FirebaseMessagingImplementation implements FirebaseMessagingService {
@@ -9,9 +8,12 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
 
   @override
   void background(RemoteMessage message) async {
-    await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-    Get.put<MainConfiguration>(MainConfiguration());
     _notificationBuilder.build(message: message, isBackground: true);
+    _handleStreamNotification(message);
+  }
+
+  void _handleStreamNotification(RemoteMessage message) async {
+    await StreamVideo.instance.handleVoipPushNotification(message.data);
   }
 
   @override
@@ -26,8 +28,9 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
     }, onError: (_) { });
 
     /// FOREGROUND LISTENER
-    FirebaseMessaging.onMessage.listen((remoteMessage) {
-      _notificationBuilder.build(message: remoteMessage);
+    FirebaseMessaging.onMessage.listen((message) {
+      _notificationBuilder.build(message: message);
+      _handleStreamNotification(message);
     }, onError: (_) { });
 
     /// BACKGROUND NOT TERMINATED LISTENER

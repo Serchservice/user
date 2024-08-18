@@ -39,6 +39,10 @@ export 'trip_widgets/history/trip_history_view.dart';
 export 'trip_widgets/history/trip_history_view_controller.dart';
 export 'trip_widgets/history/trip_history_view_state.dart';
 
+export 'trip_widgets/map_view/map_view.dart';
+export 'trip_widgets/map_view/map_view_controller.dart';
+export 'trip_widgets/map_view/map_view_state.dart';
+
 export 'trip_widgets/trip_box.dart';
 export 'trip_widgets/trip_step.dart';
 export 'trip_widgets/trip_profile.dart';

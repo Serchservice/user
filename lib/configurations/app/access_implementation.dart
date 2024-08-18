@@ -6,17 +6,15 @@ import 'package:user/library.dart';
 
 class AccessImplementation implements AccessService {
   /// Storage Permissions
-  final List<Permission> storagePermissions = [
+  List<Permission> storagePermissions(int sdk) => [
     if(Platform.isAndroid) ...[
-      if(Database.device.sdk > 32)...[
-        Permission.photos,
-        Permission.videos
-      ],
-      if(Database.device.sdk <= 32) ...[
+      if(sdk <= 32) ...[
         Permission.storage,
-      ],
-    ],
-    if(Platform.isIOS) ...[
+      ] else ...[
+        Permission.photos,
+        Permission.manageExternalStorage
+      ]
+    ] else if(Platform.isIOS) ...[
       Permission.photosAddOnly,
       Permission.photos,
       Permission.storage
@@ -30,7 +28,7 @@ class AccessImplementation implements AccessService {
   }
 
   @override
-  Future<bool> requestPermissions() async {
+  Future<bool> requestPermissions(int sdk) async {
     /// Media Permissions
     final List<Permission> mediaPermissions = [
       Permission.camera,
@@ -45,7 +43,7 @@ class AccessImplementation implements AccessService {
       Permission.notification,
     ];
 
-    var storagePermission = await [...storagePermissions].request();
+    var storagePermission = await [...storagePermissions(sdk)].request();
     var notificationPermission = await [...notificationPermissions].request();
     var mediaPermission = await [...mediaPermissions].request();
     var locationPermission = await Geolocator.requestPermission();
@@ -61,7 +59,7 @@ class AccessImplementation implements AccessService {
 
   @override
   Future<bool> hasStorage() async {
-    var storagePermission = await [...storagePermissions].request();
+    var storagePermission = await [...storagePermissions(Database.device.sdk)].request();
     return !storagePermission.entries.any((element) => !element.value.isGranted);
   }
 }
