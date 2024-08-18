@@ -91,6 +91,22 @@ List<GetPage> centreRoutes = [
   ),
 
   GetPage(
+    name: BiometricsAuthLayout.loginRoute,
+    page: () => BiometricsAuthLayout(),
+    binding: BiometricsAuthBinding(),
+    transition: Transition.native,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
+    name: BiometricsAuthLayout.route,
+    page: () => BiometricsAuthLayout(),
+    binding: BiometricsAuthBinding(),
+    transition: Transition.native,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
     name: ChangePasswordLayout.route,
     page: () => ChangePasswordLayout(),
     binding: ChangePasswordBinding(),
@@ -102,6 +118,30 @@ List<GetPage> centreRoutes = [
     name: MultiFactorLayout.route,
     page: () => MultiFactorLayout(),
     binding: MultiFactorBinding(),
+    transition: Transition.native,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
+    name: MfaAuthLayout.loginRoute,
+    page: () => MfaAuthLayout(),
+    binding: MfaAuthBinding(),
+    transition: Transition.native,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
+    name: MfaAuthLayout.enableRoute,
+    page: () => MfaAuthLayout(),
+    binding: MfaAuthBinding(),
+    transition: Transition.native,
+    transitionDuration: const Duration(milliseconds: 500),
+  ),
+
+  GetPage(
+    name: MfaAuthLayout.disableRoute,
+    page: () => MfaAuthLayout(),
+    binding: MfaAuthBinding(),
     transition: Transition.native,
     transitionDuration: const Duration(milliseconds: 500),
   ),

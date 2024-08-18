@@ -6,28 +6,55 @@ import 'package:user/library.dart';
 class ExceptionImplementation implements ExceptionService {
   @override
   void handleConnectionException(SocketException socketException) {
-    log(socketException, from: "Handler Exception - Socket Exception");
+    notify.error(message: "An error occurred while accessing your network");
+    return;
   }
 
   @override
   void handleException() {
-    CrashlyticsEngine.handle();
-
     FlutterError.onError = (details) {
-      log(details, from: "F - ErrorHandler");
-      if(details.exception is SocketException) {
+      if(details.exception is SerchException) {
+        SerchException exception = details.exception as SerchException;
+        if(exception.isPlatformNotSupported) {
+          Navigate.all(PlatformNotSupportedLayout.route);
+        } else if(exception.isLocked) {
+          Navigate.all(AccountIssueLayout.route);
+        } else if(exception.isSessionExpired) {
+          Navigate.all(LoginLayout.route);
+        }
+        if (kDebugMode) {
+          // In development mode, simply print to console.
+          FlutterError.dumpErrorToConsole(details);
+        } else {
+          // In production mode, report all uncaught errors to Crashlytics.
+          CrashlyticsEngine.handle();
+        }
+      } else if(details.exception is SerchException) {
         handleConnectionException(details.exception as SocketException);
+      } else if (kDebugMode) {
+        // In development mode, simply print to console.
+        FlutterError.dumpErrorToConsole(details);
+      } else {
+        // In production mode, report all uncaught errors to Crashlytics.
+        CrashlyticsEngine.handle();
       }
     };
 
-    PlatformDispatcher.instance.onError = (exception, stackTrace) {
-      log(stackTrace, from: "P - ErrorHandler");
-      log(exception, from: "PE - ErrorHandler");
-      if(exception is SocketException) {
-        handleConnectionException(exception);
-        return true;
+    // Pass all uncaught asynchronous errors that aren't handled by the Flutter
+    // framework to Crashlytics
+    PlatformDispatcher.instance.onError = (error, stack) {
+      if(error is SocketException) {
+        handleConnectionException(error);
+      } else if (kDebugMode) {
+        // In development mode, simply print to console.
+        log(stack, from: "P - ErrorHandler");
+        log(error, from: "PE - ErrorHandler");
+      } else {
+        // In production mode, report all uncaught errors to Crashlytics.
+        CrashlyticsEngine.handle();
       }
-      return false;
+      CrashlyticsEngine.handle();
+      return true;
     };
   }
 }

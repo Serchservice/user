@@ -58,13 +58,16 @@ class BiometricsLayout extends GetResponsiveView<BiometricsController> {
                 ? "Disable"
                 : "Enable",
               width: MediaQuery.of(context).size.width,
-              onClick: () => BiometricsSheet.open(
-                hasBiometrics: controller.state.preference.value.hasBiometrics,
-                onSuccess: (value) {
+              onClick: () async {
+                bool? value = await Navigate.to(BiometricsAuthLayout.route, parameters: {
+                  "login": "false",
+                  "has_biometrics": "${controller.state.preference.value.hasBiometrics}"
+                });
+                if(value != null) {
                   controller.state.preference.value = controller.state.preference.value.copyWith(hasBiometrics: value);
                   Navigate.back();
                 }
-              ),
+              }
             ))
           ]
         ),

@@ -10,3 +10,4 @@ export 'utilities/library.dart';
 export 'app/library.dart';
 
 export 'main.dart';
+export 'app.dart';

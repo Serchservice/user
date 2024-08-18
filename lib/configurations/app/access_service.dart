@@ -4,7 +4,7 @@ abstract class AccessService {
   /// Requests all necessary permissions.
   ///
   /// @return A `Future` that completes with a boolean indicating whether all permissions were granted.
-  Future<bool> requestPermissions();
+  Future<bool> requestPermissions(int sdk);
 
   /// Checks if the location permissions were granted. If not, requests for them.
   ///

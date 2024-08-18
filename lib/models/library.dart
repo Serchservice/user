@@ -52,7 +52,7 @@ export 'conversation/issue.dart';
 export 'conversation/speak_with_serch.dart';
 
 export 'conversation/call/active_call_response.dart';
-export 'conversation/call/call.dart';
+export 'conversation/call/call_response.dart';
 export 'conversation/call/call_history.dart';
 export 'conversation/call/call_member.dart';
 
@@ -67,6 +67,10 @@ export 'profile/more.dart';
 export 'profile/phone_info.dart';
 export 'profile/profile.dart';
 export 'profile/specialization.dart';
+
+/// MAP
+export 'map/direction.dart';
+export 'map/direction_distance.dart';
 
 /// GUEST
 export 'shared/guest_data.dart';
@@ -94,6 +98,7 @@ export 'trip/shared_trip_response.dart';
 export 'trip/timeline_response.dart';
 export 'trip/trip_response.dart';
 export 'trip/user_response.dart';
+export 'trip/map_view_response.dart';
 
 /// NOTIFICATION
 export 'notification/types/chat_notification.dart';

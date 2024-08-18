@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:user/library.dart';
 
 class Connect<T> extends Interceptor implements ConnectService<T> {
@@ -107,8 +109,8 @@ class Connect<T> extends Interceptor implements ConnectService<T> {
         queryParameters: query,
       );
       return transformResponse(response);
-    } catch (e) {
-      return transformError(e);
+    } on DioException catch (e) {
+      return handleDioException(e);
     }
   }
 
@@ -120,13 +122,14 @@ class Connect<T> extends Interceptor implements ConnectService<T> {
   }) async {
     try {
       var response = await connect.get(
-        endpoint,
-        queryParameters: query,
-        onReceiveProgress: onReceiveProgress,
+          endpoint,
+          queryParameters: query,
+          onReceiveProgress: onReceiveProgress,
+          cancelToken: CancelTokenManager.cancelToken
       );
       return transformResponse(response);
-    } catch (e) {
-      return transformError(e);
+    } on DioException catch (e) {
+      return handleDioException(e);
     }
   }
 
@@ -140,15 +143,16 @@ class Connect<T> extends Interceptor implements ConnectService<T> {
   }) async {
     try {
       var response = await connect.patch(
-        endpoint,
-        data: body,
-        queryParameters: query,
-        onReceiveProgress: onReceiveProgress,
-        onSendProgress: onSendProgress,
+          endpoint,
+          data: body,
+          queryParameters: query,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress,
+          cancelToken: CancelTokenManager.cancelToken
       );
       return transformResponse(response);
-    } catch (e) {
-      return transformError(e);
+    } on DioException catch (e) {
+      return handleDioException(e);
     }
   }
 
@@ -162,15 +166,16 @@ class Connect<T> extends Interceptor implements ConnectService<T> {
   }) async {
     try {
       var response = await connect.post(
-        endpoint,
-        data: body,
-        queryParameters: query,
-        onReceiveProgress: onReceiveProgress,
-        onSendProgress: onSendProgress,
+          endpoint,
+          data: body,
+          queryParameters: query,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress,
+          cancelToken: CancelTokenManager.cancelToken
       );
       return transformResponse(response);
-    } catch (e) {
-      return transformError(e);
+    } on DioException catch (e) {
+      return handleDioException(e);
     }
   }
 
@@ -192,27 +197,46 @@ class Connect<T> extends Interceptor implements ConnectService<T> {
     );
   }
 
-  ApiResponse<T> transformError(dynamic e) {
+  ApiResponse<T> handleDioException(DioException e) {
     log(e, from: "Error trace in Connect");
-    if(e is DioException) {
-      if(e.response != null) {
-        try {
-          return ApiResponse.fromJson(e.response?.data);
-        } catch (_) {
-          return ApiResponse(
+    ApiResponse<T> response;
+
+    if(e.response != null) {
+      try {
+        response = ApiResponse<T>.fromJson(e.response?.data);
+      } catch (_) {
+        response = ApiResponse<T>(
             status: "",
             code: e.response?.statusCode ?? 400,
-            message: e.message ?? "Network connection failed. Check your internet"
-          );
-        }
-      } else {
-        return ApiResponse(
-          status: "",
-          code: e.response?.statusCode ?? 400,
-          message: e.message ?? "Network connection failed. Check your internet"
+            message: "Network connection failed. Check your internet connection"
         );
       }
+    } else {
+      response = ApiResponse<T>(
+          status: "",
+          code: e.response?.statusCode ?? 400,
+          message: "An error occurred while sending your request. If this continues, contact support"
+      );
     }
-    return ApiResponse(status: "", code: 400, message: e.toString());
+
+    if((response.status == "FORBIDDEN" && response.code == 403) && !Get.currentRoute.endsWith(EmailCheckerLayout.route)) {
+      CancelTokenManager.cancelAllRequests();
+      if(Get.isRegistered<HomeController>()) {
+        Get.delete<HomeController>();
+      }
+
+      Navigate.all(EmailCheckerLayout.route);
+    }
+
+    return response;
+  }
+}
+
+class CancelTokenManager {
+  static CancelToken cancelToken = CancelToken();
+
+  static void cancelAllRequests() {
+    cancelToken.cancel("Operation cancelled");
+    cancelToken = CancelToken(); // Reinitialize the token after cancellation
   }
 }

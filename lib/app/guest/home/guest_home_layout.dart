@@ -28,7 +28,8 @@ class GuestHomeLayout extends GetResponsiveView<GuestHomeController> {
         index: 2,
       ),
     ];
-    return GetBuilder<GuestHomeController>(
+
+    return GetX<GuestHomeController>(
       builder: (controller) {
         return MainLayout(
           theme: controller.state.theme.value,
@@ -50,6 +51,20 @@ class GuestHomeLayout extends GetResponsiveView<GuestHomeController> {
               label: tab.title
             )).toList()
           ),
+          floater: controller.state.isMinimized.value ? null : controller.buildEventLayout(),
+          floaterPosition: 20,
+          floatingButton: controller.state.isMinimized.value && controller.state.events.isNotEmpty
+            ? FloatingActionButton(
+              onPressed: controller.state.isMinimized.toggle,
+              tooltip: "Show active events",
+              backgroundColor: CommonColors.success,
+              child: const Icon(
+                Icons.open_in_full_rounded,
+                color: CommonColors.lightTheme
+              ),
+            )
+            : null,
+          floatingLocation: FloatingActionButtonLocation.startFloat,
           child: IndexedStack(
             index: controller.state.routeIndex.value,
             children: [

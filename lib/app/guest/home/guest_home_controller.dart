@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
@@ -12,7 +13,7 @@ class GuestHomeController extends GetxController {
 
   final AuthValidatorService _apiService = AuthValidator();
   final SocketService _socket = Socket();
-  final SocketService _socketed = Socket();
+  final SocketService _socketIn = Socket();
 
   late GuestHomeActivityService activity;
   late GuestHomeEventService event;
@@ -49,7 +50,7 @@ class GuestHomeController extends GetxController {
       subscribeDestination: "/platform/${Database.guest.id}"
     );
 
-    _socketed.initialize(
+    _socketIn.initialize(
       callback: (frame) {
         if (frame.body != null) {
           dynamic data = jsonDecode(frame.body!);
@@ -78,7 +79,7 @@ class GuestHomeController extends GetxController {
   @override
   void onClose() {
     _socket.disconnect();
-    _socketed.disconnect();
+    _socketIn.disconnect();
     stream?.cancel();
     super.onClose();
   }
@@ -129,5 +130,68 @@ class GuestHomeController extends GetxController {
     Guest guest = Guest.fromJson(data);
     state.guest.value = guest;
     Database.saveGuest(guest);
+  }
+
+  Widget? buildEventLayout() {
+    if(state.events.isNotEmpty) {
+      double space = Sizing.space(8);
+
+      return Container(
+        constraints: BoxConstraints(maxHeight: Get.height / 2),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24)),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  LoadingButton(
+                    text: state.isMinimized.value ? "View details" : "Minimize details",
+                    buttonColor: Get.theme.colorScheme.surface,
+                    textColor: Get.theme.primaryColor,
+                    textSize: 12,
+                    borderRadius: 30,
+                    padding: EdgeInsets.all(Sizing.space(6)),
+                    onClick: state.isMinimized.toggle,
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              ...state.events.map((event) {
+                bool isLast = state.events.length - 1 == state.events.indexOf(event);
+
+                return Padding(
+                  padding: isLast
+                    ? EdgeInsets.symmetric(horizontal: space)
+                    : EdgeInsets.only(bottom: space, left: space, right: space),
+                  child: Swiper(
+                    onLeftSwipe: (details) {
+                      if(event.trip != null) {
+                        this.event.removeTripEventById(event.trip!.id);
+                      }
+                    },
+                    iconOnLeftSwipe: CupertinoIcons.trash,
+                    iconOnRightSwipe: CupertinoIcons.trash,
+                    iconSize: 16,
+                    iconColor: CommonColors.error,
+                    onRightSwipe: (details) {
+                      if(event.trip != null) {
+                        this.event.removeTripEventById(event.trip!.id);
+                      }
+                    },
+                    child: event
+                  )
+                );
+              }).toList()
+            ],
+          ),
+        ),
+      );
+    } else {
+      return null;
+    }
   }
 }

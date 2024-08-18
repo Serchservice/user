@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
 
 class LocationCheckerState {
-  /// Can continue with all access
-  RxBool canContinue = false.obs;
-
   /// Country
   RxString country = "".obs;
 

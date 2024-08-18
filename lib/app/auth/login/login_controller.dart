@@ -55,13 +55,6 @@ class LoginController extends GetxController {
         Database.saveAuth(auth);
         Database.savePreference(Database.preference.copyWith(active: auth.id));
 
-        await _messaging.getFcmToken().then((token) async {
-          if(token.isNotEmpty) {
-            final ConnectService connect = Connect();
-            await connect.patch(endpoint: "/account/fcm/update?token=$token", body: {});
-          }
-        });
-
         AnalyticsEngine.userLogin(
             "email",
             state.emailAddress.value,
@@ -69,10 +62,17 @@ class LoginController extends GetxController {
             Database.address
         );
         if(auth.hasMfa && !Database.preference.remember && (Database.preference.isMFA || Database.preference.isBoth || Database.preference.isNone)) {
-          AuthWithMultiFactor.login();
+          Navigate.off(MfaAuthLayout.loginRoute);
         } else {
           Navigate.all(HomeLayout.route);
         }
+
+        await _messaging.getFcmToken().then((token) async {
+          if(token.isNotEmpty) {
+            final ConnectService connect = Connect();
+            await connect.patch(endpoint: "/account/fcm/update?token=$token", body: {});
+          }
+        });
       } else {
         notify.error(message: response.message);
         return;

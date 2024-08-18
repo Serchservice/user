@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:user/library.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 /// This class is the wrapper for the local database of the user.
 ///
@@ -14,12 +14,12 @@ const String accountsDatabase = "ACCOUNTS_DATABASE";
 
 class Database {
   static Future<void> initialize() async {
-    await GetStorage.init();
-    await GetStorage.init(settingsDatabase);
-    await GetStorage.init(authDatabase);
-    await GetStorage.init(accountDatabase);
-    await GetStorage.init(accountsDatabase);
-    await GetStorage.init(guestDatabase);
+    await Hive.initFlutter();
+    await Hive.openBox(settingsDatabase);
+    await Hive.openBox(authDatabase);
+    await Hive.openBox(accountDatabase);
+    await Hive.openBox(accountsDatabase);
+    await Hive.openBox(guestDatabase);
   }
 
   static Future<void> get clear async {

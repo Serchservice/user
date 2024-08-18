@@ -128,11 +128,13 @@ class _ChatHistoryLayoutState extends State<ChatHistoryLayout> {
                             children: [
                               MessageStatusIcon(status: room.status),
                               const SizedBox(width: 3),
-                              SText(
-                                text: room.message,
-                                size: Sizing.font(14),
-                                color: Theme.of(context).primaryColor,
-                                flow: TextOverflow.ellipsis
+                              Expanded(
+                                child: SText(
+                                  text: room.message,
+                                  size: Sizing.font(14),
+                                  color: Theme.of(context).primaryColor,
+                                  flow: TextOverflow.ellipsis
+                                ),
                               ),
                             ],
                           ),

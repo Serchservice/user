@@ -1,20 +1,20 @@
-import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:user/library.dart';
 
 /// This class is the wrapper for the local database of the user.
 class DatabaseImplementation implements DatabaseService {
-  final GetStorage _box;
-  DatabaseImplementation(String boxName) : _box = GetStorage(boxName);
+  final Box _box;
+  DatabaseImplementation(String boxName) : _box = Hive.box(boxName);
 
   @override
-  Future<void> write(String key, dynamic value) async => _box.write(key, value);
+  Future<void> write(String key, dynamic value) async => _box.put(key, value);
 
   @override
-  T? read<T>(String key) => _box.read(key);
+  T? read<T>(String key) => _box.get(key);
 
   @override
-  Future<void> erase() async => _box.erase();
+  Future<void> erase() async => _box.clear();
 
   @override
-  Future<void> remove(String key) async => _box.remove(key);
+  Future<void> remove(String key) async => _box.delete(key);
 }

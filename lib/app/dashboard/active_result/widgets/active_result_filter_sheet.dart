@@ -117,7 +117,7 @@ class _ActiveResultFilterSheetState extends State<ActiveResultFilterSheet> {
                 const SizedBox(height: 20),
                 Slider(
                   value: (radius / 100),
-                  max: 1000,
+                  max: 100,
                   label: radius.round().toString(),
                   activeColor: Theme.of(context).primaryColor,
                   inactiveColor: CommonColors.shimmerBase.withOpacity(.48),

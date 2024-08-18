@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:user/library.dart';
 
 class CallHistoryView extends StatelessWidget {
-  final Call call;
+  final CallResponse call;
   const CallHistoryView({super.key, required this.call});
 
-  static void open(Call call) {
+  static void open(CallResponse call) {
     Navigate.bottomSheet(
       sheet: CallHistoryView(call: call),
       isScrollable: true,

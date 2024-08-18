@@ -2,6 +2,7 @@ library;
 
 export 'auth/biometrics_auth_state.dart';
 export 'auth/security_type.dart';
+export 'auth/mfa_auth.dart';
 
 export 'device/theme_type.dart';
 export 'device/preference_status.dart';

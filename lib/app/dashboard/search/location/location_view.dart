@@ -37,12 +37,13 @@ class LocationView extends StatelessWidget {
                       lines: 2,
                       flow: TextOverflow.ellipsis
                     ),
-                    const SizedBox(height: 4),
-                    SText(
-                      text: address.country,
-                      size: Sizing.font(12),
-                      color: Theme.of(context).primaryColorLight
-                    ),
+                    if(address.country.isNotEmpty) ...[
+                      SText(
+                        text: address.country,
+                        size: Sizing.font(12),
+                        color: Theme.of(context).primaryColorLight
+                      ),
+                    ]
                   ],
                 )
               ),

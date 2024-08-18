@@ -19,6 +19,7 @@ class SharedTripResponse {
     required this.showGrant,
     required this.showDeny,
     required this.showLeave,
+    required this.location,
   });
 
   final int id;
@@ -38,6 +39,7 @@ class SharedTripResponse {
   final bool showGrant;
   final bool showDeny;
   final bool showLeave;
+  final MapViewResponse location;
 
   SharedTripResponse copyWith({
     int? id,
@@ -57,6 +59,7 @@ class SharedTripResponse {
     bool? showGrant,
     bool? showDeny,
     bool? showLeave,
+    MapViewResponse? location,
   }) {
     return SharedTripResponse(
       id: id ?? this.id,
@@ -76,6 +79,7 @@ class SharedTripResponse {
       showGrant: showGrant ?? this.showGrant,
       showDeny: showDeny ?? this.showDeny,
       showLeave: showLeave ?? this.showLeave,
+      location: location ?? this.location,
     );
   }
 
@@ -98,6 +102,7 @@ class SharedTripResponse {
       showGrant: json["show_grant"] ?? false,
       showDeny: json["show_deny"] ?? false,
       showLeave: json["show_leave"] ?? false,
+      location: json["location"] == null ? MapViewResponse.empty() : MapViewResponse.fromJson(json["location"])
     );
   }
 
@@ -119,6 +124,7 @@ class SharedTripResponse {
     "show_grant": showGrant,
     "show_deny": showDeny,
     "show_leave": showLeave,
+    "location": location.toJson(),
   };
 
   bool get isWaiting => status == "WAITING";

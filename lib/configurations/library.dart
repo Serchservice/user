@@ -1,6 +1,5 @@
 library;
 
-export 'app/app_lifecycle.dart';
 export 'app/app_service.dart';
 export 'app/app_implementation.dart';
 export 'app/access_service.dart';
@@ -32,6 +31,9 @@ export 'firebase/firebase_messaging_implementation.dart';
 export 'firebase/firebase_messaging_service.dart';
 
 export 'main/main_configuration.dart';
+export 'main/call_configuration.dart';
+export 'main/call_push_provider_setup.dart';
+export 'main/app_lifecycle.dart';
 
 export 'notification/in_app/in_app_notification.dart';
 export 'notification/in_app/in_app_notification_service.dart';

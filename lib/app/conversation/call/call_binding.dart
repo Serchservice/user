@@ -4,7 +4,9 @@ import 'package:user/library.dart';
 class CallBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CallController>(() => CallController());
+    if (!Get.isRegistered<CallController>()) {
+      Get.put(CallController(), permanent: true);
+    }
 
     try {
       if(!HomeController.data.initialized) {

@@ -107,14 +107,16 @@ class LoadingButton extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                   ],
-                  Center(
-                    child: loading ? loader : SText.center(
-                      text: text,
-                      color: color,
-                      size: textSize,
-                      weight: textWeight,
-                      fontFamily: fontFamily
-                    )
+                  Expanded(
+                    child: Center(
+                      child: loading ? loader : SText.center(
+                        text: text,
+                        color: color,
+                        size: textSize,
+                        weight: textWeight,
+                        fontFamily: fontFamily
+                      )
+                    ),
                   ),
                   if(suffixIcon != null) ...[
                     const SizedBox(width: 10),

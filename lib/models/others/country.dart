@@ -57,7 +57,7 @@ class Country {
       dialCode: "234",
       minLength: 10,
       maxLength: 11,
-      image: "https://wyvcjsumdfoamsmdzsna.supabase.co/storage/v1/object/public/flag/ng.png"
+      image: "https://chxpalpeslofqzeulcjr.supabase.co/storage/v1/object/public/flags/ng.png"
     );
   }
 

@@ -40,7 +40,8 @@ class FakeField extends StatelessWidget {
                     child: SText(
                       text: searchText,
                       size: Sizing.font(14),
-                      color: Theme.of(context).primaryColor
+                      color: Theme.of(context).primaryColor,
+                      flow: TextOverflow.ellipsis
                     ),
                   ),
                   if(showSearch) ...[

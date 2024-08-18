@@ -191,11 +191,11 @@ class NotificationImplementation implements NotificationService {
       RouteNavigator.openChat(roommate: action.payload!["roommate"] ?? "");
     } else if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == callSNT) {
       ActiveCallResponse call = ActiveCallResponse.fromStringedJson(action.payload!);
-      if(action.buttonKeyPressed == answerCallKey) {
-        RouteNavigator.answerCall(call: call, removeCurrentRoute: false);
-      } else {
-        RouteNavigator.goToCall(call: call, removeCurrentRoute: false);
-      }
+      // if(action.buttonKeyPressed == answerCallKey) {
+      //   RouteNavigator.answerCall(call: call, removeCurrentRoute: false);
+      // } else {
+      //   RouteNavigator.goToCall(call: call, removeCurrentRoute: false);
+      // }
     } else if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == scheduleSNT) {
       Schedule schedule = Schedule.fromStringedJson(action.payload!);
       Navigate.to(HomeLayout.route, arguments: schedule.toJson());

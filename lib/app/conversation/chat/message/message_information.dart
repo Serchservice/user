@@ -4,13 +4,36 @@ import 'package:user/library.dart';
 
 class MessageInformation extends StatelessWidget {
   final ChatMessage message;
+  final ChatReply? reply;
   final ChatController controller;
-  const MessageInformation({super.key, required this.message, required this.controller});
 
-  static void open({required ChatMessage message, required ChatController controller}) {
+  const MessageInformation({
+    super.key,
+    required this.message,
+    required this.controller,
+    this.reply
+  });
+
+  static void open({
+    required ChatMessage message,
+    required ChatController controller
+  }) {
     Navigate.bottomSheet(
       sheet: MessageInformation(message: message, controller: controller),
-      route: "/conversation/chat/${message.room}/message/${message.id}",
+      route: "/conversation/chat/${message.room}?message=${message.id}",
+      isScrollable: true,
+      safeArea: false
+    );
+  }
+
+  static void showReply({
+    required ChatMessage message,
+    required ChatReply reply,
+    required ChatController controller
+  }) {
+    Navigate.bottomSheet(
+      sheet: MessageInformation(message: message, controller: controller, reply: reply),
+      route: "/conversation/chat/${message.room}?message=${message.id}&replied=${reply.id}",
       isScrollable: true,
       safeArea: false
     );
@@ -18,7 +41,28 @@ class MessageInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(reply != null) {
+      return CurvedBottomSheet(
+        safeArea: true,
+        margin: const EdgeInsets.all(16),
+        padding: EdgeInsets.zero,
+        borderRadius: BorderRadius.circular(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildReply(context, reply!),
+          ],
+        )
+      );
+    } else {
+      return _buildMessage(context);
+    }
+  }
+
+  Widget _buildMessage(BuildContext context) {
     return CurvedBottomSheet(
+      safeArea: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,57 +131,7 @@ class MessageInformation extends StatelessWidget {
             ]
           ] else ...[
             const SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(Sizing.space(10)),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(24)
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SText(
-                    text: "Message",
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                  ),
-                  const SizedBox(height: 5),
-                  SText(
-                    text: message.reply!.message,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                    weight: FontWeight.bold
-                  ),
-                  const SizedBox(height: 10),
-                  SText(
-                    text: "Sent By",
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                  ),
-                  const SizedBox(height: 5),
-                  SText(
-                    text: message.reply!.sender,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                    weight: FontWeight.bold
-                  ),
-                  const SizedBox(height: 10),
-                  SText(
-                    text: "Message Sent Time",
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                  ),
-                  const SizedBox(height: 5),
-                  SText(
-                    text: message.reply!.label,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: Sizing.font(14),
-                    weight: FontWeight.bold
-                  ),
-                ],
-              ),
-            ),
+            _buildReply(context, message.reply!),
             if(message.isSentByCurrentUser) ...[
               const SizedBox(height: 40),
             ]
@@ -155,6 +149,60 @@ class MessageInformation extends StatelessWidget {
           ]
         ],
       )
+    );
+  }
+
+  Widget _buildReply(BuildContext context, ChatReply reply) {
+    return Container(
+      padding: EdgeInsets.all(Sizing.space(10)),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(24)
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SText(
+            text: "Message",
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+          ),
+          const SizedBox(height: 5),
+          SText(
+            text: reply.message,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+            weight: FontWeight.bold
+          ),
+          const SizedBox(height: 10),
+          SText(
+            text: "Sent By",
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+          ),
+          const SizedBox(height: 5),
+          SText(
+            text: reply.sender,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+            weight: FontWeight.bold
+          ),
+          const SizedBox(height: 10),
+          SText(
+            text: "Message Sent Time",
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+          ),
+          const SizedBox(height: 5),
+          SText(
+            text: reply.label,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: Sizing.font(14),
+            weight: FontWeight.bold
+          ),
+        ],
+      ),
     );
   }
 }

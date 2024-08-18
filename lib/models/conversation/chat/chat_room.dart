@@ -19,6 +19,8 @@ class ChatRoom {
     required this.isBookmarked,
     required this.bookmark,
     required this.schedule,
+    required this.isActive,
+    required this.trip
   });
 
   final String room;
@@ -38,6 +40,8 @@ class ChatRoom {
   final bool isBookmarked;
   final String bookmark;
   final Schedule schedule;
+  final bool isActive;
+  final String trip;
 
   ChatRoom copyWith({
     String? room,
@@ -57,6 +61,8 @@ class ChatRoom {
     bool? isBookmarked,
     String? bookmark,
     Schedule? schedule,
+    bool? isActive,
+    String? trip,
   }) {
     return ChatRoom(
       room: room ?? this.room,
@@ -76,6 +82,8 @@ class ChatRoom {
       isBookmarked: isBookmarked ?? this.isBookmarked,
       bookmark: bookmark ?? this.bookmark,
       schedule: schedule ?? this.schedule,
+      isActive: isActive ?? this.isActive,
+      trip: trip ?? this.trip,
     );
   }
 
@@ -100,6 +108,8 @@ class ChatRoom {
       lastSeen: json["last_seen"] ?? "",
       sentAt: DateTime.tryParse(json["sent_at"] ?? "") ?? DateTime.now(),
       isBookmarked: json["is_bookmarked"] ?? false,
+      isActive: json["is_active"] ?? false,
+      trip: json["trip"] ?? ""
     );
   }
 
@@ -171,6 +181,8 @@ class ChatRoom {
       "last_seen": "",
       "sent_at": "2024-05-22T23:12:01.258Z",
       "is_bookmarked": false,
+      "is_active": false,
+      "trip": ""
     });
   }
 
@@ -192,6 +204,8 @@ class ChatRoom {
     "last_seen": lastSeen,
     "sent_at": sentAt.toIso8601String(),
     "is_bookmarked": isBookmarked,
+    "is_active": isActive,
+    "trip": trip
   };
 
   /// Check if the chat room has schedule

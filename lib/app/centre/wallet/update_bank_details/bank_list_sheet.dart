@@ -87,6 +87,13 @@ class BankListSheet extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    Field(
+                      padding: const EdgeInsets.all(8),
+                      hintText: "Search for a bank",
+                      keyboard: TextInputType.text,
+                      controller: controller.bankSearch,
+                    ),
+                    const SizedBox(height: 20),
                     ...controller.state.banks.map((bank) => NavigatorButton(
                       prefixIcon: Icons.house_rounded,
                       header: bank.name,

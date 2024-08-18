@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,10 @@ class ChatController extends GetxController {
   ScrollController messageScrollController = ScrollController();
   final TextEditingController textMessage = TextEditingController();
   FocusNode focusNode = FocusNode();
-  final messageKeys = <String, GlobalKey>{};
+
   final messageHeights = <String, double>{};
+
+  Timer? _debounceTimer;
 
   @override
   void onInit() {
@@ -41,7 +44,7 @@ class ChatController extends GetxController {
   @override
   void onReady() {
     if(state.chatRoom.value.room.isNotEmpty) {
-      scrollToEnd();
+      _scrollToLastMessage();
       _initSocket(state.chatRoom.value.room);
     } else if(state.room.value.isNotEmpty) {
       _getRoom().then((room) {
@@ -60,25 +63,11 @@ class ChatController extends GetxController {
       return;
     }
 
-    messageScrollController.addListener(() {
-      if (messageScrollController.position.pixels == messageScrollController.position.maxScrollExtent) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          state.showScrollButton.value = false;
-        });
-      } else if (messageScrollController.position.extentAfter < 100) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          state.showScrollButton.value = false;
-        });
-      } else {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          state.showScrollButton.value = true;
-        });
-      }
-    });
+    messageScrollController.addListener(_onScrollListener);
 
     focusNode.addListener(() {
       if(focusNode.hasFocus) {
-        scrollToEnd();
+        _scrollToLastMessage();
       }
     });
 
@@ -98,6 +87,7 @@ class ChatController extends GetxController {
         if(frame.body != null) {
           ChatRoom room = ChatRoom.fromJson(jsonDecode(frame.body!));
           state.chatRoom.value = room;
+          _scrollToLastMessage();
 
           _home.messaging.updateChats(room);
           _home.messaging.subscribeToChatRooms();
@@ -111,7 +101,8 @@ class ChatController extends GetxController {
   @override
   void onClose() {
     textMessage.dispose();
-    messageScrollController.removeListener(() {});
+    _debounceTimer?.cancel();
+    messageScrollController.removeListener(_onScrollListener);
     super.onClose();
   }
 
@@ -148,16 +139,16 @@ class ChatController extends GetxController {
   /// Select a message for more actions
   void selectMessage(ChatMessage message) {
     removeFocus();
-    if(state.selectedMessage.value.id != message.id) {
-      state.selectedMessage.value = message;
+    if(state.openMessage.value.id != message.id) {
+      state.openMessage.value = message;
     }
   }
 
   /// Unselect a message or tap to view more details about the message
   void unselectMessage(ChatMessage message) {
     removeFocus();
-    if(state.selectedMessage.value.id == message.id) {
-      state.selectedMessage.value = ChatMessage.empty();
+    if(state.openMessage.value.id == message.id) {
+      state.openMessage.value = ChatMessage.empty();
     } else {
       MessageInformation.open(message: message, controller: this);
     }
@@ -221,37 +212,76 @@ class ChatController extends GetxController {
   }
 
   /// Scroll to a replied message
-  void scrollToMessage(ChatMessage message) {
-    int position = _getReplyLocation(message.id);
-    if(position != -1 && messageHeights.containsKey(message.id)) {
+  void scrollToMessage(ChatReply reply, ChatMessage message) {
+    int position = _getReplyLocation(reply.id);
+    if (position != -1 && messageHeights.containsKey(reply.id)) {
       double scrollPosition = 0;
+
+      // Calculate scroll position based on the heights of previous messages
       for (var key in messageHeights.keys) {
-        if (key == message.id) break;
+        if (key == reply.id) break;
         scrollPosition += messageHeights[key]!;
       }
 
-      messageScrollController.animateTo(scrollPosition, duration: const Duration(milliseconds: 500), curve: Curves.linear);
-      state.messageIndex.value = position;
-      Future.delayed(const Duration(seconds: 2), () {
-        state.messageIndex.value = -1;
+      // Ensure scrollPosition is within bounds
+      final maxScrollExtent = messageScrollController.position.maxScrollExtent;
+      scrollPosition = scrollPosition.clamp(0.0, maxScrollExtent);
+
+      messageScrollController.animateTo(
+        scrollPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.linear,
+      );
+
+      state.selectedMessageId.value = reply.id;
+      MessageInformation.showReply(reply: reply, message: message, controller: this);
+
+      Future.delayed(const Duration(seconds: 4), () {
+        state.selectedMessageId.value = "";
       });
     }
   }
 
   /// Update message content height
   void updateMessageHeight(String id, double height) {
-    messageHeights[id] = height;
+    if(messageHeights.containsKey(id)) {
+      messageHeights[id] = height;
+    } else {
+      messageHeights.putIfAbsent(id, () => height);
+    }
   }
 
   /// Scroll to the end of the chatting list
   void scrollToEnd() {
     if(messageScrollController.hasClients && messageScrollController.positions.isNotEmpty) {
+      double height = messageHeights.isNotEmpty ? messageHeights.values.last : 60;
+
       messageScrollController.animateTo(
-        messageScrollController.position.maxScrollExtent,
+        messageScrollController.position.maxScrollExtent + height,
         duration: const Duration(milliseconds: 500),
-        curve: Curves.decelerate,
+        curve: Curves.easeInCubic,
       );
     }
+  }
+
+  void _scrollToLastMessage() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToEnd();
+    });
+  }
+
+  void _onScrollListener() {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      if (messageScrollController.position.pixels == messageScrollController.position.maxScrollExtent) {
+        state.showScrollButton.value = false;
+      } else if (messageScrollController.position.extentAfter < 100) {
+        state.showScrollButton.value = false;
+      } else {
+        state.showScrollButton.value = true;
+      }
+    });
   }
 
   /// Send a message
@@ -310,15 +340,29 @@ class ChatController extends GetxController {
       chat.copyWith(reply: state.reply.value);
     }
 
-    if(state.chatRoom.value.groups.isNotEmpty) {
-      state.chatRoom.value.groups.last.messages.add(chat);
+    if (state.chatRoom.value.groups.isNotEmpty) {
+      // Create a list of messages from the last chat group and add the new message
+      List<ChatMessage> messages = List.from(state.chatRoom.value.groups.last.messages);
+      messages.add(chat);
+
+      // Create a new ChatGroupMessage with the updated messages
+      ChatGroupMessage updatedGroup = state.chatRoom.value.groups.last.copyWith(messages: messages);
+
+      // Replace the last group with the updated group and update the chat room's state
+      List<ChatGroupMessage> updatedGroups = List.from(state.chatRoom.value.groups);
+      updatedGroups[updatedGroups.length - 1] = updatedGroup;
+
+      state.chatRoom.value = state.chatRoom.value.copyWith(groups: updatedGroups);
     } else {
-      ChatGroupMessage group = ChatGroupMessage(
+      // Create a new ChatGroupMessage since there are no existing groups
+      ChatGroupMessage newGroup = ChatGroupMessage(
         label: _formatChatLabel(),
         time: DateTime.now(),
         messages: [chat]
       );
-      state.chatRoom.value.copyWith(groups: [group]);
+
+      // Update the chat room's state with the new group
+      state.chatRoom.value = state.chatRoom.value.copyWith(groups: [newGroup]);
     }
     scrollToEnd();
   }

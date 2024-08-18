@@ -5,68 +5,14 @@ class HomeEvent implements HomeEventService {
   HomeEvent({required this.controller});
 
   @override
-  void addCallEvent(CallController callController) {
-    List<ActiveEvent> events = controller.state.events;
-
-    if(events.isEmpty) {
-      events.add(ActiveEvent(callController: callController));
-    } else {
-      // Check if there is an event with the same channel
-      bool updatedExisting = false;
-      for (int i = 0; i < events.length; i++) {
-        if (events[i].callController != null && events[i].callController!.state.call.value.channel == callController.state.call.value.channel) {
-          // Update existing event
-          events[i] = ActiveEvent(callController: callController);
-          updatedExisting = true;
-          break;
-        }
-      }
-
-      // If no existing event was updated, add a new one
-      if (!updatedExisting) {
-        events.add(ActiveEvent(callController: callController));
-      }
-    }
-
-    // Update state with the new events list
-    controller.state.events.value = events;
-  }
-
-  @override
-  void removeCallEventByChannel(String channel) {
-    List<ActiveEvent> events = controller.state.events;
-
-    // Remove events with matching channel
-    events.removeWhere((event) {
-      return event.callController != null && event.callController!.state.call.value.channel == channel;
-    });
-
-    // Update state with the updated events list
-    controller.state.events.value = events;
-  }
-
-  @override
   void addTripEvent(TripResponse trip) {
-    List<ActiveEvent> events = controller.state.events;
+    List<ActiveEvent> events = List.from(controller.state.events);
 
-    if(events.isEmpty) {
-      events.add(ActiveEvent(trip: trip));
+    int existingIndex = events.indexWhere((i) => i.trip != null && i.trip!.id == trip.id);
+    if (existingIndex != -1) {
+      events[existingIndex] = ActiveEvent(trip: trip);
     } else {
-      // Check if there is an event with the same channel
-      bool updatedExisting = false;
-      for (int i = 0; i < events.length; i++) {
-        if (events[i].trip != null && events[i].trip!.id == trip.id) {
-          // Update existing event
-          events[i] = ActiveEvent(trip: trip);
-          updatedExisting = true;
-          break;
-        }
-      }
-
-      // If no existing event was updated, add a new one
-      if (!updatedExisting) {
-        events.add(ActiveEvent(trip: trip));
-      }
+      events.add(ActiveEvent(trip: trip));
     }
 
     // Update state with the new events list
@@ -75,10 +21,35 @@ class HomeEvent implements HomeEventService {
 
   @override
   void removeTripEventById(String id) {
-    List<ActiveEvent> events = controller.state.events;
+    List<ActiveEvent> events = List.from(controller.state.events);
 
     // Remove events with matching channel
     events.removeWhere((event) => event.trip != null && event.trip!.id == id);
+
+    // Update state with the updated events list
+    controller.state.events.value = events;
+  }
+
+  @override
+  void addCallEvent(CallController call) {
+    List<ActiveEvent> events = List.from(controller.state.events);
+
+    int existingIndex = events.indexWhere((i) => i.call != null && i.call!.state.call.value.channel == call.state.call.value.channel);
+    if (existingIndex != -1) {
+      events[existingIndex] = ActiveEvent(call: call);
+    } else {
+      events.add(ActiveEvent(call: call));
+    }
+
+    controller.state.events.value = events;
+  }
+
+  @override
+  void removeCallEventByChannel(String channel) {
+    List<ActiveEvent> events = List.from(controller.state.events);
+
+    // Remove events with matching channel
+    events.removeWhere((event) => event.call != null && event.call!.state.call.value.channel == channel);
 
     // Update state with the updated events list
     controller.state.events.value = events;

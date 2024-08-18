@@ -3,7 +3,12 @@ library;
 export 'auth/library.dart';
 
 export 'layout.dart';
-export 'event_layout.dart';
+
+/// ACCOUNT PICKER
+export 'account_picker/account_picker_binding.dart';
+export 'account_picker/account_picker_controller.dart';
+export 'account_picker/account_picker_layout.dart';
+export 'account_picker/account_picker_state.dart';
 
 /// WEB
 export 'web/web_binding.dart';
@@ -48,7 +53,6 @@ export 'home/home_controller.dart';
 export 'home/home_binding.dart';
 
 /// PAGE VIEWS
-export 'active/library.dart';
 export 'guest/library.dart';
 export 'misc/library.dart';
 export 'activity/library.dart';

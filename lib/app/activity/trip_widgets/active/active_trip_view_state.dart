@@ -28,4 +28,13 @@ class ActiveTripViewState {
 
   /// Is ending trip
   RxBool isEnding = RxBool(false);
+
+  /// Checks if the details panel is minimized
+  RxBool isMinimized = RxBool(true);
+
+  /// Checks if the shared provider is on the way
+  RxBool isSharedOnTheWay = RxBool(false);
+
+  /// Checks if the provider is on the way
+  RxBool isProviderOnTheWay = RxBool(false);
 }

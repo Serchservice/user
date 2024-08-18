@@ -5,13 +5,11 @@ class Media{
   static const nameTag = "asset/logo/all.png";
 
   static const review = "asset/anim/review.png";
-  static const location = "asset/anim/location.png";
   static const serchChat = "asset/anim/serch_chat.png";
   static const userMapIcon = "asset/anim/user_map_icon.png";
   static const messages = "asset/anim/messages.png";
   static const wallet = "asset/anim/wallet.png";
   static const verified = "asset/anim/verified.png";
-  static const locationWorld = "asset/anim/location_world.png";
   static const notes = "asset/anim/notes.png";
   static const dark = "asset/anim/darkWallpaper.png";
   static const light = "asset/anim/lightWallpaper.png";
@@ -52,4 +50,14 @@ class Media{
   static const tip2fixCall = "asset/conversation/diy.png";
   static const voiceChat = "asset/conversation/voice.png";
   static const videoChat = "asset/conversation/video-chat.png";
+
+  /// MAP
+  static const drive = "asset/map/drive.png";
+  static const fly = "asset/map/fly.png";
+  static const current = "asset/map/current.png";
+  static const destination = "asset/map/destination.png";
+  static const mapRight = "asset/map/map-right.png";
+  static const upRight = "asset/map/up-right.png";
+  static const world = "asset/map/world.png";
+  static const location = "asset/map/location.png";
 }

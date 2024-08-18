@@ -56,7 +56,7 @@ class LoginLayout extends GetResponsiveView<LoginController> {
                         text: "Forgot Password?",
                         padding: const EdgeInsets.all(4),
                         buttonColor: Theme.of(context).scaffoldBackgroundColor,
-                        textSize: Sizing.font(14),
+                        textSize: Sizing.font(12),
                         textColor: Theme.of(context).primaryColor,
                         onClick: () => Navigate.offTo(ResetPasswordRequestLayout.route),
                       )

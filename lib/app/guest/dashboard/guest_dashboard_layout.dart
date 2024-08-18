@@ -16,7 +16,7 @@ class GuestDashboardLayout extends GetResponsiveView<GuestHomeController> {
             name: controller.state.firstName.value,
             image: controller.state.image.value,
             onSerch: () => Navigate.to(AppInformationLayout.route),
-            onAccounts: () => AccountPicker.open(
+            onAccounts: () => AccountPickerLayout.open(
               onUserSuccess: () => Navigate.all(HomeLayout.route),
               onGuestSuccess: (guest) {
                 controller.state.firstName.value = guest.firstName;

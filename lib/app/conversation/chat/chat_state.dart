@@ -18,7 +18,7 @@ class ChatState {
   RxBool isFetchingData = RxBool(false);
 
   /// Show the message that was replied when the replied message is tapped
-  RxInt messageIndex = RxInt(-1);
+  RxInt messageIndex = RxInt(-10);
 
   /// To check if the user has swiped a message for reply
   RxBool isSwiped = false.obs;
@@ -45,10 +45,13 @@ class ChatState {
   RxList<ChatMessage> selectedMessages = <ChatMessage>[].obs;
 
   /// The message being selected for more options
-  Rx<ChatMessage> selectedMessage = ChatMessage.empty().obs;
+  Rx<ChatMessage> openMessage = ChatMessage.empty().obs;
 
   /// The [ChatReply] model of a swiped message
   Rx<ChatReply> reply = ChatReply.empty().obs;
+
+  /// The message being selected for more options
+  Rx<String> selectedMessageId = RxString("");
 
   /// File to upload
   Rx<SelectedMedia> media = SelectedMedia(path: "").obs;

@@ -7,6 +7,7 @@ class UpdateBankDetailsController extends GetxController {
   final state = UpdateBankDetailsState();
 
   final TextEditingController accountNumberController = TextEditingController();
+  final TextEditingController bankSearch = TextEditingController();
 
   final FocusNode focus = FocusNode();
 
@@ -31,6 +32,16 @@ class UpdateBankDetailsController extends GetxController {
       }
     });
 
+    bankSearch.addListener(() {
+      if(bankSearch.text.isNotEmpty) {
+        List<Bank> banks = List.from(state.banks);
+        state.filteredBanks.value = banks.where((bank) {
+          return bank.name.toLowerCase().contains(bankSearch.text.toLowerCase())
+              || bank.code.toLowerCase().contains(bankSearch.text.toLowerCase());
+        }).toList();
+      }
+    });
+
     state.bank.value = Bank(name: _walletController.state.wallet.value.bankName, code: "");
     state.account.value = BankAccount(
       accountNumber: _walletController.state.wallet.value.accountNumber,
@@ -42,6 +53,7 @@ class UpdateBankDetailsController extends GetxController {
   @override
   void onClose() {
     accountNumberController.dispose();
+    bankSearch.dispose();
     super.onClose();
   }
 

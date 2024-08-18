@@ -2,13 +2,19 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:user/library.dart';
 
 class CallState {
+  /// Call Response
   Rx<ActiveCallResponse> call = ActiveCallResponse.empty().obs;
-  /// Call time in int
-  /// Call time in string
-  RxString time = RxString("00:00:00");
 
-  /// Switching between different call types
-  RxBool isRequestingSwitch = RxBool(false);
+  /// Current duration
+  RxString duration = RxString("");
+
+  /// Current session
+  RxInt session = RxInt(0);
+
+  /// Search request data
+  Rx<RequestSearch> search = RequestSearch(address: Database.address).obs;
+
+  RxString amount = RxString("");
 
   /// Call speaker on volume out
   RxBool isOnSpeaker = RxBool(false);
@@ -16,30 +22,15 @@ class CallState {
   /// Microphone is muted
   RxBool isAudioMuted = RxBool(false);
 
-  /// User is answering with bluetooth
-  RxBool isOnBluetooth = RxBool(false);
-
   /// Checks if Agora Engine is initialized
   RxBool isInitialized = RxBool(false);
 
-  /// Checks if Agora preview is ready for display
-  RxBool isPreviewReady = RxBool(false);
+  /// Checks if the user has decided to invite the provider
+  RxBool isInviting = RxBool(false);
 
-  /// Checks if the call camera is muted
-  RxBool isVideoMuted = RxBool(false);
+  /// The wallet data
+  Rx<Wallet> wallet = Wallet.empty().obs;
 
-  /// Checks if the call is on speaker
-  RxBool isSpeaker = RxBool(false);
-
-  /// Call time out
-  RxInt timeout = 60.obs;
-
-  /// Call duration in seconds
-  RxString seconds = "".obs;
-
-  /// Call duration in hours
-  RxString hours = "".obs;
-
-  /// Call duration in minutes
-  RxString minutes = "".obs;
+  // Fetching wallet details
+  RxBool isFetchingWallet = RxBool(true);
 }
