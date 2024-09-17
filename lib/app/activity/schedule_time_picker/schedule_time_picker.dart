@@ -160,41 +160,42 @@ class ScheduleTimePicker extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(12)
       ),
-      child: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 6,
-          childAspectRatio: 1.91
+      child: SingleChildScrollView(
+        child: Wrap(
+          runAlignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 5,
+          runSpacing: 5,
+          children: controller.state.times.map((time) {
+            return Obx(() {
+              bool isSelected = controller.state.selected.value == time;
+              return IconButton(
+                splashRadius: 25,
+                onPressed: () => controller.state.selected.value = time,
+                padding: EdgeInsets.symmetric(horizontal: Sizing.space(4), vertical: Sizing.space(1)),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith((states) {
+                    return isSelected ? CommonColors.darkTheme2 : Colors.transparent;
+                  }),
+                  shape: WidgetStateProperty.resolveWith((states) {
+                    return RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+                  }),
+                  overlayColor: WidgetStateProperty.resolveWith((states) {
+                    return CommonColors.shimmerBase.withOpacity(.48);
+                  }),
+                ),
+                icon: SText(
+                  text: time.time,
+                  color: isSelected
+                    ? CommonColors.lightTheme
+                    : Theme.of(context).scaffoldBackgroundColor,
+                  size: Sizing.font(12)
+                ),
+              );
+            });
+          }).toList(),
         ),
-        itemCount: controller.state.times.length,
-        itemBuilder: (context, index) {
-          final time = controller.state.times[index];
-          return Obx(() {
-            bool isSelected = controller.state.selected.value == time;
-            return IconButton(
-              splashRadius: 25,
-              onPressed: () => controller.state.selected.value = time,
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith((states) {
-                  return isSelected ? CommonColors.darkTheme2 : Colors.transparent;
-                }),
-                shape: WidgetStateProperty.resolveWith((states) {
-                  return RoundedRectangleBorder(borderRadius: BorderRadius.circular(50));
-                }),
-                overlayColor: WidgetStateProperty.resolveWith((states) {
-                  return CommonColors.shimmerBase.withOpacity(.48);
-                }),
-              ),
-              icon: SText(
-                text: time.time,
-                color: isSelected ? CommonColors.lightTheme : Theme.of(context).scaffoldBackgroundColor
-              ),
-            );
-          });
-        },
-      )
+      ),
     );
   }
 

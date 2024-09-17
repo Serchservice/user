@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
@@ -11,7 +12,9 @@ class GuestHomeController extends GetxController {
   final state = GuestHomeState();
   static GuestHomeController get data => Get.find<GuestHomeController>();
 
+  final ConnectService _connect = Connect(useToken: false);
   final AuthValidatorService _apiService = AuthValidator();
+  final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
   final SocketService _socket = Socket();
   final SocketService _socketIn = Socket();
 
@@ -22,6 +25,7 @@ class GuestHomeController extends GetxController {
 
   @override
   void onInit() {
+    AnalyticsEngine.logOpen();
     _apiService.fetchAccounts();
     activity = GuestHomeActivity(controller: this);
     event = GuestHomeEvent(controller: this);
@@ -30,6 +34,8 @@ class GuestHomeController extends GetxController {
 
   @override
   void onReady() {
+    _firebaseService.foreground();
+    _sendServerUpdate();
     activity.fetchTrips(showLoader: true);
     activity.fetchInvites(showLoader: true);
 
@@ -74,6 +80,18 @@ class GuestHomeController extends GetxController {
       durationInSeconds: 60
     );
     super.onReady();
+  }
+
+  void _sendServerUpdate() async {
+    String fcmToken = await _firebaseService.getFcmToken();
+    if(fcmToken.isNotEmpty) {
+      await _connect.patch(endpoint: "/guest/fcm/update?token=$fcmToken&guest=${Database.guest.id}");
+    }
+
+    try {
+      String timezone = await FlutterTimezone.getLocalTimezone();
+      await _connect.patch(endpoint: "/guest/update?timezone=$timezone&guest=${Database.guest.id}");
+    } catch (_) { }
   }
 
   @override
@@ -185,7 +203,7 @@ class GuestHomeController extends GetxController {
                     child: event
                   )
                 );
-              }).toList()
+              })
             ],
           ),
         ),

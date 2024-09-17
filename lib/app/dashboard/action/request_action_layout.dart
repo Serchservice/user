@@ -407,7 +407,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
                         )
                       ],
                     ),
-                  )).toList(),
+                  )),
                   const Divider(color: CommonColors.lightTheme),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

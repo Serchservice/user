@@ -121,7 +121,7 @@ class AccountPickerController extends GetxController {
       _navigate(false, true);
       onGuestSuccess?.call(Database.guest);
     } else {
-      final ConnectService connect = Connect(useToken: Database.isUserLoggedIn);
+      final ConnectService connect = Connect(useToken: Database.isUserActive);
       state.isLoading.value = true;
       state.selected.value = linkId;
 

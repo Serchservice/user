@@ -54,7 +54,7 @@ class CallOptionSheet extends StatelessWidget {
           ),
           Center(
             child: SText.center(
-              text: "Which call option do you prefer?",
+              text: "Which call option do you prefer with $name?",
               size: Sizing.font(16),
               weight: FontWeight.bold,
               color: Theme.of(context).primaryColor
@@ -66,7 +66,7 @@ class CallOptionSheet extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: options.length,
               crossAxisSpacing: 10,
-              mainAxisExtent: 160
+              mainAxisExtent: 100,
             ),
             itemCount: options.length,
             shrinkWrap: true,
@@ -83,25 +83,24 @@ class CallOptionSheet extends StatelessWidget {
                 },
                 child: Column(
                   children: [
-                    SText(
-                      text: option.header,
-                      size: Sizing.font(14),
-                      weight: FontWeight.bold,
-                      color: Theme.of(context).primaryColorLight
-                    ),
-                    const SizedBox(height: 10),
                     Expanded(
                       child: Image.asset(
                         option.path,
                         width: MediaQuery.of(context).size.width
                       )
                     ),
-                    const SizedBox(height: 10),
-                    SText.center(
-                      text: option.body,
-                      size: Sizing.font(12),
+                    SText(
+                      text: option.header,
+                      size: Sizing.font(14),
+                      weight: FontWeight.bold,
                       color: Theme.of(context).primaryColorLight
                     ),
+                    // const SizedBox(height: 10),
+                    // SText.center(
+                    //   text: option.body,
+                    //   size: Sizing.font(12),
+                    //   color: Theme.of(context).primaryColorLight
+                    // ),
                   ],
                 )
               );

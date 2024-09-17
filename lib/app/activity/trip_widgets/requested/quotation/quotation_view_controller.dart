@@ -17,7 +17,7 @@ class QuotationViewController extends GetxController {
   });
 
   final state = QuotationViewState();
-  final ConnectService _connect = Connect(useToken: Database.isUserLoggedIn);
+  final ConnectService _connect = Connect(useToken: Database.isUserActive);
 
   void accept() async {
     state.isAccepting.value = true;
@@ -26,7 +26,7 @@ class QuotationViewController extends GetxController {
       body: {
         "trip": trip,
         "quote_id": quotation.id,
-        "guest": Database.isUserLoggedIn ? "" : Database.guest.id
+        "guest": Database.isUserActive ? "" : Database.guest.id
       }
     );
 
@@ -43,7 +43,7 @@ class QuotationViewController extends GetxController {
     state.isDeclining.value = true;
     var response = await _connect.delete(
       endpoint: "/trip/invite/cancel/quote-${quotation.id}",
-      body: {"link_id": Database.isUserLoggedIn ? "" : Database.preference.active}
+      body: {"link_id": Database.isUserActive ? "" : Database.preference.active}
     );
     state.isDeclining.value = false;
 

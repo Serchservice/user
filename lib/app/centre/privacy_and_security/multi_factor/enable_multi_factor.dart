@@ -61,8 +61,7 @@ class EnableMultiFactor extends StatelessWidget {
               weight: FontWeight.bold,
             ),
             SText(
-              text: "Scan this QR Code with your Google Authenticator app or copy the code to your"
-                  " Google Authenticator app.",
+              text: "Scan this QR Code with your authenticator app or copy the code to your authenticator app.",
               color: Theme.of(context).primaryColor,
               size: Sizing.font(12),
               weight: FontWeight.bold,
@@ -96,10 +95,7 @@ class EnableMultiFactor extends StatelessWidget {
                       const SizedBox(width: 10),
                       IconButton(
                         onPressed: () => CommonUtility.copy(mfa.secret),
-                        icon: Icon(
-                            Icons.copy_rounded,
-                            color: Theme.of(context).primaryColor
-                        )
+                        icon: Icon(Icons.copy_rounded, color: Theme.of(context).primaryColor)
                       )
                     ],
                   ),
@@ -113,8 +109,8 @@ class EnableMultiFactor extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               textSize: Sizing.font(14),
               onClick: () async {
-                bool? result = await Navigate.off(MfaAuthLayout.enableRoute);
-                if(result != null && result) {
+                dynamic result = await Navigate.off(MfaAuthLayout.enableRoute);
+                if(result != null && result is bool) {
                   onSuccess.call();
                 }
               },

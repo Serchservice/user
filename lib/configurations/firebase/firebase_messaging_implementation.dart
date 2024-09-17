@@ -1,23 +1,18 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:user/library.dart';
 
 class FirebaseMessagingImplementation implements FirebaseMessagingService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   final NotificationBuildService _notificationBuilder = NotificationBuildImplementation();
+  final ConnectService _connect = Connect(useToken: Database.preference.active != Database.guest.id);
 
   @override
   void background(RemoteMessage message) async {
     _notificationBuilder.build(message: message, isBackground: true);
-    _handleStreamNotification(message);
-  }
-
-  void _handleStreamNotification(RemoteMessage message) async {
-    await StreamVideo.instance.handleVoipPushNotification(message.data);
   }
 
   @override
-  void foreground() {
+  void foreground() async {
     _messaging.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
 
     /// BACKGROUND TERMINATED GETTER
@@ -25,27 +20,33 @@ class FirebaseMessagingImplementation implements FirebaseMessagingService {
       if(remoteMessage != null) {
         _notificationBuilder.build(message: remoteMessage, shouldNavigate: true);
       }
-    }, onError: (_) { });
+    }, onError: (error) {
+      log(error, from: "FIREBASE MESSAGING LISTENER - B");
+    });
 
     /// FOREGROUND LISTENER
     FirebaseMessaging.onMessage.listen((message) {
       _notificationBuilder.build(message: message);
-      _handleStreamNotification(message);
-    }, onError: (_) { });
+    }, onError: (error) {
+      log(error, from: "FIREBASE MESSAGING LISTENER - F");
+    });
 
     /// BACKGROUND NOT TERMINATED LISTENER
     FirebaseMessaging.onMessageOpenedApp.listen((remoteMessage) {
       _notificationBuilder.build(message: remoteMessage, shouldNavigate: true);
+    }, onError: (error) {
+      log(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
 
     /// TOKEN LISTENER
     _messaging.onTokenRefresh.listen((token) async {
-      final ConnectService connect = Connect(useToken: Database.preference.active != Database.guest.id);
       if(Database.preference.active != Database.guest.id) {
-        await connect.patch(endpoint: "/account/fcm/update?token=$token", body: {});
+        await _connect.patch(endpoint: "/account/fcm/update?token=$token", body: {});
       } else {
-        await connect.patch(endpoint: "/guest/fcm/update?token=$token&guest=${Database.guest.id}", body: {});
+        await _connect.patch(endpoint: "/guest/fcm/update?token=$token&guest=${Database.guest.id}", body: {});
       }
+    }, onError: (error) {
+      log(error, from: "FIREBASE MESSAGING LISTENER - F");
     });
   }
 

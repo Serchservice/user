@@ -4,23 +4,39 @@ import 'package:user/library.dart';
 
 class CallDurationView extends StatelessWidget {
   final CallController controller;
+  final String? text;
 
-  const CallDurationView({super.key, required this.controller});
+  const CallDurationView({super.key, required this.controller, this.text});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).appBarTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(5),
-      child: Obx(() {
-        return SText(
-          text: controller.state.duration.value,
-          color: Theme.of(context).primaryColor
+    return Obx(() {
+      if(controller.state.call.value.isOnCall) {
+        return Column(
+          crossAxisAlignment: controller.state.call.value.isVoice
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SText(
+              text: text ?? controller.state.call.value.status.type,
+              size: Sizing.font(14),
+              color: CommonColors.hint,
+            ),
+            SText(
+              text: controller.state.duration.value,
+              color: CommonColors.hint,
+              size: Sizing.font(12),
+            ),
+          ],
         );
-      }),
-    );
+      } else {
+        return SText(
+          text: text ?? controller.state.call.value.status.type,
+          size: Sizing.font(16),
+          color: CommonColors.hint,
+        );
+      }
+    });
   }
 }

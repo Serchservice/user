@@ -6,9 +6,9 @@ export 'centre_navigator.dart';
 
 /// APP INFORMATION
 export 'app_information/app_information_controller.dart';
-export 'app_information/app_information_header.dart';
+export 'app_information/widgets/app_information_header.dart';
 export 'app_information/app_information_layout.dart';
-export 'app_information/app_information_sheet.dart';
+export 'app_information/widgets/app_information_sheet.dart';
 export 'app_information/app_information_state.dart';
 export 'app_information/app_information_binding.dart';
 
@@ -139,8 +139,8 @@ export 'account/account_state.dart';
 export 'account/account_binding.dart';
 
 /// SHARED LINKS
-export 'account/shared_links/shared_link_detail.dart';
-export 'account/shared_links/shared_link_guest_detail.dart';
+export 'account/shared_links/widgets/shared_link_detail.dart';
+export 'account/shared_links/widgets/shared_link_guest_detail.dart';
 
 export 'account/shared_links/shared_links_layout.dart';
 export 'account/shared_links/shared_links_controller.dart';

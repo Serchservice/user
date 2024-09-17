@@ -131,7 +131,7 @@ class ChatMoreOptionSheet extends StatelessWidget {
                                 children: [
                                   Icon(
                                     option.icon,
-                                    color: Theme.of(context).primaryColorDark,
+                                    color: option.index == 3 ? CommonColors.error : Theme.of(context).primaryColorDark,
                                     size: 18,
                                   ),
                                   const SizedBox(height: 10),

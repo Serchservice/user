@@ -28,6 +28,8 @@ class ActiveResultController extends GetxController {
     } else {
       state.title.value = "Showing results for ${state.searchQuery.value.category?.type}s";
     }
+
+    AnalyticsEngine.logSearchResults(state.title.value, state.searchQuery.value.toJson());
   }
 
   String noResult() {

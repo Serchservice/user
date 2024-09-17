@@ -84,7 +84,7 @@ class _ShopViewState extends State<ShopView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CategoryImage(image: widget.response.shop.image, height: 50, width: 50),
-                  const SizedBox(height: 10),
+                  const SizedBox(width: 10),
                   Expanded(child: _buildStatus(context))
                 ],
               ),
@@ -168,8 +168,19 @@ class _ShopViewState extends State<ShopView> {
       );
     } else {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Expanded(
+            child: SText(
+              text: widget.response.shop.open
+                ? "This shop is currently open"
+                : "This shop is currently closed",
+              color: Theme.of(context).primaryColor,
+              flow: TextOverflow.ellipsis,
+              size: Sizing.font(14),
+            ),
+          ),
+          const SizedBox(width: 10),
           Switcher(onChanged: (value) { }, value: widget.response.shop.open)
         ],
       );

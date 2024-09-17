@@ -49,7 +49,7 @@ class AppInformationSheet extends StatelessWidget {
                 onPressed: () => onTap.call(option)
               ),
             );
-          }).toList()
+          })
         ],
     ));
   }

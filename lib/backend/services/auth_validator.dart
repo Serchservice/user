@@ -21,7 +21,7 @@ class AuthValidator implements AuthValidatorService {
 
   @override
   void fetchAccounts({Function(List<Account> success)? onSuccess, Function(String error)? onError}) async {
-    var useToken = Database.isUserLoggedIn;
+    var useToken = Database.isUserActive;
 
     final ConnectService connect = Connect(useToken: useToken);
     var response = await connect.get(

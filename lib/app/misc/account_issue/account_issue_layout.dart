@@ -68,7 +68,7 @@ class AccountIssueLayout extends GetResponsiveView<AccountIssueController> {
                         url: button.path
                       ),
                     )
-                  )).toList(),
+                  )),
                   const SizedBox(height: 30),
                   LoadingButton(
                     text: "Send us a message to recover your account",

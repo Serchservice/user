@@ -91,62 +91,62 @@ class CallHistoryView extends StatelessWidget {
   }
 
   Widget _buildHistory({required BuildContext context, required CallHistory history}) {
-    return Padding(
-      padding: EdgeInsets.all(Sizing.space(12)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(
-            history.outgoing && history.isMissed
-              ? Icons.call_missed_outgoing_rounded
-              : history.isDeclined
-              ? Icons.disabled_visible_outlined
-              : Icons.arrow_outward_rounded,
-            color: history.isMissed
-              ? CommonColors.error
-              : history.isDeclined
-              ? CommonColors.hint
-              : CommonColors.green,
-            size: 30
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SText(
-                  text: history.label,
-                  size: Sizing.font(14),
-                  color: Theme.of(context).primaryColor,
-                  flow: TextOverflow.ellipsis
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => CallOptionSheet.open(
+          name: call.member.name,
+          id: call.member.member,
+          avatar: call.member.avatar
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(Sizing.space(12)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              getCallIcon(history),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SText(
+                      text: history.label,
+                      size: Sizing.font(14),
+                      color: Theme.of(context).primaryColor,
+                      flow: TextOverflow.ellipsis
+                    ),
+                    if(history.duration.isNotEmpty) ...[
+                      SText(
+                        text: history.duration,
+                        size: Sizing.font(11),
+                        color: Theme.of(context).primaryColorLight,
+                        flow: TextOverflow.ellipsis
+                      )
+                    ],
+                  ],
+                )
+              ),
+              const SizedBox(width: 6),
+              Container(
+                padding: EdgeInsets.all(Sizing.space(5)),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).appBarTheme.backgroundColor,
                 ),
-                SText(
-                  text: history.duration,
-                  size: Sizing.font(11),
-                  color: Theme.of(context).primaryColorLight,
-                  flow: TextOverflow.ellipsis
+                child: CategoryImage(
+                  image: history.isVoice
+                    ? Media.voiceCall
+                    : history.isVideo
+                    ? Media.videoCall
+                    : Media.tip2fixCall,
+                  width: 25,
+                  height: 25
                 ),
-              ],
-            )
+              ),
+            ],
           ),
-          const SizedBox(width: 6),
-          Container(
-            padding: EdgeInsets.all(Sizing.space(5)),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).appBarTheme.backgroundColor,
-            ),
-            child: CategoryImage(
-              image: history.isVoice
-                ? Media.voiceCall
-                : history.isVideo
-                ? Media.videoCall
-                : Media.tip2fixCall,
-              width: 25,
-              height: 25
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

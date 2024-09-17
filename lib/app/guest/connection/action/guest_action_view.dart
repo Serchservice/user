@@ -336,7 +336,7 @@ class GuestActionView extends StatelessWidget {
                         )
                       ],
                     ),
-                  )).toList(),
+                  )),
                   const Divider(color: CommonColors.lightTheme),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

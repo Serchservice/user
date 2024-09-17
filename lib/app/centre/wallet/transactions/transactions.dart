@@ -55,7 +55,6 @@ class Transactions extends StatelessWidget {
     } else {
       return ListView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: groups.length,
         itemBuilder: (context, index) {
           TransactionGroup group = groups[index];

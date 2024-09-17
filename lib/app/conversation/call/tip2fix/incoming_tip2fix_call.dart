@@ -1,75 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:user/library.dart';
+import 'package:get/state_manager.dart';
 import 'package:stream_video_flutter/stream_video_flutter.dart' as stream;
+import 'package:user/library.dart';
 
 class IncomingTip2FixCall extends StatelessWidget {
-  final stream.Call call;
-  final ActiveCallResponse active;
   final CallController controller;
-  final stream.CallState callState;
 
-  const IncomingTip2FixCall({
-    super.key,
-    required this.call,
-    required this.controller,
-    required this.callState,
-    required this.active
-  });
+  const IncomingTip2FixCall({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      shouldOverride: true,
-      backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-      appbar: AppBar(
-        backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-        leading: GoBack(onTap: () => controller.goBack(false, null), icon: Icons.arrow_back),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: CircledButton(
-              title: "Call Info",
-              icon: Icons.info_outline_rounded,
-              iconColor: CommonColors.lightTheme,
-              backgroundColor: darkAlternateColor,
-              onClick: () => CallInfoView.open(controller: controller),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: CircledButton(
-              title: "My wallet",
-              asset: Media.wallet,
-              backgroundColor: darkAlternateColor,
-              onClick: () => ViewWalletSheet.open(controller: controller),
-            ),
-          )
-        ],
-      ),
-      child: Center(
+    return Obx(() {
+      ActiveCallResponse active = controller.state.call.value;
+
+      return Center(
         child: Stack(
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
+              child: controller.localParticipant != null
+                ? stream.StreamVideoRenderer(
+                  call: controller.streamCall,
+                  participant: controller.localParticipant!,
+                  videoTrackType: stream.SfuTrackType.video,
+                  videoFit: stream.VideoFit.cover,
+                  placeholderBuilder: (context) {
+                    return Tip2FixCallUser(avatar: active.avatar, image: active.image);
+                  },
+                )
+                : Tip2FixCallUser(avatar: active.avatar, image: active.image),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  const Expanded(child: SizedBox()),
-                  Stack(
-                    children: [
-                      Avatar(radius: 70, avatar: active.avatar),
-                      Positioned(
-                          right: 5,
-                          bottom: 0,
-                          child: Avatar(radius: 13, avatar: active.image)
-                      ),
-                    ],
-                  ),
-                  SText(
-                    text: "Incoming",
-                    size: Sizing.font(16),
-                    color: CommonColors.hint,
-                  ),
+                  Tip2FixCallTopBar(controller: controller),
                   const Expanded(child: SizedBox()),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -79,68 +46,30 @@ class IncomingTip2FixCall extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        stream.CallControlOption(
-                          icon: const Icon(Icons.call_end_rounded),
-                          iconColor: Colors.white,
-                          backgroundColor: Colors.red,
-                          onPressed: controller.decline,
-                          padding: const EdgeInsets.all(24),
+                        CircledButton(
+                          title: "End call",
+                          icon: Icons.call_end_rounded,
+                          backgroundColor: CommonColors.error,
+                          iconColor: CommonColors.lightTheme,
+                          onClick: controller.end,
                         ),
-                        stream.CallControlOption(
-                          icon: const Icon(Icons.call_rounded),
-                          iconColor: Colors.white,
-                          backgroundColor: Colors.green,
-                          onPressed: controller.answer,
-                          padding: const EdgeInsets.all(24),
+                        CircledButton(
+                          title: "Answer call",
+                          icon: Icons.call_rounded,
+                          backgroundColor: CommonColors.success,
+                          iconColor: CommonColors.lightTheme,
+                          onClick: controller.answer,
                         ),
                       ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              bottom: 120,
-              right: 10,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  height: 250,
-                  width: 160,
-                  color: Theme.of(context).textSelectionTheme.selectionColor,
-                  child: stream.StreamCallParticipant(
-                    call: call,
-                    participant: callState.localParticipant!,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 120,
-              left: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    controller.asset,
-                    width: 20,
-                    color: Theme.of(context).primaryColor,
-                    height: 20
-                  ),
-                  const SizedBox(height: 5),
-                  SText(
-                    text: active.name,
-                    size: Sizing.font(14),
-                    weight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
                   ),
                 ],
               ),
             ),
+            Tip2FixBottomFloater(controller: controller, text: "Incoming"),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }

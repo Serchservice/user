@@ -6,7 +6,7 @@ class ConversationNotifier extends StatelessWidget {
   const ConversationNotifier({super.key});
 
   static void open() {
-    Navigate.bottomSheet(sheet: const ConversationNotifier(), route: "/conversation/notice");
+    Navigate.bottomSheet(sheet: const ConversationNotifier(), route: "/conversation/notice", isScrollable: true);
   }
 
   @override
@@ -21,37 +21,39 @@ class ConversationNotifier extends StatelessWidget {
     ];
 
     return CurvedBottomSheet(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              padding: EdgeInsets.all(Sizing.space(2)),
-              margin: EdgeInsets.all(Sizing.space(6)),
-              alignment: Alignment.center,
-              width: 60,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
-                  borderRadius: BorderRadius.circular(16)
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(Sizing.space(2)),
+                margin: EdgeInsets.all(Sizing.space(6)),
+                alignment: Alignment.center,
+                width: 60,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorLight,
+                    borderRadius: BorderRadius.circular(16)
+                ),
               ),
             ),
-          ),
-          Center(
-            child: SText.center(
-              text: "What you should know",
-              size: Sizing.font(16),
-              weight: FontWeight.bold,
-              color: Theme.of(context).primaryColor
+            Center(
+              child: SText.center(
+                text: "What you should know",
+                size: Sizing.font(16),
+                weight: FontWeight.bold,
+                color: Theme.of(context).primaryColor
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          ...notifications.map((notification) {
-            bool isBottom = notification == notifications[notifications.length - 1];
+            const SizedBox(height: 20),
+            ...notifications.map((notification) {
+              bool isBottom = notification == notifications[notifications.length - 1];
 
-            return StepItem(title: notification, showBottom: !isBottom);
-          })
-        ],
+              return StepItem(title: notification, showBottom: !isBottom);
+            })
+          ],
+        ),
       )
     );
   }

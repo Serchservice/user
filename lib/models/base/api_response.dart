@@ -52,6 +52,8 @@ class ApiResponse<T> {
   /// Active guest trip
   bool get isGuestOnTrip => data != null && data == "S111";
 
+  bool get canEndCall => data != null && data == "S65";
+
   factory ApiResponse.fromJson(Map<String, dynamic> json) {
     ApiResponse<T> response = ApiResponse(
       status: json['status'] ?? "",

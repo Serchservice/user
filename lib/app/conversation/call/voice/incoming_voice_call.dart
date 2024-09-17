@@ -1,68 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:stream_video_flutter/stream_video_flutter.dart' as stream;
+import 'package:get/get.dart';
 import 'package:user/library.dart';
 
 class IncomingVoiceCall extends StatelessWidget {
-  final stream.Call call;
-  final ActiveCallResponse active;
   final CallController controller;
-  final stream.CallState callState;
 
-  const IncomingVoiceCall({
-    super.key,
-    required this.call,
-    required this.controller,
-    required this.callState,
-    required this.active
-  });
+  const IncomingVoiceCall({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    List<stream.UserInfo> participants = callState.otherParticipants.map((e) => e.toUserInfo()).toList();
+    return Obx(() {
+      ActiveCallResponse active = controller.state.call.value;
 
-    return MainLayout(
-      shouldOverride: true,
-      backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-      appbar: AppBar(
-        backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-        leading: GoBack(onTap: () => controller.goBack(false, null), icon: Icons.arrow_back),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: CircledButton(
-              title: "Call Info",
-              icon: Icons.info_outline_rounded,
-              iconColor: CommonColors.lightTheme,
-              backgroundColor: darkAlternateColor,
-              onClick: () => CallInfoView.open(controller: controller),
-            ),
-          )
-        ],
-      ),
-      child: Center(
+      return Center(
         child: Column(
           children: [
+            VoiceCallTopBar(controller: controller, text: "Incoming"),
             const Spacer(),
-            Stack(
-              children: [
-                Avatar(radius: 70, avatar: active.avatar),
-                Positioned(
-                  right: 5,
-                  bottom: 0,
-                  child: Avatar(radius: 13, avatar: active.image)
-                ),
-              ],
-            ),
+            VoiceCallUser(avatar: active.avatar, image: active.image),
             const SizedBox(height: 20),
             SText(
               text: active.name,
-              size: Sizing.font(20),
-              color: Theme.of(context).primaryColor,
-            ),
-            SText(
-              text: "Incoming",
               size: Sizing.font(16),
-              color: CommonColors.hint,
+              color: Theme.of(context).primaryColor,
             ),
             const Expanded(child: SizedBox()),
             Image.asset(
@@ -80,26 +40,26 @@ class IncomingVoiceCall extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  stream.CallControlOption(
-                    icon: const Icon(Icons.call_end_rounded),
-                    iconColor: Colors.white,
-                    backgroundColor: Colors.red,
-                    onPressed: controller.decline,
-                    padding: const EdgeInsets.all(24),
+                  CircledButton(
+                    title: "End call",
+                    icon: Icons.call_end_rounded,
+                    backgroundColor: CommonColors.error,
+                    iconColor: CommonColors.lightTheme,
+                    onClick: controller.end,
                   ),
-                  stream.CallControlOption(
-                    icon: const Icon(Icons.call_rounded),
-                    iconColor: Colors.white,
-                    backgroundColor: Colors.green,
-                    onPressed: controller.answer,
-                    padding: const EdgeInsets.all(24),
+                  CircledButton(
+                    title: "Answer call",
+                    icon: Icons.call_rounded,
+                    backgroundColor: CommonColors.success,
+                    iconColor: CommonColors.lightTheme,
+                    onClick: controller.answer,
                   ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }

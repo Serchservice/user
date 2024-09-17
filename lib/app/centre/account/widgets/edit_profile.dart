@@ -91,9 +91,10 @@ class _EditProfileState extends State<EditProfile> {
     }
     if(response.isOk) {
       Profile profile = Profile.fromJson(response.data);
-      Database.saveAuth(Database.auth.copyWith(avatar: profile.avatar));
+      Database.saveAuth(Database.auth.copyWith(avatar: profile.avatar, firstName: profile.firstName, lastName: profile.lastName));
       home.state.avatar.value = profile.avatar;
       home.state.name.value = profile.name;
+      home.state.firstName.value = profile.firstName;
       widget.controller.updateProfile(profile);
       if(mounted) {
         Navigate.back();

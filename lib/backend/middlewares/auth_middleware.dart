@@ -24,7 +24,7 @@ class AuthMiddleware extends GetMiddleware{
 
     if(Database.preference.skipLocationCheck) {
       if(Database.preference.useLastLoggedInAccountAsDefault) {
-        if(Database.isUserLoggedIn) {
+        if(Database.isUserActive) {
           if(Database.loginWithBiometrics) {
             return RouteSettings(name: "${BiometricsAuthLayout.loginRoute}?login=true&has_biometrics=${Database.preference.hasBiometrics}");
           } else if(Database.loginWithMFA) {

@@ -102,7 +102,9 @@ export 'trip/map_view_response.dart';
 
 /// NOTIFICATION
 export 'notification/types/chat_notification.dart';
+export 'notification/types/call_notification.dart';
 export 'notification/types/trip_notification.dart';
+export 'notification/types/transaction_notification.dart';
 
 export 'notification/notification.dart';
 export 'notification/notifier.dart';

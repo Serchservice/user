@@ -35,7 +35,7 @@ class _QuotationSheetState extends State<QuotationSheet> {
     super.initState();
   }
 
-  final ConnectService _connect = Connect(useToken: Database.isUserLoggedIn);
+  final ConnectService _connect = Connect(useToken: Database.isUserActive);
 
   void send() async {
     setState(() {
@@ -48,7 +48,7 @@ class _QuotationSheetState extends State<QuotationSheet> {
         "quote_id": widget.quotation,
         "id": widget.trip,
         "amount": _controller.text,
-        "guest": Database.isUserLoggedIn ? "" : Database.guest.id
+        "guest": Database.isUserActive ? "" : Database.guest.id
       }
     );
 

@@ -48,7 +48,7 @@ class GuestHomeActivity implements GuestHomeActivityService {
   void removeFromInvite(TripResponse response) {
     List<TripResponse> invites = List.from(controller.state.invites); // Create a copy to avoid modifying the controller.state directly
     // Find the index of the existing response
-    int existingIndex = invites.indexWhere((i) => i.id == response.id);
+    int existingIndex = invites.indexWhere((i) => i.id == response.id || i.requestedId == response.requestedId);
 
     if (existingIndex != -1) {
       // If the response exists, update the existing response

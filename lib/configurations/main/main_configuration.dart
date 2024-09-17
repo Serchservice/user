@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
+import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:user/library.dart';
 
 class MainConfiguration extends GetxController {
@@ -42,6 +44,7 @@ class MainConfiguration extends GetxController {
     _appService.buildDeviceInformation(
       onSuccess: (device) {
         Database.saveDevice(device);
+        AnalyticsEngine.logEvent("DEVICE_INFORMATION", parameters: device.toJson());
       }
     );
     _appService.getCountries(
@@ -54,11 +57,22 @@ class MainConfiguration extends GetxController {
     );
 
     AppLifeCycle appLifeCycle = AppLifeCycle(
-      onForeground: () async { },
-      onPaused: () async { },
-      onDetached: () async {},
-      onInactive: () async { },
-      onHidden: () async { }
+      onForeground: () async {
+        log("FOREGROUND", from: "LifeCycle - Main Configuration");
+      },
+      onPaused: () async {
+        log("PAUSED", from: "LifeCycle - Main Configuration");
+      },
+      onDetached: () async {
+        log("DETACHED", from: "LifeCycle - Main Configuration");
+        StreamVideo.instance.pushNotificationManager?.endAllCalls();
+      },
+      onInactive: () async {
+        log("INACTIVE", from: "LifeCycle - Main Configuration");
+      },
+      onHidden: () async {
+        log("HIDDEN", from: "LifeCycle - Main Configuration");
+      }
     );
     WidgetsBinding.instance.addObserver(appLifeCycle);
     appLifeCycle.init();
@@ -73,19 +87,23 @@ class MainConfiguration extends GetxController {
   }
 
   void updateRoute(Routing? routing) {
-    if(routing != null) {
-      currentRoute.value = routing;
+    if(kDebugMode) {
+      Logger.log(routing?.route);
+    } else {
+      AnalyticsEngine.logScreen(routing?.route?.settings.name ?? "", routing?.route?.settings.toString() ?? "");
     }
-    Logger.log(routing?.route);
   }
 
   void addNotification(String id, int notification) {
+    List<Notifier> notifiers = List.from(notifications);
     Notifier notifier = Notifier(notification: notification, id: id);
-    notifications.add(notifier);
+    notifiers.add(notifier);
+
+    notifications.value = notifiers;
   }
 
   void removeNotification({String? id, int? notification}) {
-    List<Notifier> notifiers = notifications;
+    List<Notifier> notifiers = List.from(notifications);
     if(id != null) {
       notifiers.removeWhere((note) => note.id == id);
       notifications.value = notifiers;
@@ -96,6 +114,7 @@ class MainConfiguration extends GetxController {
   }
 
   int? findNotification(String id) {
-    return notifications.firstWhereOrNull((notification) => notification.id == id)?.notification;
+    List<Notifier> notifiers = List.from(notifications);
+    return notifiers.firstWhereOrNull((notification) => notification.id == id)?.notification;
   }
 }

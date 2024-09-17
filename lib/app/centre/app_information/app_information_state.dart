@@ -24,4 +24,7 @@ class AppInformationState {
 
   /// Is loading data
   RxBool isLoading = true.obs;
+
+  /// Has messages
+  RxBool hasUnreadMessages = false.obs;
 }

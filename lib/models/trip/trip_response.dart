@@ -46,6 +46,7 @@ class TripResponse {
     required this.showDeny,
     required this.showLeave,
     required this.location,
+    required this.requestedId
   });
 
   final String id;
@@ -91,6 +92,7 @@ class TripResponse {
   final bool showDeny;
   final bool showLeave;
   final MapViewResponse location;
+  final String requestedId;
 
   TripResponse copyWith({
     String? id,
@@ -136,6 +138,7 @@ class TripResponse {
     bool? showDeny,
     bool? showLeave,
     MapViewResponse? location,
+    String? requestedId,
   }) {
     return TripResponse(
       id: id ?? this.id,
@@ -180,7 +183,8 @@ class TripResponse {
       showGrant: showGrant ?? this.showGrant,
       showDeny: showDeny ?? this.showDeny,
       showLeave: showLeave ?? this.showLeave,
-      location: location ?? this.location
+      location: location ?? this.location,
+      requestedId: requestedId ?? this.requestedId
     );
   }
 
@@ -228,6 +232,7 @@ class TripResponse {
       showGrant: json["show_grant"] ?? false,
       showDeny: json["show_deny"] ?? false,
       showLeave: json["show_leave"] ?? false,
+      requestedId: json["requested_id"] ?? "",
       location: json["location"] == null ? MapViewResponse.empty() : MapViewResponse.fromJson(json["location"]),
     );
   }
@@ -275,7 +280,8 @@ class TripResponse {
     "show_grant": showGrant,
     "show_deny": showDeny,
     "show_leave": showLeave,
-    "location": location.toJson()
+    "location": location.toJson(),
+    "requested_id": ""
   };
 
   bool get isWaiting => status == "WAITING";
@@ -343,7 +349,8 @@ class TripResponse {
       "total_amount_spent_in_shopping": "string",
       "created_at": "2024-07-25T05:27:18.601Z",
       "updated_at": "2024-07-25T05:27:18.601Z",
-      "location": null
+      "location": null,
+      "requested_id": ""
     });
   }
 }

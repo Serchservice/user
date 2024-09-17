@@ -16,8 +16,8 @@ class GuestRequestedTripViewController extends GetxController {
 
   @override
   void onInit() {
-    loadAudio();
     state.trip.value = trip;
+    loadAudio();
     super.onInit();
   }
 

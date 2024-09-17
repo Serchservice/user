@@ -78,6 +78,13 @@ class WebController extends GetxController {
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
             }
+            if (request.url.startsWith('https://www.serchservice.com/payment/verify')) {
+              Navigate.back(result: state.response.value);
+              return NavigationDecision.prevent;
+            }
+            if(request.url == 'https://standard.paystack.co/close'){
+              Navigate.back(result: state.response.value);
+            }
             return NavigationDecision.navigate;
           },
           // onHttpError: (HttpResponseError error) {

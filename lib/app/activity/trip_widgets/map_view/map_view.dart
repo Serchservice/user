@@ -103,7 +103,7 @@ class MapViewDetails extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(Media.upRight, width: 30, color: Theme.of(context).appBarTheme.backgroundColor),
+                Image.asset(Media.upRight, width: 30, color: Theme.of(context).primaryColorDark),
                 const SizedBox(width: 10),
                 Expanded(child: DashedDivider(color: Theme.of(context).primaryColorDark)),
                 const SizedBox(width: 10),

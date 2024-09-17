@@ -6,4 +6,7 @@ abstract class NotificationService {
 
   /// Initialize main isolate
   void initPort();
+
+  /// Remove notification from notification tray
+  void removeNotification(int id, {bool canDismissAll = false, String channel = "", String group = ""});
 }

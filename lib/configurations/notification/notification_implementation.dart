@@ -7,7 +7,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:user/library.dart';
 
 class NotificationImplementation implements NotificationService {
-  final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
   static final MainConfiguration config = MainConfiguration.data;
 
   ReceivedAction? initialAction;
@@ -23,18 +22,15 @@ class NotificationImplementation implements NotificationService {
       channelGroups: LocalNotificationChannel.groups,
       debug: true
     );
-    _firebaseService.foreground();
 
     AwesomeNotifications().setListeners(
-        onActionReceivedMethod: onActionReceivedMethod,
-        onNotificationCreatedMethod: onNotificationCreatedMethod,
-        onNotificationDisplayedMethod: onNotificationDisplayedMethod,
-        onDismissActionReceivedMethod: onDismissActionReceivedMethod
+      onActionReceivedMethod: onActionReceivedMethod,
+      onNotificationCreatedMethod: onNotificationCreatedMethod,
+      onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod: onDismissActionReceivedMethod
     );
 
     initialAction = await AwesomeNotifications().getInitialNotificationAction();
-
-    _firebaseService.foreground();
   }
 
   @override
@@ -172,13 +168,7 @@ class NotificationImplementation implements NotificationService {
   static Future<void> onCallAction(ReceivedAction action) async {
     if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == callSNT) {
       ActiveCallResponse call = ActiveCallResponse.fromStringedJson(action.payload!);
-      if(action.buttonKeyPressed == declineCallKey) {
-        config.removeNotification(notification: action.id, id: action.payload!["channel"]);
-        socket.send(destination: "/call/decline", message: {
-          "channel": call.channel
-        });
-        return;
-      }
+      CallConfiguration.consumeIncomingCall(uuid: call.hashCode.toString(), channel: call.app);
     }
     return onActionReceivedImplementationMethod(action);
   }
@@ -191,22 +181,31 @@ class NotificationImplementation implements NotificationService {
       RouteNavigator.openChat(roommate: action.payload!["roommate"] ?? "");
     } else if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == callSNT) {
       ActiveCallResponse call = ActiveCallResponse.fromStringedJson(action.payload!);
-      // if(action.buttonKeyPressed == answerCallKey) {
-      //   RouteNavigator.answerCall(call: call, removeCurrentRoute: false);
-      // } else {
-      //   RouteNavigator.goToCall(call: call, removeCurrentRoute: false);
-      // }
+      CallConfiguration.consumeIncomingCall(uuid: call.hashCode.toString(), channel: call.app);
     } else if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == scheduleSNT) {
       Schedule schedule = Schedule.fromStringedJson(action.payload!);
       Navigate.to(HomeLayout.route, arguments: schedule.toJson());
     } else if(action.payload != null && action.payload!.containsKey(notifyKey) && action.payload![notifyKey] == tripSNT) {
       TripNotification trip = TripNotification.fromStringJson(action.payload!);
 
-      if(Database.isUserLoggedIn) {
+      if(Database.isUserActive) {
         Navigate.to(HomeLayout.route, arguments: trip.toJson());
       } else {
         Navigate.to(GuestHomeLayout.route, arguments: trip.toJson());
       }
+    }
+  }
+
+  @override
+  void removeNotification(int id, {bool canDismissAll = false, String channel = "", String group = ""}) {
+    AwesomeNotifications().dismiss(id);
+
+    if(canDismissAll) {
+      AwesomeNotifications().dismissAllNotifications();
+    } else if(group.isNotEmpty) {
+      AwesomeNotifications().dismissNotificationsByGroupKey(group);
+    } else if(channel.isNotEmpty) {
+      AwesomeNotifications().dismissNotificationsByChannelKey(channel);
     }
   }
 }

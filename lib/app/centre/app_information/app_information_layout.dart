@@ -61,6 +61,7 @@ class AppInformationLayout extends GetResponsiveView<AppInformationController> {
             index: 6
           ),
         ];
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -76,7 +77,7 @@ class AppInformationLayout extends GetResponsiveView<AppInformationController> {
                     ...options.map((tab) {
                       return CentreNavigator(
                         tab: tab,
-                        needNotification: tab.index == 1 && controller.homeController.state.hasSerchMessage.value,
+                        needNotification: tab.index == 1 && controller.state.hasUnreadMessages.value,
                         onTap: () {
                           if(tab.index == 0) {
                             controller.openRating();
@@ -94,10 +95,7 @@ class AppInformationLayout extends GetResponsiveView<AppInformationController> {
                           } else if(tab.index == 5) {
                             controller.openSolution();
                           } else {
-                            RouteNavigator.openWeb(
-                              header: tab.header,
-                              url: tab.path
-                            );
+                            RouteNavigator.openWeb(header: tab.header, url: tab.path);
                           }
                         }
                       );

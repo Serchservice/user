@@ -21,8 +21,8 @@ class GuestActiveTripViewController extends GetxController {
 
   @override
   void onInit() {
-    loadAudio();
     state.trip.value = trip;
+    loadAudio();
     super.onInit();
   }
 
@@ -55,6 +55,9 @@ class GuestActiveTripViewController extends GetxController {
 
   void updateTrip(TripResponse trip) {
     state.trip.value = trip;
+    state.isSharedOnTheWay.value = trip.shared != null
+        && trip.shared!.timelines.any((t) => t.isOnTheWay && !t.isOver);
+    state.isProviderOnTheWay.value = trip.timelines.any((t) => t.isOnTheWay && t.isOver);
 
     if(trip.isClosed) {
       Navigate.back();

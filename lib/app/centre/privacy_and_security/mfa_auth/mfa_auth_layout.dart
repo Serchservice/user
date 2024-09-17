@@ -18,114 +18,117 @@ class MfaAuthLayout extends GetResponsiveView<MfaAuthController> {
   Widget build(BuildContext context) {
     return Obx(() {
       String title = controller.isLogin
-        ? "Login with Two-Factor"
-        : controller.isDisable
+          ? "Login with Two-Factor"
+          : controller.isDisable
           ? "Confirm Two-Factor Removal"
           : "Two-Factor Authentication";
 
+      String description = controller.isDisable
+          ? "Are you sure that you want to disable Two-Factor Authentication?"
+          : controller.isLogin
+          ? "Your security, enhanced and encrypted..."
+          : "Enter the passcode from the authenticator app";
+
       return MainLayout(
-        appbar: AppBar(
-          elevation: 0.5,
-          title: SText.center(
-            text: title,
-            size: Sizing.font(16),
-            weight: FontWeight.bold,
-            color: Theme.of(context).primaryColor
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if(controller.isDisable) ...[
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(Sizing.font(16)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SText.center(
-                        text: "Are you sure that you want to disable Two-Factor Authentication?",
-                        color: Theme.of(context).primaryColor,
-                        size: Sizing.font(16),
-                        weight: FontWeight.bold,
-                      ),
-                      const SizedBox(height: 30),
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GoBack(color: Theme.of(context).primaryColorLight, icon: Icons.arrow_back),
+              // Image.asset(Media.logo, width: 80, height: 80, color: Theme.of(context).primaryColor),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: LineHeader(
+                  header: title,
+                  footer: description,
+                  headerSize: 16,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              const SizedBox(height: 40),
+              if(controller.isDisable) ...[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: SText(
-                          text: "This action will most certainly reduce the security level of your account.",
-                          color: Theme.of(context).primaryColor,
-                          size: Sizing.font(12),
-                          weight: FontWeight.bold,
-                        ),
                       ),
-                    ],
+                      child: SText(
+                        text: "This action will most certainly reduce the security level of your account.",
+                        color: Theme.of(context).primaryColor,
+                        size: Sizing.font(12),
+                        weight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ] else ...[
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(Sizing.font(16)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      OtpField(
-                        controller: controller.authController,
-                        focusNode: controller.authFocusNode,
-                        isBox: false,
-                        onCompleted: (code) => controller.verify(code: code),
-                        onChanged: (code) => controller.state.token.value = code
-                      ),
-                      if(controller.isLogin) ...[
-                        const SizedBox(height: 15),
-                        SText(
-                          text: "You can either use recovery code or Google Authenticator Code.",
-                          color: Theme.of(context).primaryColor,
-                          size: Sizing.font(12),
-                          weight: FontWeight.bold,
+              ] else ...[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        OtpField(
+                            controller: controller.authController,
+                            focusNode: controller.authFocusNode,
+                            isBox: false,
+                            onCompleted: (code) => controller.verify(code: code),
+                            onChanged: (code) => controller.state.token.value = code
                         ),
-                        const SizedBox(height: 15),
-                        GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: controller.buttons.length,
-                            crossAxisSpacing: 8,
-                            mainAxisExtent: 30
+                        if(controller.isLogin) ...[
+                          const SizedBox(height: 40),
+                          SText(
+                            text: "You can either use recovery code or code from your authenticator app.",
+                            color: Theme.of(context).primaryColor,
+                            size: Sizing.font(12),
+                            weight: FontWeight.bold,
                           ),
-                          shrinkWrap: true,
-                          itemCount: controller.buttons.length,
-                          itemBuilder: (context, index) {
-                            return Obx(() => ButtonSelector(
-                              text: controller.buttons[index],
-                              selected: controller.state.isRecovery.value,
-                              unSelectedBgColor: Theme.of(context).scaffoldBackgroundColor,
-                              onTap: (value) => controller.toggle(index),
-                              index: index
-                            ));
-                          },
-                        ),
+                          const SizedBox(height: 15),
+                          GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: controller.buttons.length,
+                              crossAxisSpacing: 8,
+                              mainAxisExtent: 33
+                            ),
+                            shrinkWrap: true,
+                            itemCount: controller.buttons.length,
+                            itemBuilder: (context, index) {
+                              return Obx(() => ButtonSelector(
+                                text: controller.buttons[index],
+                                selected: index == 0 ? controller.state.isRecovery.value : !controller.state.isRecovery.value,
+                                unSelectedBgColor: Theme.of(context).scaffoldBackgroundColor,
+                                onTap: (value) => controller.toggle(index),
+                                index: index
+                              ));
+                            },
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
+              ],
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: LoadingButton(
+                  text: "Confirm",
+                  borderRadius: 24,
+                  isCircular: true,
+                  width: MediaQuery.of(context).size.width,
+                  textSize: Sizing.font(14),
+                  onClick: () => controller.verify(),
+                  loading: controller.state.isVerifying.value,
+                ),
               ),
+              const SizedBox(height: 15),
             ],
-            LoadingButton(
-              text: "Confirm",
-              borderRadius: 24,
-              isCircular: true,
-              width: MediaQuery.of(context).size.width,
-              textSize: Sizing.font(14),
-              onClick: () => controller.verify(),
-              loading: controller.state.isVerifying.value,
-            ),
-            const SizedBox(height: 15),
-          ],
+          ),
         )
       );
     });

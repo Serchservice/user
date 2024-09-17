@@ -140,37 +140,41 @@ class DashboardLayout extends GetResponsiveView<HomeController> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: count(length: 2),
-                      shrinkWrap: true,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
+                    Wrap(
+                      runAlignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 5,
+                      runSpacing: 5,
+                      children: [
+                        {
+                          "header": "Total Trips",
+                          "key": controller.state.dashboard.value.trip,
+                          "icon": Icons.trending_up_rounded
+                        },
+                        {
+                          "header": "Total Shared Trips",
+                          "key": controller.state.dashboard.value.shared,
+                          "icon": Icons.share_location_rounded
+                        },
+                        {
+                          "header": "Average Rating",
+                          "key": controller.state.dashboard.value.rating,
+                          "icon": Icons.stars_outlined
+                        },
+                        {
+                          "header": "Total Schedule",
+                          "key": controller.state.dashboard.value.schedule,
+                          "icon": Icons.calendar_month_outlined
+                        }
+                      ].map((item) {
                         return _buildDashboard(
                           context: context,
-                          content: index == 0
-                            ? "Total Trips"
-                            : index == 1
-                            ? "Total Shared Trips"
-                            : index == 2
-                            ? "Total Rating"
-                            : "Total Schedule",
-                          key: index == 0
-                            ? controller.state.dashboard.value.trip
-                            : index == 1
-                            ? controller.state.dashboard.value.shared
-                            : index == 2
-                            ? controller.state.dashboard.value.rating
-                            : controller.state.dashboard.value.schedule,
-                          icon: index == 0
-                            ? Icons.trending_up_rounded
-                            : index == 1
-                            ? Icons.share_location_rounded
-                            : index == 2
-                            ? Icons.stars_outlined
-                            : Icons.calendar_month_outlined
+                          content: item["header"] as String,
+                          key: item["key"] as String,
+                          icon: item["icon"] as IconData,
+                          width: Get.width / 2.2
                         );
-                      },
+                      }).toList(),
                     ),
                     const SizedBox(height: 10),
                     _buildDashboard(
@@ -195,12 +199,15 @@ class DashboardLayout extends GetResponsiveView<HomeController> {
     required String key,
     required String content,
     IconData? icon,
-    String image = ""
+    String image = "",
+    double? width
   }) => Container(
     padding: EdgeInsets.all(Sizing.space(12)),
+    width: width ?? Get.width,
+    constraints: const BoxConstraints(maxHeight: 100),
     decoration: BoxDecoration(
-      color: CommonColors.darkTheme2,
-      borderRadius: BorderRadius.circular(16)
+        color: CommonColors.darkTheme2,
+        borderRadius: BorderRadius.circular(16)
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,23 +223,44 @@ class DashboardLayout extends GetResponsiveView<HomeController> {
               weight: FontWeight.bold,
             ),
             if(icon != null) ...[
-              Icon(icon, color: CommonColors.lightTheme, size: 25)
+              Icon(
+                  icon,
+                  color: CommonColors.lightTheme,
+                  size: 25
+              )
             ]
           ],
         ),
         const SizedBox(height: 14),
         if(image.isNotEmpty) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(image, width: 30),
-              const SizedBox(width: 6),
-              Expanded(child: SText(text: content, size: Sizing.font(15), color: CommonColors.lightTheme)),
-            ],
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                    image,
+                    width: 30
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: SText(
+                      text: content,
+                      size: Sizing.font(15),
+                      color: CommonColors.lightTheme
+                  ),
+                ),
+              ],
+            ),
           )
         ],
         if(image.isEmpty) ...[
-          SText(text: content, size: Sizing.font(15), color: CommonColors.lightTheme)
+          Expanded(
+            child: SText(
+                text: content,
+                size: Sizing.font(15),
+                color: CommonColors.lightTheme
+            ),
+          )
         ]
       ],
     )

@@ -54,25 +54,31 @@ final class Socket implements SocketService {
     required String subscribeDestination
   }) {
     Logger.log('Connected to WebSocket');
-    stompClient.subscribe(
-      destination: subscribeDestination,
-      headers: _buildHeader(),
-      callback: callback,
-    );
+    if(stompClient.connected) {
+      stompClient.subscribe(
+        destination: subscribeDestination,
+        headers: _buildHeader(),
+        callback: callback,
+      );
+    }
   }
 
   @override
   void send({required String destination, Map<String, dynamic>? message, String data = ""}) {
     assert((message != null && data.isEmpty) || (message == null && data.isNotEmpty), "Message or data must be provided");
-    stompClient.send(
-      destination: destination,
-      body: data.isNotEmpty ? data : jsonEncode(message),
-      headers: _buildHeader(),
-    );
+    if(stompClient.connected) {
+      stompClient.send(
+        destination: destination,
+        body: data.isNotEmpty ? data : jsonEncode(message),
+        headers: _buildHeader(),
+      );
+    }
   }
 
   @override
   void disconnect() {
-    stompClient.deactivate();
+    if(stompClient.connected) {
+      stompClient.deactivate();
+    }
   }
 }

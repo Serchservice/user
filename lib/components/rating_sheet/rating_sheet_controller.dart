@@ -11,7 +11,7 @@ class RatingSheetController extends GetxController {
   final state = RatingSheetState();
   final TextEditingController controller = TextEditingController();
   final TextEditingController invitedController = TextEditingController();
-  final ConnectService _connect = Connect(useToken: Database.isUserLoggedIn);
+  final ConnectService _connect = Connect(useToken: Database.isUserActive);
 
   @override
   void onClose() {
@@ -83,7 +83,7 @@ class RatingSheetController extends GetxController {
       endpoint: "/rating/rate/app",
       body: {
         "rating": state.rating.value,
-        "account": Database.isUserLoggedIn ? "" : Database.guest.id,
+        "account": Database.isUserActive ? "" : Database.guest.id,
         "comment": comment
       }
     );
@@ -101,7 +101,7 @@ class RatingSheetController extends GetxController {
 
     Map<String, dynamic> data = {
       "id": trip!.id,
-      "guest": Database.isUserLoggedIn ? "" : Database.guest.id,
+      "guest": Database.isUserActive ? "" : Database.guest.id,
       "rating": state.rating.value,
       "comment": comment,
     };
@@ -119,7 +119,7 @@ class RatingSheetController extends GetxController {
         String invitedComment = state.invitedComments.isNotEmpty ? state.invitedComments.join(", ") : controller.text.trim();
         Map<String, dynamic> invited = {
           "id": trip!.id,
-          "guest": Database.isUserLoggedIn ? "" : Database.guest.id,
+          "guest": Database.isUserActive ? "" : Database.guest.id,
           "invited": state.invited.value,
           "comment": invitedComment,
         };

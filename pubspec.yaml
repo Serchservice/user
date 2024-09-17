@@ -86,12 +86,17 @@ dependencies:
   stream_video_push_notification: ^0.5.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  pull_to_refresh: ^2.0.0
+  in_app_review: ^2.0.9
+  flutter_timezone: ^3.0.1
 
+  webview_flutter_android: any
+  webview_flutter_wkwebview: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   flutter_launcher_icons: "^0.13.1"
   hive_generator: ^2.0.1
   build_runner: ^2.4.12
@@ -116,13 +121,13 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "asset/logo/logo_icon.png"
-  adaptive_background_color: #030001
+  adaptive_background_color: "#030001"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
     image_path: "asset/logo/logo_icon.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
+    background_color: "#050404"
+    theme_color: "#050404"
   windows:
     generate: true
     image_path: "asset/logo/logo_icon.png"

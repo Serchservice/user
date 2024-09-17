@@ -25,11 +25,13 @@ class HelpLayout extends GetResponsiveView<HelpController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() => CentreNavigator(
-                  tab: controller.chatWithSerch,
-                  needNotification: controller.homeController.state.hasSerchMessage.value,
-                  onTap: () => Navigate.to(controller.chatWithSerch.path)
-                )),
+                if(Database.isUserActive) ...[
+                  Obx(() => CentreNavigator(
+                    tab: controller.chatWithSerch,
+                    needNotification: controller.homeController.state.hasSerchMessage.value,
+                    onTap: () => Navigate.to(controller.chatWithSerch.path)
+                  ))
+                ],
                 ...controller.help.map((tab) {
                   return CentreNavigator(
                     tab: tab,
