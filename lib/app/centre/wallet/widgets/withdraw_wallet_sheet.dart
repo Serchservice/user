@@ -37,20 +37,31 @@ class WithdrawWalletSheet extends StatelessWidget {
             color: Theme.of(context).primaryColor
           ),
           const SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).scaffoldBackgroundColor
-            ),
-            padding: const EdgeInsets.all(8),
-            child: Obx(() => SText(
-                text: CommonUtility.getAmount(controller.state.withdrawalAmount.value),
-                size: Sizing.font(18),
-                weight: FontWeight.bold,
-                color: Theme.of(context).primaryColor
-            ))
-          ),
-          const SizedBox(height: 20),
+          Obx(() {
+            if(controller.state.withdrawalAmount.value.isNotEmpty) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).scaffoldBackgroundColor
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: SText(
+                      text: CommonUtility.getAmount(controller.state.withdrawalAmount.value),
+                      size: Sizing.font(18),
+                      weight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor
+                    )
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              );
+            } else {
+              return Container();
+            }
+          }),
           Field(
             padding: const EdgeInsets.all(8),
             hintText: "Amount",

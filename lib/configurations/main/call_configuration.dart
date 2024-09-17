@@ -4,12 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:stream_video_push_notification/stream_video_push_notification.dart';
+import 'package:stream_video_push_notification/stream_video_push_notification_platform_interface.dart';
 import 'package:user/library.dart';
 import 'package:user/enums/library.dart' as status;
 
 class CallConfiguration extends GetxController {
   final StreamVideo? videoClient;
-  CallConfiguration({this.videoClient});
+  final NotificationMessage<CallNotification>? notification;
+  CallConfiguration({this.videoClient, this.notification});
 
   static CallConfiguration get data => Get.find<CallConfiguration>();
 
@@ -40,19 +42,27 @@ class CallConfiguration extends GetxController {
     if(videoClient != null) {
       client = videoClient!;
     } else {
+      StreamVideo.reset();
+
       client = StreamVideo(
         Keys.streamApiKey,
         user: User(info: Database.auth.toUserInfo()),
         options: const StreamVideoOptions(
-          logPriority: Priority.info,
+          logPriority: Priority.none,
           muteAudioWhenInBackground: true,
           muteVideoWhenInBackground: true,
         ),
         pushNotificationManagerProvider: StreamVideoPushNotificationManager.create(
-            iosPushProvider: CallPushProviderSetup.iosConfig,
-            androidPushProvider: CallPushProviderSetup.androidConfig,
-            pushParams: CallPushProviderSetup.videoPushParams,
-            backgroundVoipCallHandler: backgroundCallHandler
+          iosPushProvider: CallPushProviderSetup.iosConfig,
+          androidPushProvider: CallPushProviderSetup.androidConfig,
+          pushParams: CallPushProviderSetup.videoPushParams,
+          backgroundVoipCallHandler: backgroundCallHandler,
+          callerCustomizationCallback: ({required String callCid, String? callerHandle, String? callerName}) {
+            return CallerCustomizationResponse(
+              handle: "Serch",
+              name: callerName,
+            );
+          },
         ),
         tokenLoader: _tokenLoader,
         onTokenUpdated: (token) async {},
@@ -75,38 +85,39 @@ class CallConfiguration extends GetxController {
     if (Navigate.navigatorKey.currentContext == null) {
       // App is not running yet. Postpone consuming after app is in the foreground
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _consumeIncomingCall();
+        consumeIncomingCall(uuid: notification?.token, channel: notification?.data?.callCid);
       });
     } else {
       // no-op. If the app is already running we'll handle it via events
     }
   }
 
-  Future<void> _consumeIncomingCall() async {
-    final calls =
-    await StreamVideo.instance.pushNotificationManager?.activeCalls();
+  static Future<void> consumeIncomingCall({String? uuid, String? channel}) async {
+    if(uuid != null && channel != null) {
+      final callResult = await StreamVideo.instance.consumeIncomingCall(uuid: uuid, cid: channel);
 
-    if (calls == null || calls.isEmpty) return;
+      callResult.fold(success: (result) async {
+        onNavigateToCall(result.data);
+      }, failure: (error) {
+        notify.error(message: "Error consuming incoming call");
+        CrashlyticsEngine.logError(error.toString(), "CONSUME CALL CONFIGURATION");
+      });
+    } else {
+      final calls = await StreamVideo.instance.pushNotificationManager?.activeCalls();
+      if (calls == null || calls.isEmpty) return;
 
-    final callResult = await StreamVideo.instance.consumeIncomingCall(
-      uuid: calls.first.uuid!,
-      cid: calls.first.callCid!,
-    );
+      final callResult = await StreamVideo.instance.consumeIncomingCall(
+        uuid: calls.first.uuid!,
+        cid: calls.first.callCid!,
+      );
 
-    callResult.fold(success: (result) async {
-      final call = result.data;
-      await call.accept();
-
-      _onNavigateToCall(result.data);
-    }, failure: (error) {
-      notify.error(message: "Error consuming incoming call");
-      CrashlyticsEngine.logError(error.toString(), "CONSUME CALL CONFIGURATION");
-      log('Error consuming incoming call: $error');
-    });
-  }
-
-  void _endAllCalls() {
-    client.pushNotificationManager?.endAllCalls();
+      callResult.fold(success: (result) async {
+        onNavigateToCall(result.data);
+      }, failure: (error) {
+        notify.error(message: "Error consuming incoming call");
+        CrashlyticsEngine.logError(error.toString(), "CONSUME CALL CONFIGURATION");
+      });
+    }
   }
 
   @override
@@ -115,24 +126,37 @@ class CallConfiguration extends GetxController {
       StreamBackgroundService.init(
         client,
         callNotificationOptionsBuilder: (call) {
-          String image = call.state.value.callParticipants.isNotEmpty
-              ? call.state.value.callParticipants.first.image ?? ""
-              : call.state.value.localParticipant != null
-              ? call.state.value.localParticipant!.image ?? ""
-              : "";
+          if(call.state.value.status.isDisconnected) {
+            return const NotificationOptions();
+          } else {
+            CallParticipantState? participant = call.state.value.callParticipants
+                .where((d) => !d.isLocal).firstOrNull;
+            String type = call.type.value.toLowerCase() == "voice" ? "Voice" : "Tip2Fix";
 
-          return NotificationOptions(
-              content: NotificationContent(
-                  title: call.type.value.toLowerCase() == "voice" ? "Voice Call" : "Tip2Fix Call",
-                  text: call.state.value.status.toStatusString()
-              ),
-              avatar: NotificationAvatar(url: image),
-              useCustomLayout: true
-          );
+            if(participant != null) {
+              return NotificationOptions(
+                content: NotificationContent(
+                  title: participant.name,
+                  text: "$type | ${call.state.value.status.toStatusString()}"
+                ),
+                avatar: NotificationAvatar(url: participant.image ?? ""),
+                useCustomLayout: true
+              );
+            } else {
+              String type = call.type.value.toLowerCase() == "voice" ? "Voice" : "Tip2Fix";
+
+              return NotificationOptions(
+                content: NotificationContent(text: "$type | ${call.state.value.status.toStatusString()}"),
+                useCustomLayout: true
+              );
+            }
+          }
         },
-        onNotificationClick: (call) async => _onNavigateToCall(call),
+        onNotificationClick: (call) async => onNavigateToCall(call),
+        onButtonClick: (call, button, service) async => onNavigateToCall(call)
       );
-      client.state.incomingCall.listen(_onNavigateToCall);
+
+      client.state.incomingCall.listen(onNavigateToCall);
 
       _observeCallKitEvents();
     } catch (e) {
@@ -142,24 +166,13 @@ class CallConfiguration extends GetxController {
     super.onReady();
   }
 
-  void _onNavigateToCall(Call? call) async {
+  static void onNavigateToCall(Call? call) async {
     if(call != null) {
       var result = await call.get();
-      UserInfo userInfo = call.state.value.otherParticipants.map((e) => e.toUserInfo()).toList()[0];
-
-      ActiveCallResponse activeCallResponse = ActiveCallResponse(
-          name: userInfo.name,
-          avatar: userInfo.image ?? Media.light,
-          user: userInfo.id,
-          channel: call.callCid.id,
-          type: call.type.value.toLowerCase() == "voice" ? CallType.voice : CallType.tip2fix,
-          isCaller: userInfo.id == call.state.value.localParticipant?.userId,
-          app: "",
-          status: call.state.value.status.isIncoming ? status.CallStatus.ringing : status.CallStatus.onCall,
-          category: result.isSuccess ? result.getDataOrNull()?.metadata.details.custom["category"].toString() ?? "" : "",
-          image: result.isSuccess ? result.getDataOrNull()?.metadata.details.custom["image"].toString() ?? "" : "",
-          session: 0,
-          snt: "CALL"
+      ActiveCallResponse activeCallResponse = getCallFromStreamCall(
+        call: call,
+        category: result.getDataOrNull()?.metadata.details.custom["category"].toString(),
+        image: result.getDataOrNull()?.metadata.details.custom["image"].toString(),
       );
 
       if(!Get.currentRoute.startsWith(CallLayout.route)) {
@@ -177,97 +190,109 @@ class CallConfiguration extends GetxController {
 
   void _observeCallKitEvents() {
     _callKitEventSubscriptions.addAll([
-      client.onCallKitEvent<ActionCallAccept>(_onCallAccept),
-      client.onCallKitEvent<ActionCallDecline>(_onCallDecline),
-      client.onCallKitEvent<ActionCallEnded>(_onCallEnded),
+      // client.onCallKitEvent<ActionCallAccept>(_onCallAccept),
+      // client.onCallKitEvent<ActionCallDecline>(_onCallDecline),
+      // client.onCallKitEvent<ActionCallEnded>(_onCallEnded),
       client.onCallKitEvent<ActionCallIncoming>(_onCallIncoming),
     ]);
   }
 
-  void _onCallAccept(ActionCallAccept event) async {
-    final uuid = event.data.uuid;
-    final cid = event.data.callCid;
-    if (uuid == null || cid == null) return;
+  // void _endAllCalls() {
+  //   client.pushNotificationManager?.endAllCalls();
+  // }
+  //
+  static void answerCall({String? uuid, String? channel, ActionCallAccept? event}) async {
+    if(uuid != null && channel != null) {
+      final callResult = await StreamVideo.instance.consumeIncomingCall(uuid: uuid, cid: channel);
+      final call = callResult.getDataOrNull();
+      if (call == null) return;
 
-    final call = await client.consumeIncomingCall(uuid: uuid, cid: cid);
-    final callToJoin = call.getDataOrNull();
-    if (callToJoin == null) return;
+      await call.accept().then((v) {
+        if(v.isSuccess) {
+          socket.send(destination: "/call/answer", message: {
+            "channel": call.callCid.id,
+          });
+          onNavigateToCall(call);
+        } else {
+          onNavigateToCall(call);
+        }
+      });
+    } else if(event != null) {
+      final uuid = event.data.uuid;
+      final cid = event.data.callCid;
+      if (uuid == null || cid == null) return;
 
-    var acceptResult = await callToJoin.accept();
+      final callResult = await StreamVideo.instance.consumeIncomingCall(uuid: uuid, cid: cid);
+      final call = callResult.getDataOrNull();
+      if (call == null) return;
 
-    // Return if cannot accept call
-    if(acceptResult.isFailure) {
-      notify.error(message: "Error occurred while accepting call");
-      CrashlyticsEngine.logError(acceptResult.getErrorOrNull()?.message.toString() ?? acceptResult.toString(), "ACCEPT CALL CONFIGURATION");
-      log('Error accepting call: $call');
-      return;
+      await call.accept().then((v) {
+        if(v.isSuccess) {
+          socket.send(destination: "/call/answer", message: {
+            "channel": call.callCid.id,
+          });
+          onNavigateToCall(call);
+        } else {
+          onNavigateToCall(call);
+        }
+      });
     }
-
-    socket.send(destination: "/call/answer", message: {
-      "channel": callToJoin.callCid.id,
-    });
-    _onNavigateToCall(callToJoin);
   }
+  //
+  static void declineCall({String? uuid, String? channel, ActionCallDecline? event}) async {
+    if(uuid != null && channel != null) {
+      final callResult = await StreamVideo.instance.consumeIncomingCall(uuid: uuid, cid: channel);
+      final call = callResult.getDataOrNull();
+      if (call == null) return;
+      await call.reject(reason: CallRejectReason.decline()).then((v) {
+        if(v.isSuccess) {
+          socket.send(destination: "/call/update", message: {
+            "channel": call.callCid.id,
+            "status": status.CallStatus.declined.value
+          });
+          disposeEngines(call.callCid.id);
+        }
+      });
+    } else if(event != null) {
+      final uuid = event.data.uuid;
+      final cid = event.data.callCid;
+      if (uuid == null || cid == null) return;
 
-  void _onCallDecline(ActionCallDecline event) async {
-    final uuid = event.data.uuid;
-    final cid = event.data.callCid;
-    if (uuid == null || cid == null) return;
-
-    final call = await client.consumeIncomingCall(uuid: uuid, cid: cid);
-    final callToReject = call.getDataOrNull();
-    if (callToReject == null) return;
-
-    final result = await callToReject.reject(reason: CallRejectReason.decline());
-    _endAllCalls();
-    if (result is Failure) {
-      notify.error(message: "Error occurred while rejecting call");
-      CrashlyticsEngine.logError(result.getErrorOrNull()?.message.toString() ?? result.error.message, "REJECT CALL CONFIGURATION");
-      log('Error rejecting call: ${result.error}');
+      final callResult = await StreamVideo.instance.consumeIncomingCall(uuid: uuid, cid: cid);
+      final call = callResult.getDataOrNull();
+      if (call == null) return;
+      await call.reject(reason: CallRejectReason.decline()).then((v) {
+        if(v.isSuccess) {
+          socket.send(destination: "/call/update", message: {
+            "channel": call.callCid.id,
+            "status": status.CallStatus.declined.value
+          });
+          disposeEngines(call.callCid.id);
+        }
+      });
     }
-
-    socket.send(destination: "/call/update", message: {
-      "channel": callToReject.callCid.id,
-      "status": status.CallStatus.declined.value
-    });
-    _disposeEngines(callToReject.callCid.id);
   }
-
-  void _onCallEnded(ActionCallEnded event) async {
-    final uuid = event.data.uuid;
-    final cid = event.data.callCid;
-    if (uuid == null || cid == null) return;
-
-    final call = client.activeCall;
-    if (call == null || call.callCid.value != cid) return;
-
-    final result = await call.leave();
-    if (result is Failure) {
-      notify.error(message: "Error occurred while ending call");
-      CrashlyticsEngine.logError(result.getErrorOrNull()?.message.toString() ?? result.error.message, "END CALL CONFIGURATION");
-      log('Error leaving call: ${result.error}');
-    }
-
-    socket.send(destination: "/call/end", message: {
-      "channel": call.callCid.id
-    });
-    _disposeEngines(call.callCid.id);
-  }
-
-  void _disposeEngines(String channel) {
+  //
+  // void _onCallEnded(ActionCallEnded event) async {
+  //   final uuid = event.data.uuid;
+  //   final cid = event.data.callCid;
+  //   if (uuid == null || cid == null) return;
+  //
+  //   final call = client.activeCall;
+  //   if (call == null || call.callCid.value != cid) return;
+  //
+  //   _disposeEngines(call.callCid.id);
+  // }
+  //
+  static void disposeEngines(String channel) {
     HomeController.data.event.removeCallEventByChannel(channel);
-    _endAllCalls();
+    MainConfiguration.data.removeNotification(id: channel);
+    StreamVideo.instance.pushNotificationManager?.endAllCalls();
     if(Get.isRegistered<CallController>()) {
       Get.delete<CallController>(force: true);
     }
 
-    Navigate.till(ModalRoute.withName(HomeLayout.route));
-  }
-
-  @override
-  void onClose() {
-    _callKitEventSubscriptions.cancelAll();
-    super.onClose();
+    Navigate.all(HomeLayout.route);
   }
 
   void _onCallIncoming(ActionCallIncoming event) async {
@@ -279,7 +304,13 @@ class CallConfiguration extends GetxController {
     final incomingCall = call.getDataOrNull();
     if (incomingCall == null) return;
 
-    _onNavigateToCall(incomingCall);
+    onNavigateToCall(incomingCall);
+  }
+
+  @override
+  void onClose() {
+    _callKitEventSubscriptions.cancelAll();
+    super.onClose();
   }
 }
 
@@ -303,4 +334,23 @@ extension on Subscriptions {
       add(i + 100, subscription);
     }
   }
+}
+
+ActiveCallResponse getCallFromStreamCall({required Call call, String? category, String? image}) {
+  UserInfo userInfo = call.state.value.otherParticipants.map((e) => e.toUserInfo()).toList()[0];
+
+  return ActiveCallResponse(
+    name: userInfo.name,
+    avatar: userInfo.image ?? Media.light,
+    user: userInfo.id,
+    channel: call.callCid.id,
+    type: call.type.value.toLowerCase() == "voice" ? CallType.voice : CallType.tip2fix,
+    isCaller: userInfo.id == call.state.value.localParticipant?.userId,
+    app: "",
+    status: call.state.value.status.isIncoming ? status.CallStatus.ringing : status.CallStatus.onCall,
+    category: category ?? "",
+    image: image ?? "",
+    session: 0,
+    snt: "CALL"
+  );
 }

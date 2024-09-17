@@ -130,19 +130,7 @@ class CallHistoryLayout extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          call.recent.outgoing && call.recent.isMissed
-                            ? Icons.call_missed_outgoing_rounded
-                            : call.recent.isDeclined
-                            ? Icons.disabled_visible_outlined
-                            : Icons.arrow_outward_rounded,
-                          color: call.recent.isMissed
-                            ? CommonColors.error
-                            : call.recent.isDeclined
-                            ? CommonColors.hint
-                            : CommonColors.green,
-                          size: 18
-                        ),
+                        getCallIcon(call.recent),
                         const SizedBox(width: 5),
                         Expanded(
                           child: Row(
@@ -175,4 +163,26 @@ class CallHistoryLayout extends StatelessWidget {
       )
     );
   }
+}
+
+Icon getCallIcon(CallHistory history) {
+  return Icon(
+    history.outgoing && history.isMissed
+      ? Icons.call_missed_outgoing_rounded
+      : !history.outgoing && history.isMissed
+      ? Icons.call_missed
+      : history.isDeclined
+      ? Icons.disabled_visible_outlined
+      : !history.outgoing
+      ? Icons.call_received_outlined
+      : Icons.call_made_rounded,
+    color: history.outgoing && history.isMissed
+      ? CommonColors.premium
+      : history.isMissed
+      ? CommonColors.error
+      : history.isDeclined
+      ? CommonColors.hint
+      : CommonColors.green,
+    size: 18
+  );
 }

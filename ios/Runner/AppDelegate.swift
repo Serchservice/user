@@ -3,7 +3,7 @@ import Flutter
 import GoogleMaps
 import stream_video_push_notification
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
     _ application: UIApplication,

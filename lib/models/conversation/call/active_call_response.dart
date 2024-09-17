@@ -15,6 +15,8 @@ class ActiveCallResponse {
   final String? error;
   final String? errorCode;
   final String snt;
+  final bool start;
+  final bool answer;
 
   ActiveCallResponse({
     required this.app,
@@ -31,6 +33,8 @@ class ActiveCallResponse {
     this.error,
     this.errorCode,
     required this.snt,
+    this.answer = false,
+    this.start = false
   });
 
   factory ActiveCallResponse.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,8 @@ class ActiveCallResponse {
         error: json["error"],
         errorCode: json["error_code"],
         snt: json["snt"] ?? "",
+        start: json["start"] ?? false,
+        answer: json["answer"] ?? false
       );
     }
   }
@@ -78,6 +84,8 @@ class ActiveCallResponse {
       error: json["error"],
       errorCode: json["error_code"],
       snt: json["snt"] ?? "",
+      start: bool.parse(json["start"] ?? "false"),
+      answer: bool.parse(json["answer"] ?? "false"),
     );
   }
 
@@ -122,6 +130,7 @@ class ActiveCallResponse {
       error: null,
       errorCode: null,
       snt: "",
+      start: true
     );
   }
 
@@ -141,6 +150,8 @@ class ActiveCallResponse {
       "error": error,
       "error_code": errorCode,
       "snt": snt,
+      "start": start,
+      "answer": answer
     };
   }
 
@@ -160,6 +171,8 @@ class ActiveCallResponse {
       "error": error ?? "",
       "error_code": errorCode ?? "",
       "snt": snt,
+      "start": start.toString(),
+      "answer": answer.toString()
     };
   }
 
@@ -178,6 +191,8 @@ class ActiveCallResponse {
     String? error,
     String? errorCode,
     String? snt,
+    bool? start,
+    bool? answer
   }) {
     return ActiveCallResponse(
       app: app ?? this.app,
@@ -194,6 +209,8 @@ class ActiveCallResponse {
       error: error ?? this.error,
       errorCode: errorCode ?? this.errorCode,
       snt: snt ?? this.snt,
+      start: start ?? this.start,
+      answer: answer ?? this.answer,
     );
   }
 
@@ -214,4 +231,7 @@ class ActiveCallResponse {
 
   /// Call is disconnected
   bool get isDisconnected => status == CallStatus.disconnected;
+
+  /// Is nullable
+  bool get isNullable => channel == "null" && user == "null" && category == "null";
 }

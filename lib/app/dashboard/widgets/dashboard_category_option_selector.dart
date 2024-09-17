@@ -81,6 +81,8 @@ class DashboardCategoryOptionSelector extends StatelessWidget {
                       request: category.copyWith(category: action.index == 1 ? "REQUEST" : action.index == 2 ? "SPEAK" : "DRIVE")
                     );
                   }
+
+                  AnalyticsEngine.logSelectContent(category.type, category.category, parameters: category.toJson());
                 },
               );
             })

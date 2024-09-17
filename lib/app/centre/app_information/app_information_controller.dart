@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:user/library.dart';
+
+final InAppReview inAppReview = InAppReview.instance;
 
 class AppInformationController extends GetxController {
   AppInformationController();
   final state = AppInformationState();
-  final HomeController homeController = HomeController.data;
   final ConnectService _connect = Connect();
 
   @override
@@ -24,6 +26,10 @@ class AppInformationController extends GetxController {
   @override
   void onReady() {
     fetchAppRating();
+
+    try {
+      state.hasUnreadMessages.value = HomeController.data.state.hasSerchMessage.value;
+    } catch (_) { }
     super.onReady();
   }
 
@@ -36,6 +42,10 @@ class AppInformationController extends GetxController {
       state.rating.value = rating.rating;
       state.comment.value = rating.comment;
     }
+  }
+
+  void _appStoreReview() async {
+    inAppReview.openStoreListing(appStoreId: Keys.appStore);
   }
 
   void openRating() {
@@ -71,7 +81,7 @@ class AppInformationController extends GetxController {
               },
             );
           } else {
-            /// TODO:: Add store link here
+            _appStoreReview();
           }
         }
       ),
@@ -133,10 +143,16 @@ class AppInformationController extends GetxController {
         path: Links.web("/marketplace"),
       ),
       ButtonView(
-        header: "Serch for Individuals",
+        header: "Serch for Users",
         icon: Icons.person_3_rounded,
         index: 1,
-        path: Links.web("/request"),
+        path: Links.web("/user"),
+      ),
+      ButtonView(
+        header: "Serch for Guests",
+        icon: Icons.person_add_alt_1,
+        index: 1,
+        path: Links.web("/guest"),
       ),
       ButtonView(
         header: "Serch for Business",
@@ -146,7 +162,7 @@ class AppInformationController extends GetxController {
       ButtonView(
         header: "Serch for Providers",
         icon: Icons.supervised_user_circle_rounded,
-        path: Links.web("/provide"),
+        path: Links.web("/provider"),
       ),
     ];
 

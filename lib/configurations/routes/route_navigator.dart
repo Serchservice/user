@@ -136,13 +136,13 @@ class RouteNavigator {
         CallLayout.route,
         ModalRoute.withName(HomeLayout.route),
         parameters: {"user": user, "type": type.type},
-        arguments: {"call": call.toJson(), "start": true}
+        arguments: {"call": call.toJson()}
       );
     } else {
       Navigate.to(
         CallLayout.route,
         parameters: {"user": user, "type": type.type},
-        arguments: {"call": call.toJson(), "start": true}
+        arguments: {"call": call.toJson()}
       );
     }
   }
@@ -153,13 +153,13 @@ class RouteNavigator {
         CallLayout.route,
         ModalRoute.withName(HomeLayout.route),
         parameters: {"user": call.user, "type": call.type.type},
-        arguments: {"call": call.toJson(), "start": false}
+        arguments: {"call": call.toJson()}
       );
     } else {
       Navigate.to(
           CallLayout.route,
           parameters: {"user": call.user, "type": call.type.type},
-          arguments: {"call": call.toJson(), "start": false}
+          arguments: {"call": call.toJson()}
       );
     }
   }

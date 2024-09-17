@@ -36,7 +36,7 @@ class _CancelTripSheetState extends State<CancelTripSheet> {
   bool isCancelling = false;
   final TextEditingController _controller = TextEditingController();
 
-  final ConnectService _connect = Connect(useToken: Database.isUserLoggedIn);
+  final ConnectService _connect = Connect(useToken: Database.isUserActive);
 
   void cancel() async {
     setState(() {
@@ -49,8 +49,8 @@ class _CancelTripSheetState extends State<CancelTripSheet> {
         body: {
           "trip": widget.trip,
           "reason": _controller.text,
-          "guest": Database.isUserLoggedIn ? "" : Database.guest.id,
-          "link_id": Database.isUserLoggedIn ? "" : Database.preference.active
+          "guest": Database.isUserActive ? "" : Database.guest.id,
+          "link_id": Database.isUserActive ? "" : Database.preference.active
         }
       );
 
@@ -71,8 +71,8 @@ class _CancelTripSheetState extends State<CancelTripSheet> {
         body: {
           "trip": widget.trip,
           "reason": _controller.text,
-          "guest": Database.isUserLoggedIn ? "" : Database.guest.id,
-          "link_id": Database.isUserLoggedIn ? "" : Database.preference.active
+          "guest": Database.isUserActive ? "" : Database.guest.id,
+          "link_id": Database.isUserActive ? "" : Database.preference.active
         }
       );
 
@@ -93,8 +93,8 @@ class _CancelTripSheetState extends State<CancelTripSheet> {
         body: {
           "trip": widget.trip,
           "reason": _controller.text,
-          "guest": Database.isUserLoggedIn ? "" : Database.guest.id,
-          "link_id": Database.isUserLoggedIn ? "" : Database.preference.active
+          "guest": Database.isUserActive ? "" : Database.guest.id,
+          "link_id": Database.isUserActive ? "" : Database.preference.active
         }
       );
 

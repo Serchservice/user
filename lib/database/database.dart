@@ -67,7 +67,7 @@ class Database {
     return preference.hasBiometrics && (preference.isBiometrics || preference.isBoth || preference.isNone);
   }
 
-  static bool get isUserLoggedIn => preference.active == auth.id;
+  static bool get isUserActive => preference.active == auth.id;
 
   /// DATABASE ACTIONS - PREFERENCE
   static Preference get preference {

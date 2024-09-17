@@ -23,12 +23,12 @@ class Preference {
   final bool useLastLoggedInAccountAsDefault;
 
   const Preference({
-    this.chatNotification = PreferenceOption.none,
-    this.callNotification = PreferenceOption.none,
-    this.connectNotification = PreferenceOption.none,
-    this.scheduleNotification = PreferenceOption.none,
+    this.chatNotification = PreferenceOption.all,
+    this.callNotification = PreferenceOption.all,
+    this.connectNotification = PreferenceOption.all,
+    this.scheduleNotification = PreferenceOption.all,
     this.hasBiometrics = false,
-    this.otherNotification = PreferenceOption.none,
+    this.otherNotification = PreferenceOption.all,
     this.autoConnectMeWithProvider = false,
     this.scheduleTime = ScheduleTime.thirtyMinutes,
     this.theme = ThemeType.light,
@@ -96,19 +96,19 @@ class Preference {
     return Preference(
       chatNotification: map["chat_notification"] != null
         ? (map["chat_notification"] as String).toPreferenceOption()
-        : PreferenceOption.phone,
+        : PreferenceOption.all,
       callNotification: map["call_notification"] != null
         ? (map["call_notification"] as String).toPreferenceOption()
-        : PreferenceOption.phone,
+        : PreferenceOption.all,
       otherNotification: map["other_notification"] != null
         ? (map["other_notification"] as String).toPreferenceOption()
-        : PreferenceOption.phone,
+        : PreferenceOption.all,
       connectNotification: map["connect_notification"] != null
         ? (map["connect_notification"] as String).toPreferenceOption()
-        : PreferenceOption.phone,
+        : PreferenceOption.all,
       scheduleNotification: map["schedule_notification"] != null
         ? (map["schedule_notification"] as String).toPreferenceOption()
-        : PreferenceOption.phone,
+        : PreferenceOption.all,
       scheduleTime: map["schedule_time"] != null
         ? (map["schedule_time"] as String).toScheduleTime()
         : ScheduleTime.thirtyMinutes,

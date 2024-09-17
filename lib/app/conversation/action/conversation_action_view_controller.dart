@@ -294,7 +294,7 @@ class ConversationActionViewController extends GetxController {
       TripResponse trip = TripResponse.fromJson(response.data);
       HomeController.data.activity.addToInvite(trip);
 
-      Navigate.till(ModalRoute.withName(GuestHomeLayout.route));
+      Navigate.till(ModalRoute.withName(HomeLayout.route));
       RequestedTripView.open(trip);
     } else {
       Navigate.back();

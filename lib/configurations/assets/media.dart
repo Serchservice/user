@@ -22,12 +22,12 @@ class Media{
   static const message = "asset/social/message.png";
   static const facebook = "asset/social/facebook.png";
 
-  static const outgoingRingtone = "asset/audio/outgoing.mp3";
-  static const incomingRingtone = "asset/audio/incoming.mp3";
-  static const connectRingtone = "asset/audio/connect.mp3";
-  static const messageRingtone = "asset/audio/message.mp3";
-  static const notifyRingtone = "asset/audio/notify.mp3";
-  static const scheduleRingtone = "asset/audio/schedule.mp3";
+  static const outgoingRingtone = "asset/audio/outgoing.m4a";
+  static const incomingRingtone = "asset/audio/incoming.m4a";
+  static const connectRingtone = "asset/audio/connect.m4a";
+  static const messageRingtone = "asset/audio/message.m4a";
+  static const notifyRingtone = "asset/audio/notify.m4a";
+  static const scheduleRingtone = "asset/audio/schedule.m4a";
 
   /// COMMON Images
   static const notLaunched = "asset/common/notLaunched.png";

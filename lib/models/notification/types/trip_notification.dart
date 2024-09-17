@@ -20,8 +20,8 @@ class TripNotification {
       snt: json["snt"] ?? "",
       name: json['sender_name'] ?? "",
       id: json["sender_id"] ?? "",
-      canAct: json["can_act"] ?? false,
-      isRequest: json["is_request"] ?? false,
+      canAct: bool.parse("${json["can_act"] ?? "false"}"),
+      isRequest: bool.parse("${json["is_request"] ?? "false"}"),
       trip: json["trip_id"] ?? ""
     );
   }

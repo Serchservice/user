@@ -86,20 +86,18 @@ class WalletController extends GetxController {
     state.isFunding.value = true;
     var response = await _connect.post(endpoint: "/wallet/fund", body: {
       "amount": fundController.text.trim(),
-      "callback_url": "https://user.serchservice.com/centre/transaction/verify"
+      // "callback_url": "https://user.serchservice.com/centre/transaction/verify"
     });
     state.isFunding.value = false;
     if(response.isOk) {
       Payment payment = Payment.fromJson(response.data);
       state.payment.value = payment;
-      final result = await Navigate.to(WebLayout.route, parameters: {
+      await Navigate.to(WebLayout.route, parameters: {
         "reference": payment.reference,
         "url": payment.authorizationUrl
       });
 
-      if(result != null) {
-        verify();
-      }
+      verify();
       Navigate.back();
     } else {
       notify.error(message: response.message);

@@ -5,7 +5,7 @@ import 'package:user/library.dart';
 
 /// ?shared_by=
 class SharedLinkVerifierLayout extends GetResponsiveView<SharedLinkVerifierController> {
-  static String get route => "/service/request";
+  static String get route => "/provider/request";
   SharedLinkVerifierLayout({super.key});
 
   @override

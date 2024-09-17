@@ -26,6 +26,14 @@ class GuestCentreLayout extends GetResponsiveView<GuestHomeController> {
           path: controller.state.preference.value.theme.type
         );
 
+        ButtonView help = ButtonView(
+          header: "Help Center",
+          body: "Access our help center for more support",
+          icon: Icons.help_center_rounded,
+          index: 0,
+          path: AppInformationLayout.route
+        );
+
         List<ButtonView> notifications = [
           ButtonView(
             header: "Connect Notification",
@@ -70,6 +78,7 @@ class GuestCentreLayout extends GetResponsiveView<GuestHomeController> {
             body: controller.state.guest.value.emailAddress,
           ),
         ];
+
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,6 +146,8 @@ class GuestCentreLayout extends GetResponsiveView<GuestHomeController> {
                   }
                 )
               )),
+              const SizedBox(height: 15),
+              PreferenceNavigator(view: help, onTap: () => Navigate.to(help.path)),
               if(!Database.isLoggedIn) ...[
                 const SizedBox(height: 20),
                 Center(

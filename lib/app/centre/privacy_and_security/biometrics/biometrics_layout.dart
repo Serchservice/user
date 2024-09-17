@@ -59,12 +59,17 @@ class BiometricsLayout extends GetResponsiveView<BiometricsController> {
                 : "Enable",
               width: MediaQuery.of(context).size.width,
               onClick: () async {
-                bool? value = await Navigate.to(BiometricsAuthLayout.route, parameters: {
+                dynamic value = await Navigate.to(BiometricsAuthLayout.route, parameters: {
                   "login": "false",
                   "has_biometrics": "${controller.state.preference.value.hasBiometrics}"
                 });
-                if(value != null) {
+                if(value != null && value is bool) {
                   controller.state.preference.value = controller.state.preference.value.copyWith(hasBiometrics: value);
+
+                  try {
+                    PrivacyAndSecurityController privacy = Get.find<PrivacyAndSecurityController>();
+                    privacy.state.preference.value = controller.state.preference.value;
+                  } catch (_) {}
                   Navigate.back();
                 }
               }

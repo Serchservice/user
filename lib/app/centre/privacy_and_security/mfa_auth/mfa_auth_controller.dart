@@ -73,6 +73,11 @@ class MfaAuthController extends GetxController {
       if(response.isOk) {
         AuthResponse auth = AuthResponse.fromJson(response.data);
         Database.saveAuth(auth);
+
+        try {
+          PrivacyAndSecurityController controller = Get.find<PrivacyAndSecurityController>();
+          controller.state.auth.value = auth;
+        } catch (_) {}
         Navigate.back(result: true);
       } else {
         notify.error(message: response.message);

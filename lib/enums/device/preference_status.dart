@@ -33,3 +33,8 @@ extension StringToPreferenceOption on String {
     }
   }
 }
+
+bool isInAppPreference(PreferenceOption option) => option == PreferenceOption.inApp;
+bool isPhonePreference(PreferenceOption option) => option == PreferenceOption.phone;
+bool isAllPreference(PreferenceOption option) => option == PreferenceOption.all;
+bool isNonePreference(PreferenceOption option) => option == PreferenceOption.none;

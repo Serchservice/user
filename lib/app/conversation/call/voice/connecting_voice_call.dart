@@ -1,51 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:user/library.dart';
 
 class ConnectingVoiceCall extends StatelessWidget {
-  final ActiveCallResponse call;
-  const ConnectingVoiceCall({super.key, required this.call});
+  final CallController controller;
+  const ConnectingVoiceCall({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      shouldOverride: true,
-      backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-      child: Center(
+    return Obx(() {
+      ActiveCallResponse active = controller.state.call.value;
+
+      return Center(
         child: Column(
           children: [
-            LinearProgressIndicator(color: Theme.of(context).primaryColor),
-            const Expanded(child: SizedBox()),
-            Stack(
-              children: [
-                Avatar(radius: 70, avatar: call.avatar),
-                Positioned(
-                    right: 5,
-                    bottom: 0,
-                    child: Avatar(radius: 13, avatar: call.image)
-                ),
-              ],
-            ),
+            VoiceCallTopBar(controller: controller),
+            const Spacer(),
+            VoiceCallUser(avatar: active.avatar, image: active.image),
             const SizedBox(height: 20),
             SText(
-              text: call.name,
-              size: Sizing.font(20),
+              text: active.name,
+              size: Sizing.font(16),
               color: Theme.of(context).primaryColor,
             ),
-            SText(
-              text: "Wait a moment while we connect your call...",
-              size: Sizing.font(16),
-              color: CommonColors.hint,
-            ),
-            const Expanded(child: SizedBox()),
+            const Spacer(),
             Image.asset(
-                Media.voiceChat,
-                width: 100,
-                color: Theme.of(context).primaryColor,
-                height: 100
+              controller.asset,
+              width: 100,
+              color: Theme.of(context).primaryColor,
+              height: 100
             ),
+            const Spacer(),
+            VoiceCallBottomBar(controller: controller)
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }

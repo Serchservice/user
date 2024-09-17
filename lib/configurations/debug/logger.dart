@@ -20,7 +20,7 @@ class Logger {
   }
 }
 
-String build({String? from, required dynamic text}) {
+String _buildLogger({String? from, required dynamic text}) {
   if(from != null) {
     return "$from _______________________________ ${text.toString()}";
   } else {
@@ -31,7 +31,7 @@ String build({String? from, required dynamic text}) {
 void log(text, {String? from, bool needHeader = true}){
   if(kDebugMode){
     if(needHeader) {
-      debugPrint("Serch Debug::: ${build(text: text, from: from)}");
+      debugPrint("Serch Debug::: ${_buildLogger(text: text, from: from)}");
     } else {
       debugPrint("Serch Debug::: ${text.toString()}");
     }

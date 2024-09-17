@@ -87,7 +87,9 @@ class ChatController extends GetxController {
         if(frame.body != null) {
           ChatRoom room = ChatRoom.fromJson(jsonDecode(frame.body!));
           state.chatRoom.value = room;
-          _scrollToLastMessage();
+          if(state.chatRoom.value.groups.last.messages.length != room.groups.last.messages.length) {
+            scrollToEnd();
+          }
 
           _home.messaging.updateChats(room);
           _home.messaging.subscribeToChatRooms();

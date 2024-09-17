@@ -52,7 +52,7 @@ class Swiper extends StatefulWidget {
   final GestureDragUpdateCallback? onLeftSwipe;
 
   const Swiper({
-    Key? key,
+    super.key,
     required this.child,
     this.onRightSwipe,
     this.onLeftSwipe,
@@ -64,7 +64,7 @@ class Swiper extends StatefulWidget {
     this.iconColor,
     this.animationDuration = const Duration(milliseconds: 150),
     this.offsetDx = 0.3,
-  }) : super(key: key);
+  });
 
   @override
   State<Swiper> createState() => _SwiperState();

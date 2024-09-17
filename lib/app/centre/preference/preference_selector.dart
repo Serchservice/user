@@ -236,7 +236,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     )
                   ),
                 );
-              }).toList()
+              })
             ],
             if(widget.isSecurity) ...[
               ...SecurityType.values.map((security) {
@@ -273,7 +273,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     )
                   ),
                 );
-              }).toList()
+              })
             ],
             if(widget.isScheduleTime) ...[
               ...ScheduleTime.values.map((schedule) => Padding(
@@ -308,7 +308,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     ],
                   )
                 ),
-              )).toList()
+              ))
             ],
             if(!widget.isGender && !widget.isScheduleTime && !widget.isTheme & !widget.isSecurity) ...[
               ...PreferenceOption.values.map((preference) {
@@ -348,7 +348,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                     )
                   ),
                 );
-              }).toList(),
+              }),
             ],
             if(selectedGender != widget.selectedGender || selectedPreference != widget.selectedPreference
             || selectedSchedule != widget.selectedSchedule || selectedTheme != widget.selectedTheme

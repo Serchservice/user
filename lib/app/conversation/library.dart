@@ -29,6 +29,7 @@ export 'call/widgets/call_duration_view.dart';
 export 'call/widgets/call_info_view.dart';
 export 'call/widgets/call_notifier_sheet.dart';
 export 'call/widgets/view_wallet_sheet.dart';
+export 'call/widgets/call_type_widgets.dart';
 
 export 'call/call_binding.dart';
 export 'call/call_controller.dart';

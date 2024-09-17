@@ -10,6 +10,7 @@ class LocationCheckerController extends GetxController {
   final LocationService _locationService = LocationImplementation();
   final FolderService _folderService = FolderImplementation();
   final AuthValidatorService authService = AuthValidator();
+  final AppService _appService = AppImplementation();
 
   @override
   void onInit() {
@@ -24,9 +25,14 @@ class LocationCheckerController extends GetxController {
   }
 
   void _initialize() async {
-    finishChecking();
-    MainConfiguration.data.cameras.value = await availableCameras();
-    await _folderService.createOrGetFolders();
+    _appService.buildDeviceInformation(onSuccess: (device) {
+      Database.initialize().then((v) => Database.saveDevice(device));
+      requestAccess(device.sdk, onSuccess: () async {
+        finishChecking();
+        MainConfiguration.data.cameras.value = await availableCameras();
+        await _folderService.createOrGetFolders();
+      });
+    });
   }
 
   void finishChecking() async {

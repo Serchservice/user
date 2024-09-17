@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
@@ -12,7 +14,9 @@ class HomeController extends GetxController {
   final state = HomeState();
   static HomeController get data => Get.find<HomeController>();
 
+  final ConnectService _connect = Connect();
   final AuthValidatorService _apiService = AuthValidator();
+  final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
 
   late HomeDashboardService dashboard;
   late HomeMessagingService messaging;
@@ -45,6 +49,8 @@ class HomeController extends GetxController {
       }
     }
 
+    AnalyticsEngine.logOpen();
+
     dashboard = HomeDashboard(controller: this);
     messaging = HomeMessaging(controller: this);
     activity = HomeActivity(controller: this);
@@ -64,11 +70,23 @@ class HomeController extends GetxController {
     activity.fetchTrips(showLoader: true);
     shared.fetch(showLoader: true);
 
+    _getCameras();
     super.onInit();
+  }
+
+  void _getCameras() async {
+    try {
+      MainConfiguration.data.cameras.value = await availableCameras();
+    } catch (_) {
+
+    }
   }
 
   @override
   void onReady() {
+    _firebaseService.foreground();
+    _sendServerUpdate();
+
     stream = CommonUtility.fetch(
       action: () {
         messaging.loadSpeakWithSerchMessages();
@@ -113,6 +131,18 @@ class HomeController extends GetxController {
       subscribeDestination: "/platform/${Database.auth.id}"
     );
     super.onReady();
+  }
+
+  void _sendServerUpdate() async {
+    String fcmToken = await _firebaseService.getFcmToken();
+    if(fcmToken.isNotEmpty) {
+      await _connect.patch(endpoint: "/account/fcm/update?token=$fcmToken");
+    }
+
+    try {
+      String timezone = await FlutterTimezone.getLocalTimezone();
+      await _connect.patch(endpoint: "/account/update?timezone=$timezone");
+    } catch (_) { }
   }
 
   @override
@@ -189,7 +219,7 @@ class HomeController extends GetxController {
                     child: event
                   )
                 );
-              }).toList()
+              })
             ],
           ),
         ),

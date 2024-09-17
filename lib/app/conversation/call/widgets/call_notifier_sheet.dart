@@ -71,12 +71,14 @@ class CallNotifierSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 30),
-          SText(
-            text: message,
-            size: Sizing.font(16),
-            weight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: SText.center(
+              text: message,
+              size: Sizing.font(14),
+              color: CommonColors.error,
+            ),
           )
         ],
       ),

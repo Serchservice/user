@@ -165,7 +165,7 @@ class PrivacyAndSecurityLayout extends GetResponsiveView<PrivacyAndSecurityContr
                         : tab.index == 4
                         ? controller.state.isMicrophoneGranted.value
                         : controller.state.isCameraGranted.value,
-                    ))).toList()
+                    )))
                   ],
                 ),
               )

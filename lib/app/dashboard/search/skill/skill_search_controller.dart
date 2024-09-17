@@ -26,11 +26,13 @@ class SkillSearchController extends GetxController {
     if(state.category.value.category.isNotEmpty) {
       searchController.text = "Am looking for ${CommonUtility.textWithAorAn(state.category.value.category.toLowerCase())}";
       startSearching();
+      AnalyticsEngine.serviceSearch(searchController.text);
     }
 
     searchController.addListener(() {
       if(searchController.text.isNotEmpty) {
         startSearching();
+        AnalyticsEngine.serviceSearch(searchController.text);
       }
     });
     super.onReady();

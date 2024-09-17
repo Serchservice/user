@@ -2,24 +2,26 @@ import 'package:stream_video_push_notification/stream_video_push_notification.da
 import 'package:user/library.dart';
 
 class CallPushProviderSetup {
-  static StreamVideoPushParams videoPushParams = StreamVideoPushParams(
-      appName: "Serch",
-      ios: const IOSParams(iconName: 'IconMask'),
-      android: AndroidParams(
-        isCustomNotification: true,
-        isCustomSmallExNotification: true,
-        isShowLogo: true,
-        backgroundColor: Database.preference.isLightTheme ? "#ffffff" : "#050404",
-        actionColor: Database.preference.isLightTheme ? "#050404" : "#ffffff",
-        textColor: Database.preference.isLightTheme ? "#050404" : "#ffffff",
-        incomingCallNotificationChannelName: Channel.callName,
-        isShowFullLockedScreen: true,
-        missedCallNotificationChannelName: Channel.callName,
-        ringtonePath: "res_incoming.mp3"
-      ),
+  static StreamVideoPushParams videoPushParams = const StreamVideoPushParams(
+    appName: "Serch",
+    handle: "Serch",
+    ios: IOSParams(iconName: 'IconMask'),
+    android: AndroidParams(
+      isCustomNotification: false,
+      isCustomSmallExNotification: true,
+      isShowCallID: false,
+      isShowLogo: true,
+      backgroundColor: "#ffffff",
+      actionColor: "#050404",
+      textColor: "#050404",
+      incomingCallNotificationChannelName: Channel.callName,
+      isShowFullLockedScreen: true,
+      missedCallNotificationChannelName: Channel.callName,
+      ringtonePath: "res_incoming.mp3"
+    ),
     textAccept: "Answer",
     textDecline: "Decline",
-    missedCallNotification: const NotificationParams(isShowCallback: false)
+    missedCallNotification: NotificationParams(isShowCallback: false)
   );
 
   static StreamVideoPushProvider iosConfig = const StreamVideoPushProvider.apn(

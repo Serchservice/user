@@ -252,7 +252,7 @@ class TripHistoryOptionsController extends GetxController {
 
       state.isSharingInvited.value = false;
       if(response.isOk) {
-        notify.success(message: response.message);
+        notify.success(message: "Link generated. Go to Centre -> Account -> Links to view your links.");
         _home.shared.updateList(response.data);
       } else {
         notify.error(message: response.message);
@@ -269,7 +269,7 @@ class TripHistoryOptionsController extends GetxController {
 
       state.isSharingProvider.value = false;
       if(response.isOk) {
-        notify.success(message: response.message);
+        notify.success(message: "Link generated. Go to Centre -> Account -> Links to view your links.");
         _home.shared.updateList(response.data);
       } else {
         notify.error(message: response.message);

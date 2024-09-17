@@ -11,13 +11,22 @@ class CallState {
   /// Current session
   RxInt session = RxInt(0);
 
+  /// Current payment trials
+  RxInt paymentTrials = RxInt(0);
+
   /// Search request data
   Rx<RequestSearch> search = RequestSearch(address: Database.address).obs;
+
+  /// Whether the user clicked on end call button (used when the call is still connecting and the user ends it)
+  RxBool shouldEndCall = RxBool(false);
 
   RxString amount = RxString("");
 
   /// Call speaker on volume out
   RxBool isOnSpeaker = RxBool(false);
+
+  /// Whether the user is using the front camera
+  RxBool isCameraEnabled = RxBool(true);
 
   /// Microphone is muted
   RxBool isAudioMuted = RxBool(false);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +16,21 @@ import 'library.dart';
 Future<void> _backgroundRemoteMessagingHandler(RemoteMessage message) async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
   await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
-  _initializeApp().then((v) {
+  _initializeApp().then((_) {
     FirebaseMessagingService messaging = FirebaseMessagingImplementation();
-
-    StreamVideo videoClient = _loadVideoClient();
-    Get.put(CallConfiguration(videoClient: videoClient));
-
-    FlutterNativeSplash.remove();
     messaging.background(message);
 
-    StreamVideo.reset();
+    StreamVideo videoClient = loadVideoClient();
+    runApp(const NotificationMain());
+
+    if(isCallNotification(message.data)) {
+      Get.put(CallConfiguration(
+        videoClient: videoClient,
+        notification: NotificationBuildImplementation.getCallNotification(message)
+      ));
+    } else {
+      Get.put(CallConfiguration(videoClient: videoClient));
+    }
   });
 }
 
@@ -33,10 +40,7 @@ Future<void> _initializeApp() async {
   await Database.initialize();
 
   MainConfiguration.bind();
-
   Get.updateLocale(const Locale('en'));
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 
   final ExceptionService exceptionService = ExceptionImplementation();
   final NotificationService notification = NotificationImplementation();
@@ -55,14 +59,14 @@ void _loadPlatformChannel() {
   });
 }
 
-StreamVideo _loadVideoClient() {
+StreamVideo loadVideoClient() {
   final Connect connect = Connect();
 
   return StreamVideo(
     Keys.streamApiKey,
     user: User(info: Database.auth.toUserInfo()),
     options: const StreamVideoOptions(
-      logPriority: Priority.info,
+      logPriority: Priority.none,
       muteAudioWhenInBackground: true,
       muteVideoWhenInBackground: true,
     ),
@@ -88,7 +92,7 @@ Future<void> backgroundCallHandler() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
   await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
   _initializeApp().then((v) {
-    StreamVideo videoClient = _loadVideoClient();
+    StreamVideo videoClient = loadVideoClient();
     FlutterNativeSplash.remove();
     Get.put(CallConfiguration(videoClient: videoClient));
   });
@@ -105,9 +109,39 @@ extension on AuthResponse {
   }
 }
 
+Future<void> requestAccess(int sdk, {Function()? onSuccess}) async {
+  final AccessService accessService = AccessImplementation();
+  bool hasAccess = await accessService.requestPermissions(sdk);
+  if(hasAccess) {
+    if(Platform.isAndroid || Platform.isIOS) {
+      onSuccess?.call();
+      return;
+    } else {
+      throw SerchException("Unsupported platform", isPlatformNotSupported: true);
+    }
+  } else {
+    requestAccess(sdk, onSuccess: onSuccess);
+  }
+}
+
 Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
   await Firebase.initializeApp(options: FirebaseConfiguration.currentPlatform);
+
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
   FirebaseMessaging.onBackgroundMessage(_backgroundRemoteMessagingHandler);
-  _initializeApp().then((v) => runApp(const Main()));
+
+  _initializeApp().then((v) {
+    final AppService appService = AppImplementation();
+
+    appService.buildDeviceInformation(onSuccess: (device) {
+      Database.initialize().then((v) => Database.saveDevice(device));
+      requestAccess(device.sdk, onSuccess: () {
+        FlutterNativeSplash.remove();
+        runApp(const Main());
+      });
+    });
+  });
 }

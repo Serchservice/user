@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' show Platform, NetworkInterface;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:app_links/app_links.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:user/library.dart';
 
@@ -12,11 +12,15 @@ class AppImplementation implements AppService {
   final AppLinks _appLinks = AppLinks();
 
   Future<String> get ipAddress async {
-    var networks = await NetworkInterface.list();
-    if(networks.isNotEmpty) {
-      var addresses = networks.first.addresses;
-      if(addresses.isNotEmpty) {
-        return addresses.first.address;
+    if(kIsWeb) {
+      return "";
+    } else {
+      var networks = await NetworkInterface.list();
+      if(networks.isNotEmpty) {
+        var addresses = networks.first.addresses;
+        if(addresses.isNotEmpty) {
+          return addresses.first.address;
+        }
       }
     }
     return "";
@@ -29,7 +33,16 @@ class AppImplementation implements AppService {
     Device device = Device.empty();
     device = device.copyWith(ipAddress: ip);
 
-    if(Platform.isAndroid) {
+    if(kIsWeb) {
+      WebBrowserInfo web = await info.webBrowserInfo;
+      device = device.copyWith(
+        id: web.userAgent,
+        name: web.browserName.name,
+        host: web.appCodeName,
+        platform: "Web"
+      );
+      onSuccess.call(device);
+    } else if(Platform.isAndroid) {
       AndroidDeviceInfo android = await info.androidInfo;
       device = device.copyWith(
         sdk: android.version.sdkInt,
@@ -46,15 +59,6 @@ class AppImplementation implements AppService {
         name: ios.utsname.machine,
         host: ios.utsname.nodename,
         platform: "iOS"
-      );
-      onSuccess.call(device);
-    } else if(kIsWeb) {
-      WebBrowserInfo web = await info.webBrowserInfo;
-      device = device.copyWith(
-        id: web.userAgent,
-        name: web.browserName.name,
-        host: web.appCodeName,
-        platform: "Web"
       );
       onSuccess.call(device);
     } else if(Platform.isLinux) {

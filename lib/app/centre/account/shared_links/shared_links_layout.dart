@@ -87,7 +87,17 @@ class SharedLinksLayout extends GetResponsiveView<SharedLinksController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: controller.home.state.sharedLinks.map((link) {
-                    return SharedLinkItem(link: link);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SharedLinkItem(link: link),
+                        if(controller.home.state.sharedLinks[controller.home.state.sharedLinks.length - 1] != link) ...[
+                          const SizedBox(height: 5),
+                          Divider(color: Theme.of(context).primaryColor),
+                          const SizedBox(height: 5),
+                        ]
+                      ]
+                    );
                   }).toList()
                 ),
               )
@@ -111,7 +121,7 @@ class SharedLinkItem extends StatelessWidget {
         toWidget: SharedLinkDetail(link: link),
         toRoute: RouteSettings(name: "/centre/account/links?id=${link.data.linkId}"),
         elevation: 0.0,
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.zero,
         child: Padding(
           padding: EdgeInsets.all(Sizing.space(16)),

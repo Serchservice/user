@@ -93,7 +93,7 @@ class ActiveEvent extends StatelessWidget {
   Widget _buildTripEvent(BuildContext context) {
     return InkWell(
       onTap: () {
-        if(Database.isUserLoggedIn) {
+        if(Database.isUserActive) {
           ActiveTripView.open(trip!);
         } else {
           GuestActiveTripView.open(trip!);

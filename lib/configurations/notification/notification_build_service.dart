@@ -16,6 +16,15 @@ abstract class NotificationBuildService {
   /// @param isBackground Indicates if the notification is being built in the background.
   void buildChat({required RemoteMessage message, bool isBackground = false});
 
+  /// Builds a call notification.
+  ///
+  /// Checks user [Preference] for in-app or phone or both.
+  /// The data for the notification comes from the payload sent from the server.
+  ///
+  /// @param message The [RemoteMessage] payload data from the server.
+  /// @param isBackground Indicates if the notification is being built in the background.
+  void buildCall({required RemoteMessage message, bool isBackground = false});
+
   /// Builds a connect notification.
   ///
   /// Checks user [Preference] for in-app or phone or both.
@@ -34,14 +43,14 @@ abstract class NotificationBuildService {
   /// @param isBackground Indicates if the notification is being built in the background.
   void buildSchedule({required RemoteMessage message, bool isBackground = false});
 
-  /// Builds a request notification.
+  /// Builds a transaction notification.
   ///
   /// Checks user [Preference] for in-app or phone or both.
   /// The data for the notification comes from the payload sent from the server.
   ///
   /// @param message The [RemoteMessage] payload data from the server.
   /// @param isBackground Indicates if the notification is being built in the background.
-  void buildRequest({required RemoteMessage message, bool isBackground = false});
+  void buildTransaction({required RemoteMessage message, bool isBackground = false});
 
   /// Builds other notification types.
   ///
