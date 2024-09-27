@@ -23,21 +23,21 @@ class HelpController extends GetxController {
       header: "Mail",
       body: "Send us an email when it is your best option.",
       icon: CupertinoIcons.mail_solid,
-      path: "help@serchservice.com",
+      path: "account@serchservice.com",
       index: 0
     ),
     ButtonView(
       header: "Call Centre",
       body: "Get all the help you need with a live assistant.",
       icon: Icons.phone,
-      path: "+2349164806343",
+      path: "+18445871030",
       index: 1
     ),
     ButtonView(
       header: "Safe-Guard Community",
       body: "Join Serch SG Community and help us improve our safety measures.",
       icon: FontAwesomeIcons.whatsapp,
-      path: "https://chat.whatsapp.com/IPWEBQi7HRG7jQiOWdcJT",
+      path: "https://chat.whatsapp.com/IPWEBQi7HRG7jJQiOWdcJT",
       index: 2
     ),
     ButtonView(

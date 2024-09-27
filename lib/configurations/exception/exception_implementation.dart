@@ -16,8 +16,8 @@ class ExceptionImplementation implements ExceptionService {
       if(details.exception is SerchException) {
         SerchException exception = details.exception as SerchException;
         if(exception.isPlatformNotSupported) {
-          Navigate.all(PlatformNotSupportedLayout.route);
-        } else if(exception.isLocked) {
+          Navigate.all(PlatformErrorLayout.route, arguments: exception.message);
+        }  else if(exception.isLocked) {
           Navigate.all(AccountIssueLayout.route);
         } else if(exception.isSessionExpired) {
           Navigate.all(LoginLayout.route);

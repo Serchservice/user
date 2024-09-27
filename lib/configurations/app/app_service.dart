@@ -23,4 +23,7 @@ abstract class AppService {
   ///
   /// @param onSuccess The callback function to be called with the list of countries.
   void getCountries({required Function(List<Country> countries) onSuccess});
+
+  /// Verifies the safeness of the device
+  void verifyDevice();
 }

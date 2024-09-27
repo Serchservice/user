@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,11 +54,11 @@ class AppInformationController extends GetxController {
         header: "In-App Rating",
         index: 0
       ),
-      ButtonView(
-        index: 1,
-        icon: Platform.isAndroid ? Icons.play_arrow : Icons.apple,
-        header: "${ Platform.isIOS ? "App Store" : "Google Playstore" } rating"
-      )
+      // ButtonView(
+      //   index: 1,
+      //   icon: Platform.isAndroid ? Icons.play_arrow : Icons.apple,
+      //   header: "${ Platform.isIOS ? "App Store" : "Google Playstore" } rating"
+      // )
     ];
 
     Navigate.bottomSheet(
@@ -95,27 +94,27 @@ class AppInformationController extends GetxController {
       ButtonView(
         header: "Community Guidelines",
         icon: Icons.people_rounded,
-        path: Links.web("/hub/legal/community-guidelines"),
+        path: Links.web(Constants.communityGuidelines),
       ),
       ButtonView(
         header: "Non-Discrimination Policy",
         icon: Icons.warning_rounded,
-        path: Links.web("/hub/legal/non-discrimination-policy"),
+        path: Links.web(Constants.nonDiscriminationPolicy),
       ),
       ButtonView(
         header: "Privacy Policy",
         icon: Icons.privacy_tip_rounded,
-        path: Links.web("/hub/legal/privacy-policy"),
+        path: Links.web(Constants.privacyPolicy),
       ),
       ButtonView(
         header: "Terms and Condition",
         icon: Icons.confirmation_number_rounded,
-        path: Links.web("/hub/legal/terms-and-conditions"),
+        path: Links.web(Constants.termsAndConditions),
       ),
       ButtonView(
         header: "Zero Tolerance Policy",
         icon: Icons.not_interested_rounded,
-        path: Links.web("/hub/legal/zero-tolerance-policy"),
+        path: Links.web(Constants.zeroTolerancePolicy),
       ),
     ];
 
@@ -153,16 +152,6 @@ class AppInformationController extends GetxController {
         icon: Icons.person_add_alt_1,
         index: 1,
         path: Links.web("/guest"),
-      ),
-      ButtonView(
-        header: "Serch for Business",
-        icon: Icons.business_center_rounded,
-        path: Links.web("/business"),
-      ),
-      ButtonView(
-        header: "Serch for Providers",
-        icon: Icons.supervised_user_circle_rounded,
-        path: Links.web("/provider"),
       ),
     ];
 

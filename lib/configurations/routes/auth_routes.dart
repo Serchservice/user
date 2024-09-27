@@ -7,6 +7,9 @@ List<GetPage> authenticationRoutes = [
     page: () => AccountIssueLayout(),
     binding: AccountIssueBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -15,6 +18,9 @@ List<GetPage> authenticationRoutes = [
     page: () => EmailCheckerLayout(),
     binding: EmailCheckerBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -23,6 +29,9 @@ List<GetPage> authenticationRoutes = [
     page: () => EmailVerificationLayout(),
     binding: EmailVerificationBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -31,7 +40,8 @@ List<GetPage> authenticationRoutes = [
     page: () => LocationCheckerLayout(),
     binding: LocationCheckerBinding(),
     middlewares: [
-      AuthMiddleware(priority: 10)
+      AuthMiddleware(priority: 10),
+      DeviceMiddleware(priority: 20)
     ],
     transition: Transition.circularReveal,
     transitionDuration: const Duration(milliseconds: 800),
@@ -42,6 +52,9 @@ List<GetPage> authenticationRoutes = [
     page: () => LoginLayout(),
     binding: LoginBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -49,6 +62,9 @@ List<GetPage> authenticationRoutes = [
     name: OnboardingLayout.route,
     page: () => const OnboardingLayout(),
     transition: Transition.circularReveal,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -56,12 +72,16 @@ List<GetPage> authenticationRoutes = [
     name: PageNotFoundLayout.route,
     page: () => const PageNotFoundLayout(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
   GetPage(
-    name: PlatformNotSupportedLayout.route,
-    page: () => const PlatformNotSupportedLayout(),
+    name: PlatformErrorLayout.route,
+    page: () => PlatformErrorLayout(),
+    binding: PlatformErrorBinding(),
     transition: Transition.native,
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -71,6 +91,9 @@ List<GetPage> authenticationRoutes = [
     page: () => ResetPasswordLayout(),
     binding: ResetPasswordBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -79,6 +102,9 @@ List<GetPage> authenticationRoutes = [
     page: () => ResetPasswordConfirmationLayout(),
     binding: ResetPasswordConfirmationBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -87,6 +113,9 @@ List<GetPage> authenticationRoutes = [
     page: () => ResetPasswordRequestLayout(),
     binding: ResetPasswordRequestBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -94,6 +123,9 @@ List<GetPage> authenticationRoutes = [
     name: SignupLayout.route,
     page: () => SignupLayout(),
     binding: SignupBinding(),
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 ];

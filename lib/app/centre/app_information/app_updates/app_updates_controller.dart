@@ -6,7 +6,7 @@ class AppUpdatesController extends GetxController {
 
   List<UpdateLogView> updates = [
     UpdateLogView(
-      header: "1.0.0: Launching the Serch platform in all stores.",
+      header: "1.0.0: Launching the Serch platform.",
       content: [
         "Connect easily with service providers.",
         "Chat, Call or Schedule a fix with service providers.",
@@ -14,10 +14,11 @@ class AppUpdatesController extends GetxController {
         "View the profile of the service provider before going on a trip.",
         "A Two-Way rating for both the user and the service provider.",
         "Bookmark a service provider to ease future conversations.",
-        "Serch for a service provider within your location radius.",
-        "ProvideShare a service provider with another user or person.",
+        "Search for a service provider within your location radius.",
+        "Drive to the nearby shop location with our quickest search mode",
+        "Share your verified and trusted provider to loved ones and make extra money.",
       ],
-      date: "6/6/2024",
+      date: "25th September, 2024",
       index: 0
     )
   ];

@@ -7,6 +7,9 @@ List<GetPage> centreRoutes = [
     page: () => AppUpdatesLayout(),
     binding: AppUpdatesBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -15,6 +18,9 @@ List<GetPage> centreRoutes = [
     page: () => AppInformationLayout(),
     binding: AppInformationBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -23,6 +29,9 @@ List<GetPage> centreRoutes = [
     page: () => SpeakWithSerchLayout(),
     binding: SpeakWithSerchBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -31,6 +40,9 @@ List<GetPage> centreRoutes = [
     page: () => HelpLayout(),
     binding: HelpBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -39,6 +51,9 @@ List<GetPage> centreRoutes = [
     page: () => PreferenceLayout(),
     binding: PreferenceBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -47,6 +62,9 @@ List<GetPage> centreRoutes = [
     page: () => WalletLayout(),
     binding: WalletBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -55,6 +73,9 @@ List<GetPage> centreRoutes = [
     page: () => WalletSettingsLayout(),
     binding: WalletSettingsBinding(),
     transition: Transition.downToUp,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -63,6 +84,9 @@ List<GetPage> centreRoutes = [
     page: () => UpdateBankDetailsLayout(),
     binding: UpdateBankDetailsBinding(),
     transition: Transition.circularReveal,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -71,6 +95,9 @@ List<GetPage> centreRoutes = [
     page: () => RatingLayout(),
     binding: RatingBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -79,6 +106,9 @@ List<GetPage> centreRoutes = [
     page: () => PrivacyAndSecurityLayout(),
     binding: PrivacyAndSecurityBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -87,6 +117,9 @@ List<GetPage> centreRoutes = [
     page: () => BiometricsLayout(),
     binding: BiometricsBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -95,6 +128,9 @@ List<GetPage> centreRoutes = [
     page: () => BiometricsAuthLayout(),
     binding: BiometricsAuthBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -103,6 +139,9 @@ List<GetPage> centreRoutes = [
     page: () => BiometricsAuthLayout(),
     binding: BiometricsAuthBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -111,6 +150,9 @@ List<GetPage> centreRoutes = [
     page: () => ChangePasswordLayout(),
     binding: ChangePasswordBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -119,6 +161,9 @@ List<GetPage> centreRoutes = [
     page: () => MultiFactorLayout(),
     binding: MultiFactorBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -127,6 +172,9 @@ List<GetPage> centreRoutes = [
     page: () => MfaAuthLayout(),
     binding: MfaAuthBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -135,6 +183,9 @@ List<GetPage> centreRoutes = [
     page: () => MfaAuthLayout(),
     binding: MfaAuthBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -143,6 +194,9 @@ List<GetPage> centreRoutes = [
     page: () => MfaAuthLayout(),
     binding: MfaAuthBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -151,6 +205,9 @@ List<GetPage> centreRoutes = [
     page: () => BookmarkLayout(),
     binding: BookmarkBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -159,6 +216,9 @@ List<GetPage> centreRoutes = [
     page: () => AccountLayout(),
     binding: AccountBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -167,6 +227,9 @@ List<GetPage> centreRoutes = [
     page: () => SharedLinksLayout(),
     binding: SharedLinksBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 
@@ -175,6 +238,9 @@ List<GetPage> centreRoutes = [
     page: () => ReferralLayout(),
     binding: ReferralBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
 ];

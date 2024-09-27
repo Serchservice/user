@@ -14,13 +14,13 @@ class AccountIssueLayout extends GetResponsiveView<AccountIssueController> {
         header: "Serch Community Guidelines",
         body: "Understand the community you thrive in.",
         icon: Icons.rule_rounded,
-        path: Links.web("/")
+        path: Links.web(Constants.communityGuidelines)
       ),
       ButtonView(
         header: "Serch Non-Discrimination Policy",
         body: "Read our policy to avoid issues.",
         icon: Icons.polymer_sharp,
-        path: Links.web("/")
+        path: Links.web(Constants.nonDiscriminationPolicy)
       ),
     ];
 

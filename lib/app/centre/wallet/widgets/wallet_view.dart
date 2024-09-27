@@ -29,8 +29,8 @@ class WalletView extends StatelessWidget {
           padding: EdgeInsets.all(Sizing.space(12)),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: CommonColors.darkTheme2
+            borderRadius: BorderRadius.circular(20),
+            color: CommonColors.darkTheme2
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

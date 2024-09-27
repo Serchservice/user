@@ -7,6 +7,9 @@ List<GetPage> conversationRoutes = [
     page: () => CallLayout(),
     binding: CallBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -15,6 +18,9 @@ List<GetPage> conversationRoutes = [
     page: () => ChatLayout(),
     binding: ChatBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 ];

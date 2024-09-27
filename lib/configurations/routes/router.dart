@@ -14,6 +14,9 @@ class Routes {
       page: () => HomeLayout(),
       binding: HomeBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -22,6 +25,9 @@ class Routes {
       page: () => AccountPickerLayout(),
       binding: AccountPickerBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -30,6 +36,9 @@ class Routes {
       page: () => const WebLayout(),
       binding: WebBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -38,6 +47,9 @@ class Routes {
       page: () => ReferralLinkVerifierLayout(),
       binding: ReferralLinkVerifierBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -46,6 +58,9 @@ class Routes {
       page: () => SharedLinkVerifierLayout(),
       binding: SharedLinkVerifierBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -54,6 +69,9 @@ class Routes {
       page: () => CameraLayout(),
       binding: CameraBinding(),
       transition: Transition.native,
+      middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -62,6 +80,9 @@ class Routes {
       page: () => GalleryLayout(),
       binding: GalleryBinding(),
       transition: Transition.downToUp,
+      middlewares: [
+        DeviceMiddleware(priority: 20)
+      ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
   ];
