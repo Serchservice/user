@@ -34,6 +34,7 @@ export 'main/main_configuration.dart';
 export 'main/call_configuration.dart';
 export 'main/call_push_provider_setup.dart';
 export 'main/app_lifecycle.dart';
+export 'main/constants.dart';
 
 export 'notification/in_app/in_app_notification.dart';
 export 'notification/in_app/in_app_notification_service.dart';

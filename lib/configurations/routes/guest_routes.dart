@@ -7,6 +7,9 @@ List<GetPage> guestRoutes = [
     page: () => GuestCreateLayout(),
     binding: GuestCreateBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -15,6 +18,9 @@ List<GetPage> guestRoutes = [
     page: () => GuestHomeLayout(),
     binding: GuestHomeBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 ];

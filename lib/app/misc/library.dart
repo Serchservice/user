@@ -10,4 +10,7 @@ export 'account_issue/account_issue_state.dart';
 export 'page_not_found/page_not_found_layout.dart';
 
 /// PLATFORM NOT SUPPORTED
-export 'platform_not_supported/platform_not_supported_layout.dart';
+export 'platform_error/platform_error_layout.dart';
+export 'platform_error/platform_error_binding.dart';
+export 'platform_error/platform_error_controller.dart';
+export 'platform_error/platform_error_state.dart';

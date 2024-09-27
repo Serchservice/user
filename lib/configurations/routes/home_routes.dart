@@ -7,6 +7,9 @@ List<GetPage> homeRoutes = [
     page: () => ActiveResultLayout(),
     binding: ActiveResultBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -15,6 +18,9 @@ List<GetPage> homeRoutes = [
     page: () => SkillSearchLayout(),
     binding: SkillSearchBinding(),
     transition: Transition.native,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -23,6 +29,9 @@ List<GetPage> homeRoutes = [
     page: () => RequestActionLayout(),
     binding: RequestActionBinding(),
     transition: Transition.downToUp,
+    middlewares: [
+      DeviceMiddleware(priority: 20)
+    ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
 ];
