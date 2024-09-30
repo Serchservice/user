@@ -48,7 +48,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
         child: Column(
           children: <Widget>[
             Field(
-              hintText: "Search Country",
+              hintText: "Search Country/Region",
               borderRadius: Sizing.space(20),
               suffixIcon: const Icon(Icons.search),
               onChanged: (value) {
