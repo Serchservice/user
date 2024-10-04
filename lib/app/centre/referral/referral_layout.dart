@@ -27,7 +27,7 @@ class ReferralLayout extends GetResponsiveView<ReferralController> {
                 if(controller.state.isFetchingProgram.value) {
                   return LoadingShimmer(
                     content: Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       height: 200,
                       decoration: BoxDecoration(
                         color: CommonColors.shimmerHigh,
@@ -37,7 +37,7 @@ class ReferralLayout extends GetResponsiveView<ReferralController> {
                   );
                 } else {
                   return Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(10)),
                     decoration: BoxDecoration(
                       color: Theme.of(context).appBarTheme.backgroundColor,
@@ -111,7 +111,7 @@ class ReferralLayout extends GetResponsiveView<ReferralController> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           margin: EdgeInsets.only(bottom: Sizing.space(10)),
                           height: 70,
                           decoration: BoxDecoration(

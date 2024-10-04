@@ -74,7 +74,7 @@ class WithdrawWalletSheet extends StatelessWidget {
             borderRadius: 24,
             padding: EdgeInsets.all(Sizing.space(12)),
             textSize: Sizing.font(11),
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             onClick: controller.withdraw,
             buttonColor: CommonColors.darkTheme2,
             textColor: CommonColors.lightTheme,

@@ -99,7 +99,7 @@ class MapViewDetails extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(Sizing.space(12)),
             color: Theme.of(context).colorScheme.surface,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

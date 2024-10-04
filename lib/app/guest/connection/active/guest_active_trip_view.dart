@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
@@ -17,15 +16,15 @@ class GuestActiveTripView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GuestActiveTripViewController>(
-        init: GuestActiveTripViewController(trip: trip),
-        autoRemove: false,
-        builder: (controller) {
-          return MainLayout(
-            floaterPosition: 0,
-            floater: _buildFloater(context, controller),
-            child: _buildMap(context, controller),
-          );
-        }
+      init: GuestActiveTripViewController(trip: trip),
+      autoRemove: false,
+      builder: (controller) {
+        return MainLayout(
+          floaterPosition: 0,
+          floater: _buildFloater(context, controller),
+          child: _buildMap(context, controller),
+        );
+      }
     );
   }
 
@@ -61,63 +60,63 @@ class GuestActiveTripView extends StatelessWidget {
   Widget _buildFloater(BuildContext context, GuestActiveTripViewController controller) {
     return Obx(() {
       if(controller.state.isMinimized.value) {
-        return Animate(child: _buildHeader(context, controller)).slideY(duration: 500.ms);
+        return _buildHeader(context, controller);
       } else {
-        return Animate(child: _buildBody(context, controller)).slideY(duration: 500.ms, begin: Get.height - 120);
+        return _buildBody(context, controller);
       }
     });
   }
 
   Widget _buildHeader(BuildContext context, GuestActiveTripViewController controller) {
     return Container(
-        padding: EdgeInsets.all(Sizing.space(12)),
-        color: Theme.of(context).appBarTheme.backgroundColor,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const GoBack(size: 30, radius: 10, icon: Icons.arrow_back),
-                const Expanded(child: SizedBox(width: 15)),
-                Obx(() => LoadingButton(
-                  text: controller.state.isMinimized.value ? "View details" : "Minimize details",
-                  buttonColor: Theme.of(context).colorScheme.surface,
-                  textColor: Theme.of(context).primaryColor,
-                  textSize: 12,
-                  borderRadius: 30,
-                  padding: EdgeInsets.all(Sizing.space(6)),
-                  onClick: controller.state.isMinimized.toggle,
-                ))
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Obx(() => SText(
-                      text: "You are on a trip with ${CommonUtility.textWithAorAn(controller.state.trip.value.category)}",
-                      size: Sizing.font(18),
-                      weight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor
-                  )),
+      padding: EdgeInsets.all(Sizing.space(12)),
+      color: Theme.of(context).appBarTheme.backgroundColor,
+      width: MediaQuery.sizeOf(context).width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const GoBack(size: 30, radius: 10, icon: Icons.arrow_back),
+              const Expanded(child: SizedBox(width: 15)),
+              Obx(() => LoadingButton(
+                text: controller.state.isMinimized.value ? "View details" : "Minimize details",
+                buttonColor: Theme.of(context).colorScheme.surface,
+                textColor: Theme.of(context).primaryColor,
+                textSize: 12,
+                borderRadius: 30,
+                padding: EdgeInsets.all(Sizing.space(6)),
+                onClick: controller.state.isMinimized.toggle,
+              ))
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Obx(() => SText(
+                    text: "You are on a trip with ${CommonUtility.textWithAorAn(controller.state.trip.value.category)}",
+                    size: Sizing.font(18),
+                    weight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor
+                )),
+              ),
+              const SizedBox(width: 20),
+              Container(
+                padding: EdgeInsets.all(Sizing.space(4)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(8)
                 ),
-                const SizedBox(width: 20),
-                Container(
-                  padding: EdgeInsets.all(Sizing.space(4)),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(8)
-                  ),
-                  child: Obx(() => CategoryImage(image: controller.state.trip.value.image, width: 60, height: 60))
-                ),
-              ],
-            ),
-          ],
-        )
+                child: Obx(() => CategoryImage(image: controller.state.trip.value.image, width: 60, height: 60))
+              ),
+            ],
+          ),
+        ],
+      )
     );
   }
 
@@ -141,7 +140,7 @@ class GuestActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +163,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,7 +189,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -214,7 +213,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -258,7 +257,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -283,7 +282,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -302,7 +301,7 @@ class GuestActiveTripView extends StatelessWidget {
                       if(selected.timelines.isNotEmpty) ...[
                         const SizedBox(height: 5),
                         Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           height: 250,
                           padding: EdgeInsets.all(Sizing.space(12)),
                           child: Column(
@@ -342,7 +341,7 @@ class GuestActiveTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -392,7 +391,7 @@ class GuestActiveTripView extends StatelessWidget {
                                 Divider(color: Theme.of(context).scaffoldBackgroundColor),
                                 const SizedBox(height: 5),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   height: 250,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +447,7 @@ class GuestActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           LoadingButton(
             text: "Cancel trip",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.error,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -476,7 +475,7 @@ class GuestActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           Obx(() => LoadingButton(
             text: "Verify identity",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.darkTheme,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -492,7 +491,7 @@ class GuestActiveTripView extends StatelessWidget {
           if (trip.showGrant) ...[
             Obx(() => LoadingButton(
               text: "Grant share access",
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               buttonColor: CommonColors.allday,
               padding: EdgeInsets.all(Sizing.space(6)),
               textColor: CommonColors.lightTheme,
@@ -507,7 +506,7 @@ class GuestActiveTripView extends StatelessWidget {
             Obx(() => LoadingButton(
               text: "End trip",
               padding: EdgeInsets.all(Sizing.space(6)),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               buttonColor: CommonColors.error,
               textColor: CommonColors.lightTheme,
               loading: controller.state.isEnding.value,
@@ -524,7 +523,7 @@ class GuestActiveTripView extends StatelessWidget {
             text: "Revoke share access",
             padding: EdgeInsets.all(Sizing.space(6)),
             buttonColor: CommonColors.error,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             textColor: CommonColors.lightTheme,
             loading: controller.state.isDenyingAccess.value,
             onClick: controller.denyAccess,
@@ -548,7 +547,7 @@ class GuestActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           LoadingButton(
             text: "Cancel trip",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.error,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -577,7 +576,7 @@ class GuestActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           Obx(() => LoadingButton(
             text: "Verify identity",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.darkTheme,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),

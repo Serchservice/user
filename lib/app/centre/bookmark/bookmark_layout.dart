@@ -28,7 +28,7 @@ class BookmarkLayout extends GetResponsiveView<BookmarkController> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     margin: EdgeInsets.only(bottom: Sizing.space(10)),
                     height: 90,
                     decoration: BoxDecoration(
@@ -46,7 +46,7 @@ class BookmarkLayout extends GetResponsiveView<BookmarkController> {
             children: [
               if(controller.state.showBookmark.value) ...[
                 Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   padding: EdgeInsets.all(Sizing.space(12)),
                   margin: EdgeInsets.all(Sizing.space(10)),
                   decoration: BoxDecoration(

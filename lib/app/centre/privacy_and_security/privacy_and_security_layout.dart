@@ -124,7 +124,7 @@ class PrivacyAndSecurityLayout extends GetResponsiveView<PrivacyAndSecurityContr
               Container(
                 margin: EdgeInsets.all(Sizing.space(16)),
                 padding: EdgeInsets.all(Sizing.space(8)),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
                   color: Theme.of(context).appBarTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(24)

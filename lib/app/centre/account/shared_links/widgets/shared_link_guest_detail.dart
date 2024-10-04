@@ -22,7 +22,7 @@ class SharedLinkGuestDetail extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(Sizing.space(12)),
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             color: Theme.of(context).primaryColor,
             child: Row(
               children: [

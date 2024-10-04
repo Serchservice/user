@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
@@ -61,9 +60,9 @@ class ActiveTripView extends StatelessWidget {
   Widget _buildFloater(BuildContext context, ActiveTripViewController controller) {
     return Obx(() {
       if(controller.state.isMinimized.value) {
-        return Animate(child: _buildHeader(context, controller)).slideY(duration: 500.ms);
+        return _buildHeader(context, controller);
       } else {
-        return Animate(child: _buildBody(context, controller)).slideY(duration: 500.ms, begin: Get.height - 120);
+        return _buildBody(context, controller);
       }
     });
   }
@@ -72,7 +71,7 @@ class ActiveTripView extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(Sizing.space(12)),
       color: Theme.of(context).appBarTheme.backgroundColor,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -141,7 +140,7 @@ class ActiveTripView extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(Sizing.space(12)),
                       color: Theme.of(context).appBarTheme.backgroundColor,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +163,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,7 +189,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -214,7 +213,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -258,7 +257,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -283,7 +282,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -302,7 +301,7 @@ class ActiveTripView extends StatelessWidget {
                     if(selected.timelines.isNotEmpty) ...[
                       const SizedBox(height: 5),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         height: 250,
                         padding: EdgeInsets.all(Sizing.space(12)),
                         child: Column(
@@ -342,7 +341,7 @@ class ActiveTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -392,7 +391,7 @@ class ActiveTripView extends StatelessWidget {
                               Divider(color: Theme.of(context).scaffoldBackgroundColor),
                               const SizedBox(height: 5),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 height: 250,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +447,7 @@ class ActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           LoadingButton(
             text: "Cancel trip",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.error,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -476,7 +475,7 @@ class ActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           Obx(() => LoadingButton(
             text: "Verify identity",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.darkTheme,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -492,7 +491,7 @@ class ActiveTripView extends StatelessWidget {
           if (trip.showGrant) ...[
             Obx(() => LoadingButton(
               text: "Grant share access",
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               buttonColor: CommonColors.allday,
               padding: EdgeInsets.all(Sizing.space(6)),
               textColor: CommonColors.lightTheme,
@@ -507,7 +506,7 @@ class ActiveTripView extends StatelessWidget {
             Obx(() => LoadingButton(
               text: "End trip",
               padding: EdgeInsets.all(Sizing.space(6)),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               buttonColor: CommonColors.error,
               textColor: CommonColors.lightTheme,
               loading: controller.state.isEnding.value,
@@ -524,7 +523,7 @@ class ActiveTripView extends StatelessWidget {
             text: "Revoke share access",
             padding: EdgeInsets.all(Sizing.space(6)),
             buttonColor: CommonColors.error,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             textColor: CommonColors.lightTheme,
             loading: controller.state.isDenyingAccess.value,
             onClick: controller.denyAccess,
@@ -548,7 +547,7 @@ class ActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           LoadingButton(
             text: "Cancel trip",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.error,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),
@@ -577,7 +576,7 @@ class ActiveTripView extends StatelessWidget {
           const SizedBox(height: 10),
           Obx(() => LoadingButton(
             text: "Verify identity",
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             buttonColor: CommonColors.darkTheme,
             textColor: CommonColors.lightTheme,
             padding: EdgeInsets.all(Sizing.space(6)),

@@ -91,7 +91,7 @@ class AccountLayout extends GetResponsiveView<AccountController> {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     margin: EdgeInsets.only(bottom: Sizing.space(20)),
                     height: 40,
                     decoration: BoxDecoration(
@@ -105,7 +105,7 @@ class AccountLayout extends GetResponsiveView<AccountController> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           margin: EdgeInsets.only(bottom: Sizing.space(10)),
                           height: 80,
                           decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class AccountLayout extends GetResponsiveView<AccountController> {
                 ),
                 if(controller.state.showAccount.value) ...[
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(12)),
                     margin: EdgeInsets.symmetric(
                       vertical: Sizing.space(16),

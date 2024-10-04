@@ -97,8 +97,8 @@ class MainLayout extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
                 child: child
               ),
               Positioned(
@@ -128,8 +128,8 @@ class MainLayout extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.sizeOf(context).height,
+              width: MediaQuery.sizeOf(context).width,
               child: child
             ),
             Positioned(
@@ -149,8 +149,8 @@ class MainLayout extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
             child: child
           ),
           Positioned(

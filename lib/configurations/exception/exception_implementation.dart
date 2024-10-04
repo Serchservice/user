@@ -45,6 +45,14 @@ class ExceptionImplementation implements ExceptionService {
     PlatformDispatcher.instance.onError = (error, stack) {
       if(error is SocketException) {
         handleConnectionException(error);
+      } else if(error is SerchException) {
+        if(error.isPlatformNotSupported) {
+          Navigate.all(PlatformErrorLayout.route, arguments: error.message);
+        } else if(error.isLocked) {
+          Navigate.all(AccountIssueLayout.route);
+        } else if(error.isSessionExpired) {
+          Navigate.all(LoginLayout.route);
+        }
       } else if (kDebugMode) {
         // In development mode, simply print to console.
         log(stack, from: "P - ErrorHandler");

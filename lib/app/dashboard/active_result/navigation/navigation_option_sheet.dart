@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:user/library.dart';
 
 class NavigationOptionSheet extends StatelessWidget {
@@ -16,8 +17,11 @@ class NavigationOptionSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CurvedBottomSheet(
+      padding: EdgeInsets.zero,
       safeArea: true,
-      child: GetX<NavigationOptionSheetController>(
+      margin: const EdgeInsets.all(10),
+      borderRadius: BorderRadius.circular(24),
+      child: GetBuilder<NavigationOptionSheetController>(
         init: NavigationOptionSheetController(shop: shop),
         builder: (controller) {
           return SingleChildScrollView(
@@ -36,34 +40,88 @@ class NavigationOptionSheet extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Center(
-                  child: SText(
-                    text: "Choose the navigation that works for you",
-                    size: Sizing.font(16),
-                    weight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SText(
+                      text: "Choose the navigation that works for you",
+                      size: Sizing.font(16),
+                      weight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                ...controller.options(context).map((button) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: controller.options(context).length - 1 != button.index ? 8 : 0),
-                    child: NavigatorButton(
-                      header: button.header,
-                      detail: button.body,
-                      prefixIcon: button.icon,
-                      iconColor: button.color,
-                      headerSize: 14,
-                      onPressed: () => controller.act(button),
-                    ),
-                  );
-                })
+                _loadList(context, controller),
               ],
             )
           );
         }
       )
     );
+  }
+
+  Widget _loadList(BuildContext context, NavigationOptionSheetController controller) {
+    return Obx(() {
+      if(controller.state.isLoading.value) {
+        return LoadingShimmer(
+          content: ListView.builder(
+            itemCount: 3,
+            padding: EdgeInsets.all(Sizing.space(10)),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(
+                width: MediaQuery.sizeOf(context).width,
+                margin: EdgeInsets.only(bottom: Sizing.space(10)),
+                height: 50,
+                color: CommonColors.shimmerHigh,
+              );
+            }
+          )
+        );
+      } else if(controller.state.maps.isNotEmpty) {
+        return ListView.builder(
+          itemCount: controller.state.maps.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            bool isLast = controller.state.maps.length - 1 == index;
+            var map = controller.state.maps[index];
+
+            return Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => controller.onSelect(map),
+                child: Container(
+                  padding: EdgeInsets.all(Sizing.space(12)),
+                  margin: EdgeInsets.only(bottom: isLast ? 0 : 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(map.icon, height: 30.0, width: 30.0),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: SText(
+                          text: map.mapName,
+                          size: Sizing.font(15),
+                          color: Theme.of(context).primaryColor
+                        )
+                      ),
+                    ],
+                  ),
+                )
+              )
+            );
+          }
+        );
+      } else {
+        return Center(
+          child: SText.center(
+            text: "We couldn't find any installed map application in your device.",
+            size: Sizing.font(14),
+            color: Theme.of(context).primaryColorLight
+          ),
+        );
+      }
+    });
   }
 }

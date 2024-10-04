@@ -10,23 +10,11 @@ class PageNotFoundLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ButtonView> buttons = [
       if(!Database.isLoggedIn)...[
-        ButtonView(
-            icon: Icons.account_circle_rounded,
-            header: "Create a Serch account",
-            index: 0
-        ),
-        ButtonView(
-            icon: Icons.account_circle_rounded,
-            header: "Login to your Serch account",
-            index: 0
-        ),
+        ButtonView(icon: Icons.account_circle_rounded, header: "Create a Serch account"),
+        ButtonView(icon: Icons.account_circle_rounded, header: "Login to your Serch account"),
       ],
       if(Database.accounts.isNotEmpty) ...[
-        ButtonView(
-            icon: Icons.account_tree_rounded,
-            header: "Continue with your Serch account",
-            index: 2
-        )
+        ButtonView(icon: Icons.account_tree_rounded, header: "Continue with your Serch account", index: 2)
       ]
     ];
 
@@ -52,9 +40,9 @@ class PageNotFoundLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SText(
-                        text: "There are multiple options to continue with, when this happens...",
-                        size: Sizing.font(16),
-                        color: Theme.of(context).primaryColor
+                      text: "There are multiple options to continue with, when this happens...",
+                      size: Sizing.font(16),
+                      color: Theme.of(context).primaryColor
                     ),
                     const SizedBox(height: 10),
                     ...buttons.map((value) {
@@ -66,7 +54,7 @@ class PageNotFoundLayout extends StatelessWidget {
                           prefixIconSize: Sizing.font(30),
                           borderRadius: 16,
                           textSize: Sizing.font(14),
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           buttonColor: Theme.of(context).appBarTheme.backgroundColor,
                           textColor: Theme.of(context).primaryColor,
                           onClick: () {
@@ -99,7 +87,7 @@ class PageNotFoundLayout extends StatelessWidget {
                                 onGuestSuccess: (guest) => Navigate.all(GuestHomeLayout.route)
                               );
                             } else {
-                              Navigate.all(LocationCheckerLayout.route);
+                              Navigate.all(EmailCheckerLayout.route);
                             }
                           },
                         ),

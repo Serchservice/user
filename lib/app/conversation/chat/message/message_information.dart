@@ -155,7 +155,7 @@ class MessageInformation extends StatelessWidget {
   Widget _buildReply(BuildContext context, ChatReply reply) {
     return Container(
       padding: EdgeInsets.all(Sizing.space(10)),
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(24)

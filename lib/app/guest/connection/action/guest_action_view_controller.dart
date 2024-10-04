@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart';
 import 'package:user/library.dart';
 

@@ -100,7 +100,7 @@ class _SignoutState extends State<Signout> {
             LoadingButton(
               text: "Confirm",
               borderRadius: 24,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               textSize: Sizing.font(14),
               onClick: () => signout(),
               loading: loading,

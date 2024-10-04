@@ -27,7 +27,7 @@ class TripHistoryView extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(Sizing.space(12)),
                 color: Theme.of(context).appBarTheme.backgroundColor,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,7 +69,7 @@ class TripHistoryView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,7 +91,7 @@ class TripHistoryView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +114,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,7 +140,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -164,7 +164,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -208,7 +208,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -233,7 +233,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -252,7 +252,7 @@ class TripHistoryView extends StatelessWidget {
                       if(selected.timelines.isNotEmpty) ...[
                         const SizedBox(height: 5),
                         Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           height: 250,
                           padding: EdgeInsets.all(Sizing.space(12)),
                           child: Column(
@@ -291,7 +291,7 @@ class TripHistoryView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -319,7 +319,7 @@ class TripHistoryView extends StatelessWidget {
                                 Divider(color: Theme.of(context).scaffoldBackgroundColor),
                                 const SizedBox(height: 5),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   height: 250,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,

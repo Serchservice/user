@@ -20,7 +20,7 @@ class RatingSummary extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     height: 80,
                     decoration: BoxDecoration(
                       color: CommonColors.shimmerHigh,
@@ -29,7 +29,7 @@ class RatingSummary extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     height: 30,
                     decoration: BoxDecoration(
                       color: CommonColors.shimmerHigh,
@@ -54,7 +54,7 @@ class RatingSummary extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         margin: EdgeInsets.only(bottom: Sizing.space(10)),
                         height: 90,
                         decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class RatingSummary extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     height: 50,
                     decoration: BoxDecoration(
                       color: CommonColors.shimmerHigh,
@@ -85,7 +85,7 @@ class RatingSummary extends StatelessWidget {
             children: [
               if(controller.state.showRating.value)...[
                 Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   padding: EdgeInsets.all(Sizing.space(12)),
                   margin: EdgeInsets.all(Sizing.space(10)),
                   decoration: BoxDecoration(

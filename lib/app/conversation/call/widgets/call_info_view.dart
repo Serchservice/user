@@ -185,7 +185,7 @@ class CallInfoView extends StatelessWidget {
                             padding: EdgeInsets.all(Sizing.space(12)),
                             borderRadius: 24,
                             onClick: showButton ? controller.invite : null,
-                            width: MediaQuery.of(context).size.width
+                            width: MediaQuery.sizeOf(context).width
                           ),
                         )
                       ],

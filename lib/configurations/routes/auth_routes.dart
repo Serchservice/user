@@ -8,7 +8,7 @@ List<GetPage> authenticationRoutes = [
     binding: AccountIssueBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -19,7 +19,7 @@ List<GetPage> authenticationRoutes = [
     binding: EmailCheckerBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -30,20 +30,8 @@ List<GetPage> authenticationRoutes = [
     binding: EmailVerificationBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
-    transitionDuration: const Duration(milliseconds: 800),
-  ),
-
-  GetPage(
-    name: LocationCheckerLayout.route,
-    page: () => LocationCheckerLayout(),
-    binding: LocationCheckerBinding(),
-    middlewares: [
-      AuthMiddleware(priority: 10),
-      DeviceMiddleware(priority: 20)
-    ],
-    transition: Transition.circularReveal,
     transitionDuration: const Duration(milliseconds: 800),
   ),
 
@@ -53,7 +41,7 @@ List<GetPage> authenticationRoutes = [
     binding: LoginBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -63,7 +51,7 @@ List<GetPage> authenticationRoutes = [
     page: () => const OnboardingLayout(),
     transition: Transition.circularReveal,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -73,7 +61,7 @@ List<GetPage> authenticationRoutes = [
     page: () => const PageNotFoundLayout(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -92,7 +80,7 @@ List<GetPage> authenticationRoutes = [
     binding: ResetPasswordBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -103,7 +91,7 @@ List<GetPage> authenticationRoutes = [
     binding: ResetPasswordConfirmationBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -114,7 +102,7 @@ List<GetPage> authenticationRoutes = [
     binding: ResetPasswordRequestBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),
@@ -124,7 +112,7 @@ List<GetPage> authenticationRoutes = [
     page: () => SignupLayout(),
     binding: SignupBinding(),
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 800),
   ),

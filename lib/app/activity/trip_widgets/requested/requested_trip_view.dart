@@ -27,7 +27,7 @@ class RequestedTripView extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(Sizing.space(12)),
                 color: Theme.of(context).appBarTheme.backgroundColor,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,7 +67,7 @@ class RequestedTripView extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(Sizing.space(12)),
                         color: Theme.of(context).appBarTheme.backgroundColor,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +90,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +116,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -140,7 +140,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -184,7 +184,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -210,7 +210,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -231,7 +231,7 @@ class RequestedTripView extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(Sizing.space(12)),
                           color: Theme.of(context).appBarTheme.backgroundColor,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -272,7 +272,7 @@ class RequestedTripView extends StatelessWidget {
                     isInvite: selected.isRequest,
                     onSuccess: controller.cancelTrip
                   ),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                 ),
               )
             ],

@@ -6,6 +6,15 @@ class AppUpdatesController extends GetxController {
 
   List<UpdateLogView> updates = [
     UpdateLogView(
+      header: "1.0.1: Bug fixes and workflow change.",
+      content: [
+        "Fixed initialization bugs.",
+        "Removed country and state validator when app opens.",
+      ],
+      date: "4th October, 2024",
+      index: 1
+    ),
+    UpdateLogView(
       header: "1.0.0: Launching the Serch platform.",
       content: [
         "Connect easily with service providers.",

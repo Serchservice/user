@@ -30,32 +30,36 @@ class MfaAuthLayout extends GetResponsiveView<MfaAuthController> {
           : "Enter the passcode from the authenticator app";
 
       return MainLayout(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GoBack(color: Theme.of(context).primaryColorLight, icon: Icons.arrow_back),
-              // Image.asset(Media.logo, width: 80, height: 80, color: Theme.of(context).primaryColor),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: LineHeader(
-                  header: title,
-                  footer: description,
-                  headerSize: 16,
-                  color: Theme.of(context).primaryColor,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if(controller.isDisable) ...[
+                  GoBack(color: Theme.of(context).primaryColorLight, icon: Icons.arrow_back)
+                ] else ...[
+                  Image(image: AssetUtility.image(Media.logo), color: Theme.of(context).primaryColor, width: 80)
+                ],
+                // Image.asset(Media.logo, width: 80, height: 80, color: Theme.of(context).primaryColor),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: LineHeader(
+                    header: title,
+                    footer: description,
+                    headerSize: 16,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              if(controller.isDisable) ...[
-                Expanded(
-                  child: Padding(
+                const SizedBox(height: 40),
+                if(controller.isDisable) ...[
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          color: Theme.of(context).appBarTheme.backgroundColor,
-                          borderRadius: BorderRadius.circular(20)
+                        color: Theme.of(context).appBarTheme.backgroundColor,
+                        borderRadius: BorderRadius.circular(20)
                       ),
                       child: SText(
                         text: "This action will most certainly reduce the security level of your account.",
@@ -65,20 +69,18 @@ class MfaAuthLayout extends GetResponsiveView<MfaAuthController> {
                       ),
                     ),
                   ),
-                ),
-              ] else ...[
-                Expanded(
-                  child: Padding(
+                ] else ...[
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         OtpField(
-                            controller: controller.authController,
-                            focusNode: controller.authFocusNode,
-                            isBox: false,
-                            onCompleted: (code) => controller.verify(code: code),
-                            onChanged: (code) => controller.state.token.value = code
+                          controller: controller.authController,
+                          focusNode: controller.authFocusNode,
+                          isBox: false,
+                          onCompleted: (code) => controller.verify(code: code),
+                          onChanged: (code) => controller.state.token.value = code
                         ),
                         if(controller.isLogin) ...[
                           const SizedBox(height: 40),
@@ -89,45 +91,63 @@ class MfaAuthLayout extends GetResponsiveView<MfaAuthController> {
                             weight: FontWeight.bold,
                           ),
                           const SizedBox(height: 15),
-                          GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: controller.buttons.length,
-                              crossAxisSpacing: 8,
-                              mainAxisExtent: 33
-                            ),
-                            shrinkWrap: true,
-                            itemCount: controller.buttons.length,
-                            itemBuilder: (context, index) {
-                              return Obx(() => ButtonSelector(
-                                text: controller.buttons[index],
-                                selected: index == 0 ? controller.state.isRecovery.value : !controller.state.isRecovery.value,
-                                unSelectedBgColor: Theme.of(context).scaffoldBackgroundColor,
-                                onTap: (value) => controller.toggle(index),
-                                index: index
-                              ));
-                            },
-                          ),
+                          ...controller.buttons.asMap().entries.map((button) {
+                            bool selected = button.key == 0 ? controller.state.isRecovery.value : !controller.state.isRecovery.value;
+
+                            return Container(
+                              width: MediaQuery.sizeOf(context).width,
+                              margin: EdgeInsets.only(top: button.key == controller.buttons.length - 1 ? 6 : 0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Material(
+                                  color: selected ? Theme.of(context).primaryColor : Theme.of(context).appBarTheme.backgroundColor,
+                                  child: InkWell(
+                                    onTap: () => controller.toggle(button.key),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(Sizing.space(12)),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SText(
+                                            text: button.value,
+                                            color: selected ? Theme.of(context).scaffoldBackgroundColor : Theme.of(context).primaryColor,
+                                            size: Sizing.font(14),
+                                            weight: FontWeight.bold,
+                                          ),
+                                          SText(
+                                            text: selected ? "Selected authentication option" : "Select to use this option",
+                                            color: Theme.of(context).primaryColorLight,
+                                            size: Sizing.font(12),
+                                          ),
+                                        ],
+                                      )
+                                    ),
+                                  )
+                                ),
+                              ),
+                            );
+                          }),
                         ],
                       ],
                     ),
                   ),
+                ],
+                const SizedBox(height: 80),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: LoadingButton(
+                    text: "Confirm",
+                    borderRadius: 24,
+                    isCircular: true,
+                    width: MediaQuery.sizeOf(context).width,
+                    textSize: Sizing.font(14),
+                    onClick: () => controller.verify(),
+                    loading: controller.state.isVerifying.value,
+                  ),
                 ),
+                const SizedBox(height: 15),
               ],
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: LoadingButton(
-                  text: "Confirm",
-                  borderRadius: 24,
-                  isCircular: true,
-                  width: MediaQuery.of(context).size.width,
-                  textSize: Sizing.font(14),
-                  onClick: () => controller.verify(),
-                  loading: controller.state.isVerifying.value,
-                ),
-              ),
-              const SizedBox(height: 15),
-            ],
+            ),
           ),
         )
       );

@@ -157,7 +157,7 @@ class ShareSheet extends StatelessWidget {
                                 )
                                 : Image.asset(
                                 share.header,
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                               ),
                             ),
                           ),

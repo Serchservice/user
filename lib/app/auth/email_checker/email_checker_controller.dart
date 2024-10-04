@@ -1,3 +1,4 @@
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
@@ -17,7 +18,15 @@ class EmailCheckerController extends GetxController {
   @override
   void onInit() {
     state.referral.value = params["referral"] ?? "";
+
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    launchDevice();
+
+    super.onReady();
   }
 
   void toggle() => state.isVisible.toggle();

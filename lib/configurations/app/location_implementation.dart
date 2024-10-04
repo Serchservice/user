@@ -11,17 +11,17 @@ class LocationImplementation implements LocationService {
     required Function(String error) onError
   }) async {
     if(await _accessService.hasLocation()) {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
       try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+        List<Placemark> marks = await placemarkFromCoordinates(position.latitude, position.longitude);
         String place = "";
 
-        String country = placemarks.last.country.toString();
-        String state = placemarks.last.administrativeArea.toString();
-        String localGovernmentArea = placemarks.last.subAdministrativeArea.toString();
-        String city = placemarks.last.locality.toString();
-        String streetNumber = placemarks.last.subThoroughfare.toString();
-        String streetName = placemarks.reversed.last.thoroughfare.toString();
+        String country = marks.last.country.toString();
+        String state = marks.last.administrativeArea.toString();
+        String localGovernmentArea = marks.last.subAdministrativeArea.toString();
+        String city = marks.last.locality.toString();
+        String streetNumber = marks.last.subThoroughfare.toString();
+        String streetName = marks.reversed.last.thoroughfare.toString();
 
         place = getPlaceAddress(
           country: country,
@@ -60,36 +60,36 @@ class LocationImplementation implements LocationService {
     String lga = "", String city = "",
     String streetNumber = "", String streetName = ""
   }) {
-    String newstreetNumber = "";
+    String newStreetNumber = "";
     if(streetNumber.isNotEmpty) {
-      newstreetNumber = "$streetNumber, ";
+      newStreetNumber = "$streetNumber, ";
     }
 
-    String newstreetName = "";
+    String newStreetName = "";
     if(streetName.isNotEmpty) {
-      newstreetName = "$streetName, ";
+      newStreetName = "$streetName, ";
     }
 
-    String newcity = "";
+    String newCity = "";
     if(city.isNotEmpty) {
-      newcity = "$city, ";
+      newCity = "$city, ";
     }
 
-    String newlga = "";
+    String newLga = "";
     if(lga.isNotEmpty) {
-      newlga = "$lga. ";
+      newLga = "$lga. ";
     }
 
-    String newstate = "";
+    String newState = "";
     if(state.isNotEmpty) {
-      newstate = "$state. ";
+      newState = "$state. ";
     }
 
-    String newcountry = "";
+    String newCountry = "";
     if(country.isNotEmpty) {
-      newcountry = "$country.";
+      newCountry = "$country.";
     }
 
-    return "$newstreetNumber$newstreetName$newcity$newlga$newstate$newcountry";
+    return "$newStreetNumber$newStreetName$newCity$newLga$newState$newCountry";
   }
 }

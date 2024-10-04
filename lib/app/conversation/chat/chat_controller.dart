@@ -15,7 +15,7 @@ class ChatController extends GetxController {
   final args = Get.arguments;
 
   final ConnectService _connect = Connect();
-  final SocketService _socket = Socket.instance;
+  final Socket _socket = Socket.instance;
 
   ScrollController messageScrollController = ScrollController();
   final TextEditingController textMessage = TextEditingController();
@@ -288,7 +288,7 @@ class ChatController extends GetxController {
 
   /// Send a message
   void send(BuildContext context) {
-    if(_socket.stompClient.connected) {
+    if(_socket.isConnected) {
       if(textMessage.text.isNotEmpty || state.media.value.path.isNotEmpty) {
         Map<String, dynamic> message = {
           "room": state.room.value,
@@ -419,7 +419,7 @@ class ChatController extends GetxController {
 
   /// Mark message as read
   void markRead(ChatMessage message) {
-    if(_socket.stompClient.connected) {
+    if(_socket.isConnected) {
       if(message.status.toLowerCase() != "read" && !message.isSentByCurrentUser) {
         Map<String, dynamic> update = {
           "room": state.room.value,
@@ -447,7 +447,7 @@ class ChatController extends GetxController {
   }
 
   void deleteMessage(ChatMessage message, BuildContext context) {
-    if(_socket.stompClient.connected) {
+    if(_socket.isConnected) {
       Map<String, dynamic> update = {
         "room": state.room.value,
         "id": message.id,

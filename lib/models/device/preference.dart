@@ -21,6 +21,7 @@ class Preference {
   final String active;
   final bool skipLocationCheck;
   final bool useLastLoggedInAccountAsDefault;
+  final bool isAuthenticated;
 
   const Preference({
     this.chatNotification = PreferenceOption.all,
@@ -38,7 +39,8 @@ class Preference {
     this.remember = false,
     this.active = "",
     this.skipLocationCheck = false,
-    this.useLastLoggedInAccountAsDefault = false
+    this.useLastLoggedInAccountAsDefault = false,
+    this.isAuthenticated = false
   });
 
   bool get is30Secs => scheduleTime == ScheduleTime.thirtyMinutes;
@@ -70,7 +72,8 @@ class Preference {
     bool? remember,
     bool? skipLocationCheck,
     String? active,
-    bool? useLastLoggedInAccountAsDefault
+    bool? useLastLoggedInAccountAsDefault,
+    bool? isAuthenticated
   }) {
     return Preference(
       chatNotification: chatNotification ?? this.chatNotification,
@@ -88,7 +91,8 @@ class Preference {
       remember: remember ?? this.remember,
       active: active ?? this.active,
       skipLocationCheck: skipLocationCheck ?? this.skipLocationCheck,
-      useLastLoggedInAccountAsDefault: useLastLoggedInAccountAsDefault ?? this.useLastLoggedInAccountAsDefault
+      useLastLoggedInAccountAsDefault: useLastLoggedInAccountAsDefault ?? this.useLastLoggedInAccountAsDefault,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated
     );
   }
 
@@ -126,6 +130,7 @@ class Preference {
       hasRequestedCountry: map["has_requested_country"] ?? false,
       active: map["active"] ?? "",
       useLastLoggedInAccountAsDefault: map["use_last_logged_in_account_as_default"] ?? false,
+      isAuthenticated: map["is_authenticated"] ?? false
     );
   }
 
@@ -145,6 +150,7 @@ class Preference {
     "has_requested_country": hasRequestedCountry,
     "skip_location_check": skipLocationCheck,
     "active": active,
-    "use_last_logged_in_account_as_default": useLastLoggedInAccountAsDefault
+    "use_last_logged_in_account_as_default": useLastLoggedInAccountAsDefault,
+    "is_authenticated": isAuthenticated
   };
 }

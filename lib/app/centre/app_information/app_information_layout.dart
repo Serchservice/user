@@ -103,7 +103,7 @@ class AppInformationLayout extends GetResponsiveView<AppInformationController> {
                     Container(
                       padding: EdgeInsets.all(Sizing.space(16)),
                       margin: EdgeInsets.all(Sizing.space(16)),
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
                         color: Theme.of(context).splashColor,
                         borderRadius: BorderRadius.circular(16)

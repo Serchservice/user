@@ -152,7 +152,7 @@ class _ScheduleTimeViewerState extends State<ScheduleTimeViewer> {
             const SizedBox(height: 15),
             Container(
               padding: EdgeInsets.all(Sizing.space(8)),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(16)
@@ -185,7 +185,7 @@ class _ScheduleTimeViewerState extends State<ScheduleTimeViewer> {
               onClick: cancel,
               buttonColor: CommonColors.error,
               textColor: CommonColors.lightTheme,
-              width: MediaQuery.of(context).size.width
+              width: MediaQuery.sizeOf(context).width
             ),
           ] else if(schedule.status.toLowerCase() == "accepted") ...[
             LoadingButton(
@@ -194,7 +194,7 @@ class _ScheduleTimeViewerState extends State<ScheduleTimeViewer> {
               padding: EdgeInsets.all(Sizing.space(12)),
               borderRadius: 24,
               onClick: start,
-              width: MediaQuery.of(context).size.width
+              width: MediaQuery.sizeOf(context).width
             ),
           ]
         ],

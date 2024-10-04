@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:user/library.dart';
 
@@ -13,7 +14,7 @@ class GuestActiveTripViewController extends GetxController {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   final GuestHomeController _homeController = GuestHomeController.data;
-  final SocketService _socket = Socket();
+  final Socket _socket = Socket();
   final ConnectService _connect = Connect();
 
   final TextEditingController authController = TextEditingController();

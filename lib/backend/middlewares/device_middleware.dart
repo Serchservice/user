@@ -14,7 +14,7 @@ class DeviceMiddleware extends GetMiddleware{
   }
 
   DeviceMiddleware({
-    required int? priority
+    int? priority
   }) : _priority = priority;
 
   @override

@@ -1,3 +1,4 @@
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
@@ -85,7 +86,7 @@ class MfaAuthController extends GetxController {
     }
   }
 
-  List<String> buttons = ["Recovery Code", "Code"];
+  List<String> buttons = ["Recovery Code", "Authenticator Code"];
 
   void toggle(int button) {
     if(button == 0) {
@@ -114,6 +115,7 @@ class MfaAuthController extends GetxController {
         AuthResponse auth = AuthResponse.fromJson(response.data);
         Database.saveAuth(auth);
         if(isLogin) {
+          Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
           Navigate.all(HomeLayout.route);
         } else {
           Navigate.back();
@@ -143,6 +145,7 @@ class MfaAuthController extends GetxController {
         AuthResponse auth = AuthResponse.fromJson(response.data);
         Database.saveAuth(auth);
         if(isLogin) {
+          Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
           Navigate.all(HomeLayout.route);
         } else {
           Navigate.back();

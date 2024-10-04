@@ -1,3 +1,4 @@
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 class Logger {
@@ -11,16 +12,16 @@ class Logger {
 
   static void log(text, {String? from, bool needHeader = true}){
     if(kDebugMode){
-      if(needHeader) {
-        debugPrint("Serch Debug::: ${build(text: text, from: from)}");
-      } else {
-        debugPrint("Serch Debug::: ${text.toString()}");
-      }
+      Debug.log(
+        needHeader ? build(text: text, from: from) : text.toString(),
+        mode: DebugMode.TRACE,
+        prefix: "Serch"
+      );
     }
   }
 }
 
-String _buildLogger({String? from, required dynamic text}) {
+String build({String? from, required dynamic text}) {
   if(from != null) {
     return "$from _______________________________ ${text.toString()}";
   } else {
@@ -30,10 +31,10 @@ String _buildLogger({String? from, required dynamic text}) {
 
 void log(text, {String? from, bool needHeader = true}){
   if(kDebugMode){
-    if(needHeader) {
-      debugPrint("Serch Debug::: ${_buildLogger(text: text, from: from)}");
-    } else {
-      debugPrint("Serch Debug::: ${text.toString()}");
-    }
+    Debug.log(
+      needHeader ? build(text: text, from: from) : text.toString(),
+      mode: DebugMode.INFO,
+      prefix: "Serch"
+    );
   }
 }

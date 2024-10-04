@@ -26,7 +26,7 @@ class SharedLinksLayout extends GetResponsiveView<SharedLinksController> {
                 Padding(
                   padding: EdgeInsets.all(Sizing.space(10)),
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     margin: EdgeInsets.only(bottom: Sizing.space(10)),
                     height: 180,
                     decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class SharedLinksLayout extends GetResponsiveView<SharedLinksController> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         margin: EdgeInsets.only(bottom: Sizing.space(10)),
                         height: 90,
                         decoration: BoxDecoration(

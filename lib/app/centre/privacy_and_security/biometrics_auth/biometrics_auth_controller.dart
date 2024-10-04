@@ -106,11 +106,12 @@ class BiometricsAuthController extends GetxController {
   void _onBiometricsSuccess() {
     if(state.isLogin.value) {
       if(Database.preference.hasBiometrics) {
-        if(Database.loginWithMFA) {
+        if(Database.loginWithMFA && !Database.preference.isAuthenticated) {
           Navigate.off(MfaAuthLayout.loginRoute);
         } else {
           _apiService.validateSession(
             onSuccess: (success) {
+              Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
               Navigate.all(HomeLayout.route);
             },
             onError: (error) {
@@ -123,6 +124,7 @@ class BiometricsAuthController extends GetxController {
         notify.info(message: "You have not enabled fingerprint for this account");
         _apiService.validateSession(
           onSuccess: (success) {
+            Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
             Navigate.all(HomeLayout.route);
           },
           onError: (error) {

@@ -15,8 +15,8 @@ class ActiveTip2FixCall extends StatelessWidget {
         children: [
           _buildBody(context, controller),
           SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
             child: Column(
               children: [
                 Tip2FixCallTopBar(controller: controller),
@@ -78,8 +78,8 @@ class ActiveTip2FixCall extends StatelessWidget {
             ),
           ),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
             child: controller.remoteParticipant != null
                 ? stream.StreamVideoRenderer(
                   call: controller.streamCall,

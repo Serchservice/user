@@ -1,84 +1,32 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-import 'package:user/library.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
+import 'package:user/library.dart';
 
-final class Socket implements SocketService {
+final class Socket {
   static final Socket instance = Socket();
 
-  Map<String, String> _buildHeader() {
-    var headers = Map.of({
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${Database.session.accessToken}'
-    });
+  final SocketIt _socketIt = SocketIt(options: ConnectifyOptions(
+    useToken: true,
+    showLog: false,
+    session: Database.session,
+    mode: ConnectifyMode.PRODUCTION
+  ));
 
-    if (!kIsWeb) {
-      headers.putIfAbsent("Content-Type", () => "application/json");
-    }
-    return headers;
+  bool get isConnected => _socketIt.isConnected;
+
+  void initialize({String endpoint = "/ws:serch", required void Function(StompFrame) callback, required String subscribeDestination}) {
+    _socketIt.initialize(callback: callback, subscribeDestination: subscribeDestination);
   }
 
-  @override
-  late StompClient stompClient;
-
-  @override
-  void initialize({
-    String endpoint = "/ws:serch",
-    required void Function(StompFrame) callback,
-    required String subscribeDestination,
-  }) {
-    stompClient = StompClient(
-      config: StompConfig.sockJS(
-        url: '${Keys.baseUrl}$endpoint',
-        webSocketConnectHeaders: _buildHeader(),
-        onConnect: (frame) => onConnect(
-          callback: callback,
-          subscribeDestination: subscribeDestination,
-          frame: frame
-        ),
-        onWebSocketError: (dynamic error) { },
-        onStompError: (dynamic error) { },
-        onDisconnect: (frame) {
-          Logger.log('Disconnected: ${frame.body}');
-        },
-      ),
-    );
-    stompClient.activate();
+  void onConnect({required StompFrame frame, required void Function(StompFrame) callback, required String subscribeDestination}) {
+    _socketIt.onConnect(frame: frame, callback: callback, subscribeDestination: subscribeDestination);
   }
 
-  @override
-  void onConnect({
-    required StompFrame frame,
-    required void Function(StompFrame) callback,
-    required String subscribeDestination
-  }) {
-    Logger.log('Connected to WebSocket');
-    if(stompClient.connected) {
-      stompClient.subscribe(
-        destination: subscribeDestination,
-        headers: _buildHeader(),
-        callback: callback,
-      );
-    }
-  }
-
-  @override
   void send({required String destination, Map<String, dynamic>? message, String data = ""}) {
-    assert((message != null && data.isEmpty) || (message == null && data.isNotEmpty), "Message or data must be provided");
-    if(stompClient.connected) {
-      stompClient.send(
-        destination: destination,
-        body: data.isNotEmpty ? data : jsonEncode(message),
-        headers: _buildHeader(),
-      );
-    }
+    _socketIt.send(destination: destination, message: message, data: data);
   }
 
-  @override
   void disconnect() {
-    if(stompClient.connected) {
-      stompClient.deactivate();
-    }
+    _socketIt.disconnect();
   }
 }

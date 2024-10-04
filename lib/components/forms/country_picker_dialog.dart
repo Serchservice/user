@@ -71,10 +71,14 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                     child: NavigatorButton(
                       radius: Sizing.space(12),
                       header: _filteredCountries[index].name,
-                      prefixWidget: Image(
-                        image: AssetUtility.image(_filteredCountries[index].image),
-                        width: 32,
+                      prefixWidget: SText(
+                        text: _filteredCountries[index].flag,
+                        size: 18
                       ),
+                      // prefixWidget: Image(
+                      //   image: AssetUtility.image(_filteredCountries[index].image),
+                      //   width: 32,
+                      // ),
                       suffixWidget: SText(
                         text: '+${_filteredCountries[index].dialCode}',
                         weight: FontWeight.w700,

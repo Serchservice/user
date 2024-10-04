@@ -52,7 +52,7 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                     LoadingShimmer(
                       content: Container(
                         height: 200,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: CommonColors.shimmerHigh,
                           borderRadius: BorderRadius.circular(24)
@@ -63,7 +63,7 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                   if(!controller.state.isFetchingUsage.value) ...[
                     Container(
                       padding: EdgeInsets.all(Sizing.space(16)),
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
                         color: Theme.of(context).appBarTheme.backgroundColor,
                         borderRadius: BorderRadius.circular(24)
@@ -101,7 +101,7 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                     LoadingShimmer(
                       content: Container(
                         height: 300,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: CommonColors.shimmerHigh,
                           borderRadius: BorderRadius.circular(24)
@@ -115,7 +115,7 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                   const SizedBox(height: 40),
                   LoadingButton(
                     text: "Disable",
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     loading: controller.state.isDisabling.value,
                     onClick: () async {
                       bool? result = await Navigate.to(MfaAuthLayout.disableRoute);
@@ -163,7 +163,7 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                 const SizedBox(height: 10),
                 LoadingButton(
                   text: "Enable",
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   loading: controller.state.isFetching.value,
                   onClick: () => controller.init(
                     onSuccess: (mfa) => EnableMultiFactor.open(
@@ -241,7 +241,7 @@ class RecoveryCodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(Sizing.space(16)),
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         color: Theme.of(context).appBarTheme.backgroundColor,
         borderRadius: BorderRadius.circular(24)

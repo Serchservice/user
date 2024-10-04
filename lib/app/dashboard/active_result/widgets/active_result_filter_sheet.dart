@@ -145,7 +145,7 @@ class _ActiveResultFilterSheetState extends State<ActiveResultFilterSheet> {
           LoadingButton(
             text: "Update",
             borderRadius: 24,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             onClick: () {
               Navigate.back();
               widget.onUpdate.call(

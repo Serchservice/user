@@ -1,4 +1,5 @@
 import 'package:user/library.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 
 class GuestHomeActivity implements GuestHomeActivityService {
   final GuestHomeController controller;

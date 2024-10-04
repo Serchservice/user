@@ -194,7 +194,7 @@ class _GuestBecomeUserState extends State<GuestBecomeUser> {
           LoadingButton(
             text: "Continue",
             borderRadius: 24,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             textSize: Sizing.font(12),
             buttonColor: Theme.of(context).primaryColorDark,
             textColor: Theme.of(context).scaffoldBackgroundColor,

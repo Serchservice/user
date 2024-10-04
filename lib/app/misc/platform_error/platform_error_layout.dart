@@ -5,10 +5,22 @@ import 'package:user/library.dart';
 class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
   static String route = "/page/error/platform";
 
-  PlatformErrorLayout({super.key});
+  final String? error;
+  PlatformErrorLayout({super.key, this.error});
 
   @override
   Widget build(BuildContext context) {
+    if(error != null) {
+      return GetBuilder<PlatformErrorController>(
+        init: PlatformErrorController(error: error),
+        builder: (controller) => render(context, controller)
+      );
+    } else {
+      return render(context, controller);
+    }
+  }
+
+  Widget render(BuildContext context, PlatformErrorController controller) {
     List<ButtonView> buttons = [
       ButtonView(
         header: "Serch Help Center",
@@ -39,13 +51,12 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
               footer: "Platform error just happened",
               color: Theme.of(context).primaryColor,
             ),
+            const SizedBox(height: 30),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(Sizing.space(16)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
                       padding: EdgeInsets.all(Sizing.space(12)),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColorLight,
@@ -56,41 +67,33 @@ class PlatformErrorLayout extends GetResponsiveView<PlatformErrorController> {
                         size: Sizing.font(14),
                         color: Theme.of(context).scaffoldBackgroundColor
                       ))
-                    ),
-                    const SizedBox(height: 30),
-                    SText(
-                      text: "Quick actions",
-                      color: Theme.of(context).primaryColor
-                    ),
-                    const SizedBox(height: 30),
-                    ...buttons.map((button) => Padding(
-                      padding: EdgeInsets.only(bottom: Sizing.space(10)),
-                      child: NavigatorButton(
-                        header: button.header,
-                        backgroundColor: Theme.of(context).splashColor,
-                        detail: button.body,
-                        prefixIcon: button.icon,
-                        onPressed: () {
-                          if(button.index == 0) {
-                            RouteNavigator.openLink(url: "https://help.serchservice.com");
-                          } else {
-                            RouteNavigator.mail("improve@serchservice.com");
-                          }
-                        },
-                      )
-                    )),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 30),
+                  SText(text: "Quick actions", color: Theme.of(context).primaryColor),
+                  const SizedBox(height: 30),
+                  ...buttons.map((button) => Padding(
+                    padding: EdgeInsets.only(bottom: Sizing.space(10)),
+                    child: NavigatorButton(
+                      header: button.header,
+                      backgroundColor: Theme.of(context).splashColor,
+                      detail: button.body,
+                      prefixIcon: button.icon,
+                      detailSize: 12,
+                      onPressed: () {
+                        if(button.index == 0) {
+                          RouteNavigator.openLink(url: "https://help.serchservice.com");
+                        } else {
+                          RouteNavigator.mail("improve@serchservice.com");
+                        }
+                      },
+                    )
+                  )),
+                ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Center(
-                child: Image.asset(
-                  Media.tagline,
-                  width: 150,
-                  color: Theme.of(context).primaryColor
-                ),
+              child: Center(child: Image.asset(Media.tagline, width: 150, color: Theme.of(context).primaryColor),
               ),
             )
           ]

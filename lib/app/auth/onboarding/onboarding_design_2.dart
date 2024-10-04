@@ -87,7 +87,7 @@ class _OnboardingDesign2State extends State<OnboardingDesign2> {
             children: [
               Image.asset(
                 Media.onboard2,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
               ),
               const SizedBox(height: 20),
               AnimatedSwitcher(

@@ -44,19 +44,17 @@ class ReferralLinkVerifierController extends GetxController {
 
       ReferralProgram program = ReferralProgram.fromJson(response.data);
       Navigate.bottomSheet(
-          sheet: ReferralProgramSheet(
-              program: program,
-              onContinue: () => Navigate.to(EmailCheckerLayout.route, parameters: {
-                "referral": program.referralCode,
-              })
-          ),
-          safeArea: false,
-          isScrollable: true,
-          route: "/referral/program/${program.referralCode}"
+        sheet: ReferralProgramSheet(
+          program: program,
+          onContinue: () => Navigate.to(EmailCheckerLayout.route, parameters: {"referral": program.referralCode})
+        ),
+        safeArea: false,
+        isScrollable: true,
+        route: "/referral/program/${program.referralCode}"
       );
     } else {
       notify.error(message: response.message);
-      Navigate.all(LocationCheckerLayout.route);
+      Navigate.all(EmailCheckerLayout.route);
       return;
     }
   }

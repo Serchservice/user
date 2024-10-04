@@ -12,7 +12,7 @@ class WalletView extends StatelessWidget {
     if(isLoading) {
       return LoadingShimmer(
         content: Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           margin: EdgeInsets.all(Sizing.space(15)),
           padding: const EdgeInsets.all(12.0),
           height: 200,
@@ -27,7 +27,7 @@ class WalletView extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         child: Container(
           padding: EdgeInsets.all(Sizing.space(12)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: CommonColors.darkTheme2

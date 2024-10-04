@@ -178,7 +178,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
                             theme == ThemeType.light
                               ? Media.lightMode
                               : Media.darkMode,
-                            width: MediaQuery.of(context).size.width
+                            width: MediaQuery.sizeOf(context).width
                           )
                         ),
                         const SizedBox(height: 10),
@@ -357,7 +357,7 @@ class _PreferenceSelectorState extends State<PreferenceSelector> {
               LoadingButton(
                 text: "Save",
                 borderRadius: 24,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 textSize: Sizing.font(14),
                 buttonColor: Theme.of(context).primaryColorDark,
                 textColor: Theme.of(context).scaffoldBackgroundColor,
