@@ -8,7 +8,7 @@ List<GetPage> centreRoutes = [
     binding: AppUpdatesBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -19,7 +19,7 @@ List<GetPage> centreRoutes = [
     binding: AppInformationBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -30,7 +30,7 @@ List<GetPage> centreRoutes = [
     binding: SpeakWithSerchBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -41,7 +41,7 @@ List<GetPage> centreRoutes = [
     binding: HelpBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -52,7 +52,7 @@ List<GetPage> centreRoutes = [
     binding: PreferenceBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -63,7 +63,7 @@ List<GetPage> centreRoutes = [
     binding: WalletBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -74,7 +74,7 @@ List<GetPage> centreRoutes = [
     binding: WalletSettingsBinding(),
     transition: Transition.downToUp,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -85,7 +85,7 @@ List<GetPage> centreRoutes = [
     binding: UpdateBankDetailsBinding(),
     transition: Transition.circularReveal,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -96,7 +96,7 @@ List<GetPage> centreRoutes = [
     binding: RatingBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -107,7 +107,7 @@ List<GetPage> centreRoutes = [
     binding: PrivacyAndSecurityBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -118,7 +118,7 @@ List<GetPage> centreRoutes = [
     binding: BiometricsBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -129,7 +129,7 @@ List<GetPage> centreRoutes = [
     binding: BiometricsAuthBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -140,7 +140,7 @@ List<GetPage> centreRoutes = [
     binding: BiometricsAuthBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -151,7 +151,7 @@ List<GetPage> centreRoutes = [
     binding: ChangePasswordBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -162,7 +162,7 @@ List<GetPage> centreRoutes = [
     binding: MultiFactorBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -173,7 +173,7 @@ List<GetPage> centreRoutes = [
     binding: MfaAuthBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -184,7 +184,7 @@ List<GetPage> centreRoutes = [
     binding: MfaAuthBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -195,7 +195,7 @@ List<GetPage> centreRoutes = [
     binding: MfaAuthBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -206,7 +206,7 @@ List<GetPage> centreRoutes = [
     binding: BookmarkBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -217,7 +217,7 @@ List<GetPage> centreRoutes = [
     binding: AccountBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -228,7 +228,7 @@ List<GetPage> centreRoutes = [
     binding: SharedLinksBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),
@@ -239,7 +239,7 @@ List<GetPage> centreRoutes = [
     binding: ReferralBinding(),
     transition: Transition.native,
     middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
     transitionDuration: const Duration(milliseconds: 500),
   ),

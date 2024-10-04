@@ -205,7 +205,7 @@ class SharedLinkVerifierLayout extends GetResponsiveView<SharedLinkVerifierContr
                     LoadingButton(
                       text: "Create with user account",
                       borderRadius: 24,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       textSize: Sizing.font(14),
                       buttonColor: Theme.of(context).primaryColorDark,
                       textColor: Theme.of(context).scaffoldBackgroundColor,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:stream_video_flutter/stream_video_flutter.dart' as stream;
 import 'package:user/library.dart';
 

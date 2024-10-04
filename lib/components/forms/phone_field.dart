@@ -107,10 +107,7 @@ class _PhoneFieldState extends State<PhoneField> {
       keyboard: TextInputType.phone,
       inputAction: widget.textInputAction ?? TextInputAction.next,
       prefixIcon: Database.countries.isNotEmpty
-        ? Padding(
-          padding: const EdgeInsets.only(right:3),
-          child: _buildFlagsButton()
-        )
+        ? Padding(padding: const EdgeInsets.only(right:3), child: _buildFlagsButton())
         : null,
       suffixIcon: widget.suffixIcon,
       suffixIconConstraints: widget.suffixIconConstraints,
@@ -125,9 +122,9 @@ class _PhoneFieldState extends State<PhoneField> {
       },
       validate: (value) {
         if (!widget.disableLengthCheck && value != null) {
-          return value.length >= _selectedCountry.minLength
-            && value.length <= _selectedCountry.maxLength
-              ? null : widget.invalidNumberMessage;
+          return value.length >= _selectedCountry.minLength && value.length <= _selectedCountry.maxLength
+              ? null
+              : widget.invalidNumberMessage;
         }
         return validatorMessage;
       },
@@ -136,9 +133,7 @@ class _PhoneFieldState extends State<PhoneField> {
 
   Widget _buildFlagsButton() {
     BoxDecoration decoration = BoxDecoration(
-      border: Border(
-        right: BorderSide(color: Theme.of(context).primaryColor)
-      ),
+      border: Border(right: BorderSide(color: Theme.of(context).primaryColor)),
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(10),
         bottomLeft: Radius.circular(10)
@@ -162,10 +157,11 @@ class _PhoneFieldState extends State<PhoneField> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image(
-                    image: AssetUtility.image(_selectedCountry.image),
-                    width: 28,
-                  ),
+                  SText(text: _selectedCountry.flag, size: 18),
+                  // Image(
+                  //   image: AssetUtility.image(_selectedCountry.image),
+                  //   width: 28,
+                  // ),
                   const SizedBox(width: 8),
                   SText(
                     text: '+${_selectedCountry.dialCode}',

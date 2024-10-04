@@ -39,7 +39,7 @@ class GuestCreateLayout extends GetResponsiveView<GuestCreateController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       padding: EdgeInsets.all(Sizing.space(12)),
                       decoration: BoxDecoration(
                         color: Theme.of(context).splashColor,
@@ -160,7 +160,7 @@ class GuestCreateLayout extends GetResponsiveView<GuestCreateController> {
                       child: Obx(() => LoadingButton(
                         text: "Create",
                         borderRadius: 24,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         textSize: Sizing.font(14),
                         buttonColor: Theme.of(context).primaryColorDark,
                         textColor: Theme.of(context).scaffoldBackgroundColor,

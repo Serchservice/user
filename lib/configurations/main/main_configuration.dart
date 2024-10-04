@@ -40,21 +40,9 @@ class MainConfiguration extends GetxController {
 
   @override
   void onInit() async {
+    Database.savePreference(Database.preference.copyWith(isAuthenticated: false));
+
     _linkSubscription = await _appService.initializeDeepLink();
-    _appService.buildDeviceInformation(
-      onSuccess: (device) {
-        Database.saveDevice(device);
-        AnalyticsEngine.logEvent("DEVICE_INFORMATION", parameters: device.toJson());
-      }
-    );
-    _appService.getCountries(
-      onSuccess: (result) {
-        if(result.isNotEmpty) {
-          countries.value = result;
-          Database.saveCountries(result);
-        }
-      }
-    );
 
     AppLifeCycle appLifeCycle = AppLifeCycle(
       onForeground: () async {

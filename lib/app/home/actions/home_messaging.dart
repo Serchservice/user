@@ -1,4 +1,5 @@
 import 'package:user/library.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 
 class HomeMessaging implements HomeMessagingService {
   final HomeController controller;
@@ -70,7 +71,7 @@ class HomeMessaging implements HomeMessagingService {
   void subscribeToChatRooms() {
     for(var chat in controller.state.chats) {
       if(!controller.state.subscribed.contains(chat.room)) {
-        if(socket.stompClient.connected) {
+        if(socket.isConnected) {
           socket.send(
               destination: "/chat/connect",
               message: { "room": chat.room }

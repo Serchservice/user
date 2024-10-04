@@ -121,7 +121,7 @@ class WalletLayout extends GetResponsiveView<WalletController> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         margin: EdgeInsets.only(bottom: Sizing.space(5)),
                         padding: const EdgeInsets.all(12.0),
                         height: 70,

@@ -94,7 +94,7 @@ class UpdateBankDetailsLayout extends GetResponsiveView<UpdateBankDetailsControl
               Obx(() => LoadingButton(
                 text: "Update",
                 borderRadius: 24,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 padding: EdgeInsets.all(Sizing.space(12)),
                 textSize: Sizing.font(14),
                 onClick: controller.updateWallet,

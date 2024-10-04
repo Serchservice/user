@@ -43,6 +43,11 @@ class AccessImplementation implements AccessService {
       Permission.notification,
     ];
 
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if(!serviceEnabled) {
+      throw SerchException("Location service is not enabled on this device", isPlatformNotSupported: true);
+    }
+
     var storagePermission = await [...storagePermissions(sdk)].request();
     var notificationPermission = await [...notificationPermissions].request();
     var mediaPermission = await [...mediaPermissions].request();

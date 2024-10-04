@@ -94,7 +94,7 @@ class ActiveProviderView extends StatelessWidget {
               )
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               padding: EdgeInsets.all(Sizing.space(16)),
               color: Theme.of(context).appBarTheme.backgroundColor,
               child: Row(

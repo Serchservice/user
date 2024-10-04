@@ -33,7 +33,7 @@ class WalletSettingsLayout extends GetResponsiveView<WalletSettingsController> {
                     onTap: () => Navigate.to(UpdateBankDetailsLayout.route),
                     child: Container(
                       padding: EdgeInsets.all(Sizing.space(12)),
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -195,7 +195,7 @@ class WalletSettingsLayout extends GetResponsiveView<WalletSettingsController> {
                   return LoadingButton(
                     text: "Update",
                     borderRadius: 24,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(12)),
                     textSize: Sizing.font(14),
                     onClick: controller.updateWallet,

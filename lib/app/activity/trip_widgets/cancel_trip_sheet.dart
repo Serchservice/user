@@ -176,7 +176,7 @@ class _CancelTripSheetState extends State<CancelTripSheet> {
                 borderRadius: 24,
                 padding: EdgeInsets.all(Sizing.space(12)),
                 textSize: Sizing.font(14),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 onClick: cancel,
                 buttonColor: CommonColors.error,
                 textColor: CommonColors.lightTheme,

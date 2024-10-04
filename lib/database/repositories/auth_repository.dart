@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:user/library.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 
 class AuthRepository extends RepositoryService<AuthResponse, SessionResponse> {
   final DatabaseService _service = DatabaseImplementation(authDatabase);

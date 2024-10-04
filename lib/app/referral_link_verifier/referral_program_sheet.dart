@@ -106,7 +106,7 @@ class ReferralProgramSheet extends StatelessWidget {
                       child: LoadingButton(
                         text: "Continue with signup",
                         borderRadius: 24,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         textSize: Sizing.font(14),
                         buttonColor: Theme.of(context).primaryColorDark,
                         textColor: Theme.of(context).scaffoldBackgroundColor,
@@ -195,7 +195,7 @@ class ReferralProgramSheet extends StatelessWidget {
       children: [
         const SizedBox(height: 10),
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           height: 1.5,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,

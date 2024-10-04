@@ -33,7 +33,7 @@ class FakeField extends StatelessWidget {
             onTap: onTap,
             child: Container(
               padding: const EdgeInsets.only(left: 16.0),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               child: Row(
                 children: [
                   Expanded(

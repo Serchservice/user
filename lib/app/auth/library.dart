@@ -14,14 +14,6 @@ export 'email_verification/email_verification_controller.dart';
 export 'email_verification/email_verification_layout.dart';
 export 'email_verification/email_verification_state.dart';
 
-/// LOCATION CHECKER
-export 'location_checker/launch_in_my_city_sheet.dart';
-
-export 'location_checker/location_checker_binding.dart';
-export 'location_checker/location_checker_controller.dart';
-export 'location_checker/location_checker_layout.dart';
-export 'location_checker/location_checker_state.dart';
-
 /// LOGIN
 export 'login/login_binding.dart';
 export 'login/login_controller.dart';

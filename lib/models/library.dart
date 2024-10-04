@@ -1,7 +1,5 @@
 library;
 
-export 'auth/auth_response.dart';
-export 'auth/session_response.dart';
 export 'auth/enable_mfa.dart';
 export 'auth/mfa_usage.dart';
 export 'auth/mfa_recovery_code.dart';
@@ -44,8 +42,6 @@ export 'transaction/transaction.dart';
 export 'transaction/transaction_data.dart';
 export 'transaction/transaction_group.dart';
 export 'transaction/transaction_profile_data.dart';
-
-export 'base/api_response.dart';
 
 /// CONVERSATION
 export 'conversation/issue.dart';

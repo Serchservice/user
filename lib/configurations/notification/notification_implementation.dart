@@ -81,7 +81,7 @@ class NotificationImplementation implements NotificationService {
       config.removeNotification(notification: action.id, id: action.payload!["room"]);
 
       if(action.buttonKeyPressed == markMessageReadKey) {
-        if(socket.stompClient.connected) {
+        if(socket.isConnected) {
           Map<String, dynamic> update = {
             "room": action.payload!["room"],
             "status": "READ",

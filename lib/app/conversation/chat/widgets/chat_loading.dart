@@ -149,11 +149,11 @@ class ChatLoading extends StatelessWidget {
           : Alignment.topRight,
         child: Container(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
+            maxWidth: MediaQuery.sizeOf(context).width * 0.7,
           ),
           child: SizedBox(
             height: 70,
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.sizeOf(context).width * 0.7,
           )
         )
       ),

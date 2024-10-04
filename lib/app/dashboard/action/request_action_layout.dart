@@ -97,7 +97,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
             ),
             const SizedBox(height: 20),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               padding: EdgeInsets.all(Sizing.space(8)),
               color: Theme.of(context).appBarTheme.backgroundColor,
               child: SteppingList(
@@ -145,7 +145,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
                   return _buildShopping(context);
                 } else {
                   return Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(8)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
             }),
             const SizedBox(height: 20),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               padding: EdgeInsets.all(Sizing.space(10)),
               decoration: BoxDecoration(
                 color: Theme.of(context).appBarTheme.backgroundColor,
@@ -353,7 +353,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
       children: [
         Container(
           padding: EdgeInsets.all(Sizing.space(12)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           color: CommonColors.darkTheme2,
           child: Obx(() {
             if(controller.state.items.isEmpty) {
@@ -433,7 +433,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
         const SizedBox(height: 20),
         Container(
           padding: EdgeInsets.all(Sizing.space(12)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             color: Theme.of(context).appBarTheme.backgroundColor,
             borderRadius: BorderRadius.circular(8)
@@ -483,7 +483,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: MediaQuery.sizeOf(context).width * 0.35,
                     child: Field(
                       controller: controller.amount,
                       needLabel: true,
@@ -501,7 +501,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
                   ),
                   const Expanded(child: SizedBox()),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: MediaQuery.sizeOf(context).width * 0.35,
                     child: Field(
                       controller: controller.quantity,
                       needLabel: true,

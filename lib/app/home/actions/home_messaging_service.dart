@@ -1,4 +1,5 @@
 import 'package:user/library.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 
 /// Abstract service for managing home messaging functionality, including filters and chat operations.
 abstract class HomeMessagingService {

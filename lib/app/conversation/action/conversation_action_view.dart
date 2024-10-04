@@ -105,7 +105,7 @@ class ConversationActionView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       padding: EdgeInsets.all(Sizing.space(8)),
                       color: Theme.of(context).appBarTheme.backgroundColor,
                       child: SteppingList(
@@ -171,7 +171,7 @@ class ConversationActionView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       padding: EdgeInsets.all(Sizing.space(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +180,7 @@ class ConversationActionView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       padding: EdgeInsets.all(Sizing.space(10)),
                       decoration: BoxDecoration(
                         color: Theme.of(context).appBarTheme.backgroundColor,

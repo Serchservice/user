@@ -16,7 +16,6 @@ export 'assets/media.dart';
 export 'core/connect_service.dart';
 export 'core/connect.dart';
 export 'core/socket.dart';
-export 'core/socket_service.dart';
 
 export 'debug/logger.dart';
 

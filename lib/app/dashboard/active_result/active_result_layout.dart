@@ -292,7 +292,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
           content: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 margin: EdgeInsets.all(Sizing.space(10)),
                 padding: EdgeInsets.all(Sizing.space(20)),
                 decoration: BoxDecoration(
@@ -308,7 +308,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       margin: EdgeInsets.only(bottom: Sizing.space(4)),
                       height: 90,
                       color: CommonColors.shimmerHigh,

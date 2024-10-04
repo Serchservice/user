@@ -15,8 +15,8 @@ class GuestHomeController extends GetxController {
   final ConnectService _connect = Connect(useToken: false);
   final AuthValidatorService _apiService = AuthValidator();
   final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
-  final SocketService _socket = Socket();
-  final SocketService _socketIn = Socket();
+  final Socket _socket = Socket();
+  final Socket _socketIn = Socket();
 
   late GuestHomeActivityService activity;
   late GuestHomeEventService event;
@@ -25,10 +25,13 @@ class GuestHomeController extends GetxController {
 
   @override
   void onInit() {
+    launchDevice();
+
     AnalyticsEngine.logOpen();
     _apiService.fetchAccounts();
     activity = GuestHomeActivity(controller: this);
     event = GuestHomeEvent(controller: this);
+
     super.onInit();
   }
 
@@ -136,7 +139,7 @@ class GuestHomeController extends GetxController {
   }
 
   void refreshGuest() {
-    if(_socket.stompClient.connected) {
+    if(_socket.isConnected) {
       _socket.send(destination: "/guest/refresh", message: {
         "id": Database.guest.id,
         "link_id": Database.preference.active

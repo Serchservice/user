@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:user/library.dart';
@@ -69,18 +69,7 @@ class FolderImplementation implements FolderService {
 
   @override
   void fetchImageData({required String url, required Function(Uint8List) onSuccess, required Function(String) onError}) async {
-    try {
-      Dio dio = Dio();
-      var response = await dio.get(url, options: Options(responseType: ResponseType.bytes));
-      if (response.statusCode == 200) {
-        Uint8List imageData = Uint8List.fromList(response.data);
-        onSuccess.call(imageData);
-      } else {
-        onError.call('Failed to fetch image data');
-      }
-    } catch (error) {
-      onError.call('Error: $error');
-    }
+    ConnectifyUtils.fetchImageData(url: url, onSuccess: onSuccess, onError: onError);
   }
 
   @override

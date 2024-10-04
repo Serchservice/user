@@ -138,7 +138,7 @@ class _QuotationSheetState extends State<QuotationSheet> {
                 borderRadius: 24,
                 padding: EdgeInsets.all(Sizing.space(12)),
                 textSize: Sizing.font(14),
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 onClick: send,
                 buttonColor: CommonColors.darkTheme2,
                 textColor: CommonColors.lightTheme,

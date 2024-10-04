@@ -1,7 +1,7 @@
 import 'dart:io';
 
 abstract class ExceptionService {
-  /// SOCKETEXCEPTION ~~
+  /// SOCKET EXCEPTION ~~
   void handleConnectionException(SocketException socketException);
 
   /// EXCEPTION ~~

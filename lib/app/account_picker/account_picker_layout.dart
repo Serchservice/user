@@ -83,7 +83,7 @@ class AccountPickerLayout extends GetResponsiveView<AccountPickerController> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       margin: EdgeInsets.only(bottom: Sizing.space(10)),
                       height: 50,
                       color: CommonColors.shimmerHigh,
@@ -146,7 +146,7 @@ class AccountPickerLayout extends GetResponsiveView<AccountPickerController> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       margin: EdgeInsets.only(bottom: Sizing.space(10)),
                       height: 50,
                       color: CommonColors.shimmerHigh,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:user/library.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 
 /// This class is the wrapper for the local database of the user.
 ///

@@ -100,7 +100,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
             LoadingButton(
               text: "Confirm",
               borderRadius: 24,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               textSize: Sizing.font(14),
               onClick: () => deleteAccount(),
               loading: loading,

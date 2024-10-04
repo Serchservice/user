@@ -34,7 +34,7 @@ class GuestActionView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(8)),
                     color: Theme.of(context).appBarTheme.backgroundColor,
                     child: SteppingList(
@@ -69,7 +69,7 @@ class GuestActionView extends StatelessWidget {
                     _buildShopping(context, controller)
                   ] else ...[
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       padding: EdgeInsets.all(Sizing.space(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class GuestActionView extends StatelessWidget {
                   ],
                   const SizedBox(height: 20),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(Sizing.space(10)),
                     decoration: BoxDecoration(
                       color: Theme.of(context).appBarTheme.backgroundColor,
@@ -282,7 +282,7 @@ class GuestActionView extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.all(Sizing.space(12)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           color: CommonColors.darkTheme2,
           child: Obx(() {
             if(controller.state.items.isEmpty) {
@@ -362,7 +362,7 @@ class GuestActionView extends StatelessWidget {
         const SizedBox(height: 20),
         Container(
           padding: EdgeInsets.all(Sizing.space(12)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
             color: Theme.of(context).appBarTheme.backgroundColor,
             borderRadius: BorderRadius.circular(8)
@@ -412,7 +412,7 @@ class GuestActionView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: MediaQuery.sizeOf(context).width * 0.35,
                     child: Field(
                       controller: controller.amount,
                       needLabel: true,
@@ -430,7 +430,7 @@ class GuestActionView extends StatelessWidget {
                   ),
                   const Expanded(child: SizedBox()),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: MediaQuery.sizeOf(context).width * 0.35,
                     child: Field(
                       controller: controller.quantity,
                       needLabel: true,

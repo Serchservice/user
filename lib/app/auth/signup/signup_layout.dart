@@ -170,7 +170,7 @@ class SignupLayout extends GetResponsiveView<SignupController> {
                       child: Obx(() => LoadingButton(
                         text: "Signup",
                         borderRadius: 24,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         textSize: Sizing.font(14),
                         buttonColor: CommonColors.darkTheme2,
                         textColor: CommonColors.lightTheme,

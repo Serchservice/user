@@ -1,9 +1,10 @@
 import 'package:get/state_manager.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class NavigationOptionSheetState {
   /// Whether a route is being created for navigation
-  RxBool isCreatingRoute = RxBool(false);
+  RxBool isLoading = RxBool(false);
 
-  /// Selected option
-  RxInt selected = RxInt(-1);
+  /// List of maps available on device
+  RxList<AvailableMap> maps = RxList([]);
 }

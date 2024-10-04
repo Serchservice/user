@@ -86,7 +86,7 @@ class CallOptionSheet extends StatelessWidget {
                     Expanded(
                       child: Image.asset(
                         option.path,
-                        width: MediaQuery.of(context).size.width
+                        width: MediaQuery.sizeOf(context).width
                       )
                     ),
                     SText(

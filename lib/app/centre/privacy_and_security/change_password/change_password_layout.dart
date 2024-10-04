@@ -117,7 +117,7 @@ class ChangePasswordLayout extends GetResponsiveView<ChangePasswordController> {
                     const SizedBox(height: 50),
                     Obx(() => LoadingButton(
                       text: "Change password",
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       borderRadius: 24,
                       textSize: Sizing.font(14),
                       loading: controller.state.isConfirming.value,

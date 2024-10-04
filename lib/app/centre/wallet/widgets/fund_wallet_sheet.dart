@@ -97,7 +97,7 @@ class FundWalletSheet extends StatelessWidget {
                     borderRadius: 24,
                     padding: EdgeInsets.all(Sizing.space(12)),
                     textSize: Sizing.font(14),
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     onClick: controller.fund,
                     buttonColor: CommonColors.darkTheme2,
                     textColor: CommonColors.lightTheme,

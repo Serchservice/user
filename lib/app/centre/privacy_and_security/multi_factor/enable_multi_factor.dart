@@ -78,7 +78,7 @@ class EnableMultiFactor extends StatelessWidget {
                   Image(
                     image: AssetUtility.image(mfa.qrCode),
                     height: 200,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                   ),
                   const SizedBox(height: 15),
                   Row(
@@ -106,7 +106,7 @@ class EnableMultiFactor extends StatelessWidget {
             LoadingButton(
               text: "Verify",
               borderRadius: 24,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               textSize: Sizing.font(14),
               onClick: () async {
                 dynamic result = await Navigate.off(MfaAuthLayout.enableRoute);

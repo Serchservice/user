@@ -193,7 +193,7 @@ class CreateSerchIssueMessage extends StatelessWidget {
         : Alignment.topRight,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
+          maxWidth: MediaQuery.sizeOf(context).width * 0.7,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +230,7 @@ class CreateSerchIssueMessage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               margin: const EdgeInsets.only(top: 6),
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(
                 color: CommonColors.lightTheme2,
                 borderRadius: BorderRadius.circular(6)
@@ -260,7 +260,7 @@ class CreateSerchIssueHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: CommonColors.darkTheme2,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       padding: EdgeInsets.all(Sizing.space(12)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

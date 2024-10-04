@@ -154,7 +154,7 @@ class GuestCentreLayout extends GetResponsiveView<GuestHomeController> {
                   child: LoadingButton(
                     text: "Become a user",
                     borderRadius: 24,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     textSize: Sizing.font(14),
                     buttonColor: Theme.of(context).primaryColorDark,
                     textColor: Theme.of(context).scaffoldBackgroundColor,

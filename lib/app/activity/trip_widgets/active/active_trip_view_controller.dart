@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:user/library.dart';
 
 class ActiveTripViewController extends GetxController {
@@ -13,7 +14,7 @@ class ActiveTripViewController extends GetxController {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   final HomeController _homeController = HomeController.data;
-  final SocketService _socket = Socket();
+  final Socket _socket = Socket();
   final ConnectService _connect = Connect();
 
   final TextEditingController authController = TextEditingController();
@@ -58,6 +59,11 @@ class ActiveTripViewController extends GetxController {
     state.isSharedOnTheWay.value = trip.shared != null
       && trip.shared!.timelines.any((t) => t.isOnTheWay && !t.isOver);
     state.isProviderOnTheWay.value = trip.timelines.any((t) => t.isOnTheWay && t.isOver);
+
+    if(state.isSharedOnTheWay.value || state.isProviderOnTheWay.value) {
+      update();
+      refresh();
+    }
 
     if(trip.isClosed) {
       Navigate.back();

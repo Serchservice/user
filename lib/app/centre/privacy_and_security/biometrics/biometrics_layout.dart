@@ -57,7 +57,7 @@ class BiometricsLayout extends GetResponsiveView<BiometricsController> {
               text: controller.state.preference.value.hasBiometrics
                 ? "Disable"
                 : "Enable",
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               onClick: () async {
                 dynamic value = await Navigate.to(BiometricsAuthLayout.route, parameters: {
                   "login": "false",

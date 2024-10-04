@@ -48,19 +48,19 @@ class SharedLinkVerifierController extends GetxController {
       if(Database.isLoggedIn) {
         state.message.value = "Logging you in...";
         _apiService.validateSession(
-            onSuccess: (success) {
-              state.showLoading.value = false;
-              Navigate.all(HomeLayout.route);
-            },
-            onError: (error) {
-              state.showLoading.value = false;
-              Navigate.all(LocationCheckerLayout.route);
-              notify.error(message: error);
-            }
+          onSuccess: (success) {
+            state.showLoading.value = false;
+            Navigate.all(HomeLayout.route);
+          },
+          onError: (error) {
+            state.showLoading.value = false;
+            Navigate.all(EmailCheckerLayout.route);
+            notify.error(message: error);
+          }
         );
       } else {
         state.showLoading.value = false;
-        Navigate.all(LocationCheckerLayout.route);
+        Navigate.all(EmailCheckerLayout.route);
         return;
       }
     }

@@ -38,12 +38,12 @@ class PreferenceLayout extends GetResponsiveView<PreferenceController> {
         ];
 
         List<ButtonView> personalizations = [
-          ButtonView(
-            header: "Location Check",
-            body: "Skip location check anytime you want to use the platform",
-            icon: Icons.add_location_alt_rounded,
-            index: 0,
-          ),
+          // ButtonView(
+          //   header: "Location Check",
+          //   body: "Skip location check anytime you want to use the platform",
+          //   icon: Icons.add_location_alt_rounded,
+          //   index: 0,
+          // ),
           ButtonView(
             header: "Default account",
             body: controller.state.preference.value.useLastLoggedInAccountAsDefault

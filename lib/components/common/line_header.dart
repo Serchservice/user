@@ -34,7 +34,7 @@ class LineHeader extends StatelessWidget {
           color: color ?? Theme.of(context).primaryColor
         ),
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           height: 3,
           decoration: BoxDecoration(
             color: color ?? Theme.of(context).primaryColor,

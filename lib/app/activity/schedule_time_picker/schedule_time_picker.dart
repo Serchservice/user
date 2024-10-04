@@ -65,7 +65,7 @@ class ScheduleTimePicker extends StatelessWidget {
                   if(controller.state.isFetchingTimes.value) {
                     return SizedBox(
                       height: 150,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: Center(child: Loading(color: Theme.of(context).primaryColor))
                     );
                   } else {
@@ -273,7 +273,7 @@ class ScheduleTimePicker extends StatelessWidget {
               padding: EdgeInsets.all(Sizing.space(12)),
               borderRadius: 24,
               onClick: showButton ? controller.schedule : null,
-              width: MediaQuery.of(context).size.width
+              width: MediaQuery.sizeOf(context).width
             ),
           );
         })

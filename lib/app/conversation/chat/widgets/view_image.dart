@@ -62,7 +62,7 @@ class _ViewImageState extends State<ViewImage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               padding: EdgeInsets.all(Sizing.space(8)),
               color: Theme.of(context).bottomAppBarTheme.color,
               child: SText(

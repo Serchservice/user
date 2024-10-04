@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:stream_video_push_notification/stream_video_push_notification.dart';
 import 'package:stream_video_push_notification/stream_video_push_notification_platform_interface.dart';

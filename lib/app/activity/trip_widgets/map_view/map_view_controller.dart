@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:google_directions_api/google_directions_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_utils/google_maps_utils.dart';
@@ -27,7 +27,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
 
   final state = MapViewState();
 
-  final SocketService _socket = Socket();
+  final Socket _socket = Socket();
 
   Completer<GoogleMapController> googleMapsController = Completer();
   Animation<double>? animation;
@@ -189,17 +189,18 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
   }
 
   void _getTotalDistanceAndTime(LatLng position, LatLng destination) async {
-    String origin = "${position.latitude},${position.longitude}";
-    String destinations = "${destination.latitude},${destination.longitude}";
-
-    Dio dio = Dio();
-    String params = "units=imperial&origins=$origin&destinations=$destinations&key=${Keys.googleMapApiKey}";
-    var response = await dio.get("https://maps.googleapis.com/maps/api/distancematrix/json?$params");
-
     double distance = 0.0;
     double duration = 0.0;
-    List<dynamic> elements = response.data['rows'][0]['elements'];
-    log(response.data, from: "GET TOTAL DISTANCE AND TIME");
+
+    List<dynamic> elements = await ConnectifyUtils.getTotalDistanceAndTime(
+      originLatitude: position.latitude,
+      originLongitude: position.longitude,
+      destinationLatitude: destination.latitude,
+      destinationLongitude: destination.longitude,
+      googleMapApiKey: Keys.googleMapApiKey
+    );
+
+    log(elements, from: "GET TOTAL DISTANCE AND TIME");
 
     if(elements.any((e) => e["status"] == "ZERO_RESULTS")) {
       state.distanceLeft.value = this.distance;
@@ -289,7 +290,7 @@ class MapViewController extends GetxController with GetTickerProviderStateMixin 
   @override
   void onClose() {
     try {
-      if(_socket.stompClient.connected) {
+      if(_socket.isConnected) {
         _socket.disconnect();
       }
     } catch (_) {}

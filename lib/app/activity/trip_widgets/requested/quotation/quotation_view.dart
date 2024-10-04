@@ -36,7 +36,7 @@ class QuotationView extends StatelessWidget {
       builder: (controller) {
         return Container(
           margin: EdgeInsets.symmetric(vertical: Sizing.space(6)),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

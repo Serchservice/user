@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:user/library.dart';
 
 class AccountPickerController extends GetxController {
@@ -42,12 +43,12 @@ class AccountPickerController extends GetxController {
   void _navigate(bool isUser, bool isGuest) {
     if(Get.currentRoute.endsWith(AccountPickerLayout.route)) {
       if(isUser) {
-        if(Database.loginWithBiometrics) {
+        if(Database.loginWithBiometrics && !Database.preference.isAuthenticated) {
           Navigate.off(BiometricsAuthLayout.route, parameters: {
             "login": "false",
             "has_biometrics": "${Database.preference.hasBiometrics}"
           });
-        } else if(Database.loginWithMFA) {
+        } else if(Database.loginWithMFA && !Database.preference.isAuthenticated) {
           Navigate.off(MfaAuthLayout.loginRoute);
         } else {
           Navigate.all(HomeLayout.route);
@@ -70,6 +71,7 @@ class AccountPickerController extends GetxController {
           state.isLoading.value = false;
           state.selected.value = "";
 
+          Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
           _navigate(true, false);
           if(isLogin) {
             onUserSuccess?.call();
@@ -107,6 +109,7 @@ class AccountPickerController extends GetxController {
         Database.saveAuth(auth);
         Database.savePreference(Database.preference.copyWith(active: id));
 
+        Database.savePreference(Database.preference.copyWith(isAuthenticated: true));
         _navigate(true, false);
         onUserSuccess?.call();
       } else {

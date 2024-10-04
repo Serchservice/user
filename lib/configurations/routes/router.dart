@@ -13,10 +13,11 @@ class Routes {
       name: HomeLayout.route,
       page: () => HomeLayout(),
       binding: HomeBinding(),
-      transition: Transition.native,
+      transition: Transition.circularReveal,
       middlewares: [
-      DeviceMiddleware(priority: 20)
-    ],
+        AuthMiddleware(priority: 10),
+        DeviceMiddleware()
+      ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
 
@@ -26,7 +27,7 @@ class Routes {
       binding: AccountPickerBinding(),
       transition: Transition.native,
       middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -37,7 +38,7 @@ class Routes {
       binding: WebBinding(),
       transition: Transition.native,
       middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -48,7 +49,7 @@ class Routes {
       binding: ReferralLinkVerifierBinding(),
       transition: Transition.native,
       middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -59,7 +60,7 @@ class Routes {
       binding: SharedLinkVerifierBinding(),
       transition: Transition.native,
       middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -70,7 +71,7 @@ class Routes {
       binding: CameraBinding(),
       transition: Transition.native,
       middlewares: [
-      DeviceMiddleware(priority: 20)
+      DeviceMiddleware()
     ],
       transitionDuration: const Duration(milliseconds: 800),
     ),
@@ -81,7 +82,7 @@ class Routes {
       binding: GalleryBinding(),
       transition: Transition.downToUp,
       middlewares: [
-        DeviceMiddleware(priority: 20)
+        DeviceMiddleware()
       ],
       transitionDuration: const Duration(milliseconds: 800),
     ),

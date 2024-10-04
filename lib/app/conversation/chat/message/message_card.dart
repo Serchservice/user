@@ -88,7 +88,7 @@ class _MessageCardState extends State<MessageCard> {
         nipWidth: 5,
         elevation: 4,
         child: Container(
-          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+          constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width * 0.7),
           color: Colors.transparent,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -136,7 +136,7 @@ class _ReportSheetState extends State<ReportSheet> {
               onClick: report,
               buttonColor: CommonColors.error,
               textColor: CommonColors.lightTheme,
-              width: MediaQuery.of(context).size.width
+              width: MediaQuery.sizeOf(context).width
             )
           ],
         )

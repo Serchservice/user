@@ -72,7 +72,7 @@ class AccountIssueLayout extends GetResponsiveView<AccountIssueController> {
                   const SizedBox(height: 30),
                   LoadingButton(
                     text: "Send us a message to recover your account",
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     buttonColor: Theme.of(context).splashColor,
                     textColor: Theme.of(context).primaryColorLight,
                     prefixIcon: Icons.send_time_extension_rounded,

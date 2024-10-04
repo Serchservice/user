@@ -43,7 +43,7 @@ class SkillSearchLayout extends GetResponsiveView<SkillSearchController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             padding: EdgeInsets.only(
               bottom: Sizing.space(16),
               left: Sizing.space(16),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:connectify_flutter/connectify_flutter.dart';
 import 'package:user/library.dart';
 
 class ChangePasswordController extends GetxController {

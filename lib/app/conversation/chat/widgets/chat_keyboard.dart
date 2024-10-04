@@ -13,7 +13,7 @@ class ChatKeyboard extends StatelessWidget {
       bool isSwiped = controller.state.isSwiped.value;
 
       return Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

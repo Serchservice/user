@@ -85,7 +85,7 @@ class _OnboardingDesign1State extends State<OnboardingDesign1> {
             children: [
               Image.asset(
                 Media.onboard1,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
               ),
               const SizedBox(height: 20),
               Row(

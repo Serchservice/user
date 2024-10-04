@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:user/library.dart';
 
-final SocketService socket = Socket.instance;
+final Socket socket = Socket.instance;
 
 class HomeController extends GetxController {
   HomeController();
@@ -17,6 +16,8 @@ class HomeController extends GetxController {
   final ConnectService _connect = Connect();
   final AuthValidatorService _apiService = AuthValidator();
   final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
+  final AuthValidatorService _authService = AuthValidator();
+  final LocationService _locationService = LocationImplementation();
 
   late HomeDashboardService dashboard;
   late HomeMessagingService messaging;
@@ -49,7 +50,8 @@ class HomeController extends GetxController {
       }
     }
 
-    AnalyticsEngine.logOpen();
+    launchDevice();
+    _locationService.getAddress(onSuccess: (address, position) => Database.saveAddress(address), onError: (error) {});
 
     dashboard = HomeDashboard(controller: this);
     messaging = HomeMessaging(controller: this);
@@ -58,32 +60,33 @@ class HomeController extends GetxController {
     call = HomeCall(controller: this);
     shared = HomeSharedLink(controller: this);
 
-    _apiService.fetchAccounts();
-    messaging.loadSpeakWithSerchMessages();
-    dashboard.loadCategories();
-    dashboard.loadPopularCategories();
-    dashboard.fetchDashboard(true);
-    call.fetchCalls(showLoader: true);
-    messaging.fetchChats(showLoader: true);
-    activity.fetchSchedules(showLoader: true);
-    activity.fetchInvites(showLoader: true);
-    activity.fetchTrips(showLoader: true);
-    shared.fetch(showLoader: true);
+    _authService.validateSession(
+      onSuccess: (success) {
+        _apiService.fetchAccounts();
+        messaging.loadSpeakWithSerchMessages();
+        dashboard.loadCategories();
+        dashboard.loadPopularCategories();
+        dashboard.fetchDashboard(true);
+        call.fetchCalls(showLoader: true);
+        messaging.fetchChats(showLoader: true);
+        activity.fetchSchedules(showLoader: true);
+        activity.fetchInvites(showLoader: true);
+        activity.fetchTrips(showLoader: true);
+        shared.fetch(showLoader: true);
+      },
+      onError: (error) {
+        Navigate.all(EmailCheckerLayout.route);
+        notify.error(message: error);
+      }
+    );
 
-    _getCameras();
     super.onInit();
-  }
-
-  void _getCameras() async {
-    try {
-      MainConfiguration.data.cameras.value = await availableCameras();
-    } catch (_) {
-
-    }
   }
 
   @override
   void onReady() {
+    AnalyticsEngine.logOpen();
+
     _firebaseService.foreground();
     _sendServerUpdate();
 

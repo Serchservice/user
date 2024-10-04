@@ -12,7 +12,7 @@ class GuestRequestedTripViewController extends GetxController {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   final GuestHomeController _homeController = GuestHomeController.data;
-  final SocketService _socket = Socket();
+  final Socket _socket = Socket();
 
   @override
   void onInit() {
