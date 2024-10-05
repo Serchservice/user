@@ -51,7 +51,7 @@ class MfaAuthController extends GetxController {
       authenticateWithTotp(code: code);
     } else if(isEnable) {
       enable(code: code);
-    } else {
+    } else if(isDisable) {
       disableAuth();
     }
   }

@@ -118,8 +118,8 @@ class MultiFactorLayout extends GetResponsiveView<MultiFactorController> {
                     width: MediaQuery.sizeOf(context).width,
                     loading: controller.state.isDisabling.value,
                     onClick: () async {
-                      bool? result = await Navigate.to(MfaAuthLayout.disableRoute);
-                      if(result != null && result) {
+                      dynamic result = await Navigate.to(MfaAuthLayout.disableRoute);
+                      if(result != null && result is bool && result) {
                         controller.state.hasAuth.value = false;
                       }
                     },
