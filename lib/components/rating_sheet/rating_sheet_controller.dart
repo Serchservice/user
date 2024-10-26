@@ -22,14 +22,53 @@ class RatingSheetController extends GetxController {
   }
 
   List<String> appComments = [
-    "Awesome with good user experience"
+    "Awesome with good user experience",
+    "Easy to navigate and use",
+    "Fast and reliable",
+    "Needs improvement in certain areas",
+    "Occasionally crashes",
+    "Great design but could be more intuitive",
+    "Useful features, but some bugs need fixing",
+    "Highly recommend it to others",
+    "Could use more customization options",
+    "Great app, but some features are hard to find"
   ];
 
   List<String> tripComments = [
-    "Punctual", "Skilled in the service"
+    "Punctual",
+    "Skilled in the service",
+    "Friendly and helpful",
+    "Very professional",
+    "Quick response time",
+    "Good communication skills",
+    "Service was above expectations",
+    "Clean and well-maintained tools",
+    "Went the extra mile to assist",
+    "Great value for money",
+    "Could improve punctuality",
+    "Lacked professionalism",
+    "Not as friendly as expected",
+    "Service was delayed",
+    "Average service"
   ];
 
-  List<String> tripInvitedComments = [];
+  List<String> tripInvitedComments = [
+    "Easy to coordinate with",
+    "Flexible with scheduling",
+    "Very accommodating",
+    "Prompt responses",
+    "Polite and courteous",
+    "Showed up on time",
+    "Reliable and trustworthy",
+    "Provided all necessary information",
+    "Could improve communication",
+    "Rescheduled multiple times",
+    "Wasn't very clear with instructions",
+    "Great attitude throughout",
+    "Seemed unprepared for the trip",
+    "Arrived late but was apologetic",
+    "Canceled at the last minute"
+  ];
 
   void pickAppComment(String comment) {
     if (state.comments.contains(comment)) {
