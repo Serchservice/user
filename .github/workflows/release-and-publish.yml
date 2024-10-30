@@ -43,6 +43,8 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY_IOS=${{ secrets.GOOGLE_MAPS_API_KEY_IOS }}" >> .env
           echo "GET_STREAM_API_KEY=${{ secrets.GET_STREAM_API_KEY }}" >> .env
           echo "TIP2FIX_SESSION=${{ secrets.TIP2FIX_SESSION }}" >> .env
+          echo "API_KEY=${{ secrets.GUEST_APP_API_KEY }}" >> .env
+          echo "SECRET_KEY=${{ secrets.GUEST_APP_SECRET_KEY }}" >> .env
 
       - name: Decode and save keystore
         run: |
