@@ -22,7 +22,12 @@ class Connect<T> implements ConnectService<T> {
 
           Navigate.all(EmailCheckerLayout.route);
         }
-      }
+      },
+      headers: Database.preference.active == Database.guest.id ? {
+        'Content-Type': 'application/json',
+        'X-Serch-Guest-Api-Key': Keys.apiKey,
+        'X-Serch-Guest-Secret-Key': Keys.secretKey,
+      } : null,
     ));
   }
 

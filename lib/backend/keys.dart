@@ -9,6 +9,12 @@ class Keys {
   /// Tip2Fix Session Duration
   static final int tip2fixSession = int.parse(dotenv.env["TIP2FIX_SESSION"] ?? "30");
 
+  /// Serch api key
+  static final String apiKey = dotenv.env["API_KEY"] ?? "";
+
+  /// Serch secret key
+  static final String secretKey = dotenv.env["SECRET_KEY"] ?? "";
+
   /// Get stream api key
   static final String streamApiKey = dotenv.env["GET_STREAM_API_KEY"] ?? "";
 

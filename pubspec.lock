@@ -331,10 +331,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "179f7b41702ff4a211a67e5b612e875f44e04dc9"
+      resolved-ref: cc3b71ae574c31fcbe02c30e5312f0b45a951095
       url: "https://github.com/Serchservice/connectify_flutter.git"
     source: git
-    version: "0.0.4"
+    version: "0.0.5"
   connectivity_plus:
     dependency: transitive
     description:
