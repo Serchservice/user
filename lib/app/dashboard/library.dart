@@ -42,6 +42,7 @@ export 'search/location/location_search_state.dart';
 /// SEARCH RESULT
 export 'active_result/widgets/active_result_filter_sheet.dart';
 export 'active_result/widgets/active_result_view.dart';
+export 'active_result/widgets/active_sheet.dart';
 
 export 'active_result/active_result_controller.dart';
 export 'active_result/active_result_binding.dart';
