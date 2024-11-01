@@ -72,6 +72,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                     ),
                   ),
                   ActiveResultView(
+                    controller: controller,
                     active: controller.state.search.value.best!,
                     buttons: controller.requestButtons,
                     isBest: true,
@@ -87,6 +88,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return ActiveResultView(
+                          controller: controller,
                           active: controller.state.sortedProviders[index],
                           buttons: controller.requestButtons,
                           latitude: controller.state.searchQuery.value.address.latitude,
@@ -105,6 +107,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return ActiveResultView(
+                  controller: controller,
                   active: controller.state.sortedProviders[index],
                   buttons: controller.requestButtons,
                   latitude: controller.state.searchQuery.value.address.latitude,
@@ -161,6 +164,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return ActiveResultView(
+                  controller: controller,
                   shop: controller.state.sortedShops[index],
                   buttons: controller.driveButtons,
                   latitude: controller.state.searchQuery.value.address.latitude,
@@ -216,6 +220,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
               child: Column(
                 children: [
                   ActiveResultView(
+                    controller: controller,
                     active: controller.state.search.value.best!,
                     buttons: controller.requestButtons,
                     isBest: true,
@@ -233,6 +238,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
 
                       if(item is Active && (controller.state.filter.value == 0 || controller.state.filter.value == 2)) {
                         return ActiveResultView(
+                          controller: controller,
                           active: item, buttons: controller.requestButtons,
                           latitude: controller.state.searchQuery.value.address.latitude,
                           longitude: controller.state.searchQuery.value.address.longitude,
@@ -240,6 +246,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                         );
                       } else if(item is SearchShopResponse && (controller.state.filter.value == 0 || controller.state.filter.value == 1)) {
                         return ActiveResultView(
+                          controller: controller,
                           shop: item, buttons: controller.driveButtons,
                           latitude: controller.state.searchQuery.value.address.latitude,
                           longitude: controller.state.searchQuery.value.address.longitude,
@@ -262,6 +269,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
 
                 if(item is Active && (controller.state.filter.value == 0 || controller.state.filter.value == 2)) {
                   return ActiveResultView(
+                    controller: controller,
                     active: item, buttons: controller.requestButtons,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,
@@ -269,6 +277,7 @@ class ActiveResultLayout extends GetResponsiveView<ActiveResultController> {
                   );
                 } else if(item is SearchShopResponse && (controller.state.filter.value == 0 || controller.state.filter.value == 1)) {
                   return ActiveResultView(
+                    controller: controller,
                     shop: item, buttons: controller.driveButtons,
                     latitude: controller.state.searchQuery.value.address.latitude,
                     longitude: controller.state.searchQuery.value.address.longitude,

@@ -1,120 +1,203 @@
 import 'package:user/library.dart';
 import 'package:flutter/material.dart';
 
-class ShopView extends StatefulWidget {
-  final SearchShopResponse response;
-  final double longitude;
-  final double latitude;
+class ShopView extends StatelessWidget {
+  final SearchShopResponse shop;
+  final Address pickup;
+  final String category;
 
-  const ShopView({required this.response, super.key, required this.longitude, required this.latitude});
-
-  @override
-  State<ShopView> createState() => _ShopViewState();
-
-  static void open({required SearchShopResponse response, required double latitude, required double longitude}) {
-    Navigate.bottomSheet(
-      sheet: ShopView(response: response, latitude: latitude, longitude: longitude),
-      route: "/dashboard/request/result/view?shop=${response.shop.id}"
-    );
-  }
-}
-
-class _ShopViewState extends State<ShopView> {
-  int current = 0;
-
-  void updateTab(int index) {
-    setState(() => current = index);
-  }
+  const ShopView({required this.shop, super.key, required this.pickup, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    List<String> tabs = ["Business Hours", "Services", "Profile Details"];
-
     return CurvedBottomSheet(
+      safeArea: true,
+      margin: const EdgeInsets.all(16),
       padding: EdgeInsets.zero,
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      borderRadius: BorderRadius.circular(24),
       child: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(Sizing.space(12)),
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Avatar.small(avatar: widget.response.shop.logo),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SText(
-                          text: widget.response.shop.name,
-                          color: Theme.of(context).primaryColor,
-                          size: Sizing.font(16),
-                          weight: FontWeight.bold,
-                          flow: TextOverflow.ellipsis
-                        ),
-                        RatingIcon(rating: widget.response.shop.rating),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  CircledButton(
-                    title: "Drive to",
-                    asset: Media.mapRight,
-                    onClick: () => NavigationOptionSheet.open(widget.response),
-                    backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-                  ),
-                  CircledButton(
-                    title: "Call",
-                    icon: Icons.call,
-                    onClick: () => RouteNavigator.callNumber(widget.response.shop.phone),
-                    backgroundColor: Theme.of(context).textSelectionTheme.selectionColor,
-                  ),
-                ],
-              )
-            ),
-            Container(
+            SizedBox(
               width: MediaQuery.sizeOf(context).width,
-              padding: EdgeInsets.all(Sizing.space(16)),
-              color: Theme.of(context).appBarTheme.backgroundColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              height: 250,
+              child: Image(
+                image: AssetUtility.image(shop.shop.logo),
+                width: MediaQuery.sizeOf(context).width,
+                height: MediaQuery.sizeOf(context).height,
+                fit: BoxFit.cover,
+                errorBuilder: (context, obj, trace) {
+                  return Image.asset(
+                    Database.preference.isDarkTheme ? Media.dark : Media.light,
+                    width: MediaQuery.sizeOf(context).width,
+                    height: MediaQuery.sizeOf(context).height,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 8, right: 8, bottom: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CategoryImage(image: widget.response.shop.image, height: 50, width: 50),
-                  const SizedBox(width: 10),
-                  Expanded(child: _buildStatus(context))
+                  SText(
+                    text: shop.shop.name,
+                    size: Sizing.font(18),
+                    weight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                    flow: TextOverflow.ellipsis
+                  ),
+                  SText(
+                    text: "Distance: ${shop.distanceInKm}",
+                    size: Sizing.font(12),
+                    color: Theme.of(context).primaryColorLight
+                  ),
                 ],
               ),
             ),
-            DefaultTabController(
-              length: tabs.length,
-              child: TabBar(
-                onTap: (index) => updateTab(index),
-                indicatorColor: Theme.of(context).primaryColor,
-                overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-                  return Theme.of(context).splashColor;
-                }),
-                tabs: tabs.map((tab) {
-                  return Tab(
+            Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
                     child: SText(
-                      text: tab,
-                      color: Theme.of(context).primaryColor,
+                      text: "Open for business",
                       size: Sizing.font(14),
-                    )
-                  );
-                }).toList()
-              )
+                      color: Theme.of(context).primaryColor,
+                      flow: TextOverflow.ellipsis
+                    ),
+                  ),
+                  SText(
+                    text: shop.shop.open ? "YES" : "NO",
+                    size: Sizing.font(12),
+                    color: shop.shop.open ? CommonColors.success : CommonColors.error,
+                  ),
+                ],
+              ),
             ),
-            IndexedStack(
-              index: current,
-              children: [
-                ShopViewWeekdays(weekdays: widget.response.shop.weekdays),
-                ShopViewServices(services: widget.response.shop.services),
-                ShopViewProfile(shop: widget.response.shop),
-              ]
+            Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: SText(
+                      text: "Provider",
+                      size: Sizing.font(14),
+                      color: Theme.of(context).primaryColor,
+                      flow: TextOverflow.ellipsis
+                    ),
+                  ),
+                  SText(
+                    text: shop.isGoogle ? "Google" : "Serchservice",
+                    size: Sizing.font(14),
+                    color: CommonColors.success,
+                  ),
+                ],
+              ),
+            ),
+            Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            if(!shop.isGoogle) ...[
+              Container(
+                padding: EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: CommonColors.success,)
+                ),
+                child: SText(text: "RECOMMENDED", size: Sizing.font(12), color: CommonColors.success,),
+              ),
+              Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  padding: EdgeInsets.all(8),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Wrap(
+                    runSpacing: 20,
+                    children: [
+                      ButtonView(body: shop.shop.address, icon: Icons.location_on_sharp),
+                      ButtonView(body: shop.shop.phone, icon: Icons.call),
+                      ButtonView(body: shop.shop.status, icon: Icons.data_exploration_rounded),
+                      ButtonView(body: category, icon: Icons.category)
+                    ].map((view) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(view.icon, color: Theme.of(context).primaryColorLight),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: SText(
+                              text: CommonUtility.capitalizeWords(view.body.replaceAll("_", " ")),
+                              size: Sizing.font(14),
+                              color: view.body.toLowerCase() == "open" ? CommonColors.success : Theme.of(context).primaryColor
+                            ),
+                          )
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+            Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            if(shop.shop.services.isNotEmpty) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        padding: EdgeInsets.all(12),
+                        color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4),
+                        child: SText(
+                            text: "Services",
+                            size: Sizing.font(14),
+                            color: Theme.of(context).primaryColorLight,
+                            flow: TextOverflow.ellipsis
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          alignment: WrapAlignment.start,
+                          children: shop.shop.services.map((service) {
+                            return SText(
+                              text: CommonUtility.capitalizeWords(service.service),
+                              size: Sizing.font(12),
+                              color: Theme.of(context).primaryColor
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Divider(color: CommonUtility.lightenColor(Theme.of(context).scaffoldBackgroundColor, 4)),
+            ],
+            MapView(
+              origin: pickup,
+              destination: Address(latitude: shop.shop.latitude, longitude: shop.shop.longitude, place: shop.shop.address),
+              distance: shop.distanceInKm,
+              isTop: false,
+              height: 200,
             )
           ],
         ),
@@ -122,68 +205,10 @@ class _ShopViewState extends State<ShopView> {
     );
   }
 
-  Widget _buildStatus(BuildContext context) {
-    if(widget.response.shop.current != null) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SText(
-                  text: widget.response.shop.current!.day,
-                  color: Theme.of(context).primaryColor,
-                  size: Sizing.font(14),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SText.center(
-                      text: widget.response.shop.current!.opening,
-                      size: Sizing.font(11),
-                      color: Theme.of(context).primaryColor
-                    ),
-                    const SizedBox(width: 5),
-                    SText.center(
-                      text: "-",
-                      size: Sizing.font(11),
-                      color: Theme.of(context).primaryColor
-                    ),
-                    const SizedBox(width: 5),
-                    SText.center(
-                      text: widget.response.shop.current!.closing,
-                      size: Sizing.font(11),
-                      color: Theme.of(context).primaryColor
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          Switcher(onChanged: (value) { }, value: widget.response.shop.open)
-        ],
-      );
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: SText(
-              text: widget.response.shop.open
-                ? "This shop is currently open"
-                : "This shop is currently closed",
-              color: Theme.of(context).primaryColor,
-              flow: TextOverflow.ellipsis,
-              size: Sizing.font(14),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Switcher(onChanged: (value) { }, value: widget.response.shop.open)
-        ],
-      );
-    }
+  static void open({required SearchShopResponse shop, required Address pickup, required String category}) {
+    Navigate.bottomSheet(
+      sheet: ShopView(shop: shop, pickup: pickup, category: category),
+      route: "/dashboard/request/result/view?shop=${shop.shop.id}"
+    );
   }
 }
