@@ -11,7 +11,7 @@ import stream_video_push_notification
   ) -> Bool {
 
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-    let mapApi = FlutterMethodChannel(name: "com.serch.user/apiKey", binaryMessenger: controller.binaryMessenger)
+    let mapApi = FlutterMethodChannel(name: "com.serchservice.user/apiKey", binaryMessenger: controller.binaryMessenger)
 
     mapApi.invokeMethod("getMapApiKey", arguments: nil) { (result: Any?) in
       if let apiKey = result as? String {

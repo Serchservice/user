@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -14,6 +13,7 @@ class HomeController extends GetxController {
   static HomeController get data => Get.find<HomeController>();
 
   final ConnectService _connect = Connect();
+  final AppService _appService = AppImplementation();
   final AuthValidatorService _apiService = AuthValidator();
   final FirebaseMessagingService _firebaseService = FirebaseMessagingImplementation();
   final AuthValidatorService _authService = AuthValidator();
@@ -87,6 +87,7 @@ class HomeController extends GetxController {
   void onReady() {
     AnalyticsEngine.logOpen();
 
+    _appService.checkUpdate();
     _firebaseService.foreground();
     _sendServerUpdate();
 
@@ -98,41 +99,41 @@ class HomeController extends GetxController {
       durationInSeconds: 60
     );
 
-    socket.initialize(
-      callback: (frame) {
-        if (frame.body != null) {
-          dynamic data = jsonDecode(frame.body!);
-          if (data is String) {
-            if (Navigate.navigatorKey.currentState != null) {
-              notify.tip(message: data);
-            } else if (Navigate.navigatorKey.currentContext != null) {
-              notify.tip(message: data);
-            }
-          } else if (data is Map) {
-            if(data.containsKey("room")) {
-              messaging.prepareData(data: data as Map<String, dynamic>);
-            } else if(data.containsKey("channel")) {
-              notify.tip(message: data["error"]);
-            } else if(data.containsKey("timelines")) {
-              activity.prepareTrip(data);
-            }
-          } else if(data is List) {
-            log(data, from: "List - Socket");
-            if(data.any((d) => d.containsKey("schedules"))) {
-              activity.updateScheduleGroups(data);
-            } else if(data.any((d) => d.containsKey("closedOnTime"))) {
-              activity.updateSchedules(data);
-            } else if(data.any((d) => d.containsKey("timelines"))) {
-              activity.prepareTrips(data);
-            }
-          } else {
-            //
-          }
-        }
-      },
-      endpoint: "/ws:serch",
-      subscribeDestination: "/platform/${Database.auth.id}"
-    );
+    // socket.initialize(
+    //   callback: (frame) {
+    //     if (frame.body != null) {
+    //       dynamic data = jsonDecode(frame.body!);
+    //       if (data is String) {
+    //         if (Navigate.navigatorKey.currentState != null) {
+    //           notify.tip(message: data);
+    //         } else if (Navigate.navigatorKey.currentContext != null) {
+    //           notify.tip(message: data);
+    //         }
+    //       } else if (data is Map) {
+    //         if(data.containsKey("room")) {
+    //           messaging.prepareData(data: data as Map<String, dynamic>);
+    //         } else if(data.containsKey("channel")) {
+    //           notify.tip(message: data["error"]);
+    //         } else if(data.containsKey("timelines")) {
+    //           activity.prepareTrip(data);
+    //         }
+    //       } else if(data is List) {
+    //         log(data, from: "List - Socket");
+    //         if(data.any((d) => d.containsKey("schedules"))) {
+    //           activity.updateScheduleGroups(data);
+    //         } else if(data.any((d) => d.containsKey("closedOnTime"))) {
+    //           activity.updateSchedules(data);
+    //         } else if(data.any((d) => d.containsKey("timelines"))) {
+    //           activity.prepareTrips(data);
+    //         }
+    //       } else {
+    //         //
+    //       }
+    //     }
+    //   },
+    //   endpoint: "/ws:serch",
+    //   subscribeDestination: "/platform/${Database.auth.id}"
+    // );
     super.onReady();
   }
 

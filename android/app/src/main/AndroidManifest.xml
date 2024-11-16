@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.serch.user">
+    package="com.serchservice.user">
 
     <!--
     Internet permissions do not affect the `permission_handler` plugin, but are required if your app needs access to
@@ -120,7 +120,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Add optional android:host to distinguish your app from others in case of conflicting scheme name -->
                 <data android:scheme="https"/>
-                <data android:host="com.serch.user"/>
+                <data android:host="com.serchservice.user"/>
                 <!-- <data android:scheme="sample" /> -->
             </intent-filter>
         </activity>

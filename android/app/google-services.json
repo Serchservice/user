@@ -1,59 +1,21 @@
 {
   "project_info": {
-    "project_number": "825589816078",
-    "project_id": "serch-service",
-    "storage_bucket": "serch-service.appspot.com"
+    "project_number": "1009108172645",
+    "project_id": "user-serch",
+    "storage_bucket": "user-serch.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:825589816078:android:716f8bc9c5741183bc955f",
+        "mobilesdk_app_id": "1:1009108172645:android:2d249d3a6fb25708b66b8c",
         "android_client_info": {
-          "package_name": "com.serch.business"
+          "package_name": "com.serchservice.user"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:825589816078:android:6658a99d9607813abc955f",
-        "android_client_info": {
-          "package_name": "com.serch.provider"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:825589816078:android:eac9de002f6546e2bc955f",
-        "android_client_info": {
-          "package_name": "com.serch.user"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk"
+          "current_key": "AIzaSyBB6aWh2uE4k5md237CAPzX37M5H-EDAWg"
         }
       ],
       "services": {

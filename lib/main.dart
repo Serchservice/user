@@ -22,7 +22,7 @@ Future<void> _initializeApp() async {
 }
 
 void _loadPlatformChannel() {
-  const platform = MethodChannel('com.serch.user/apiKey');
+  const platform = MethodChannel('com.serchservice.user/apiKey');
   platform.setMethodCallHandler((call) async {
     if (call.method == 'getMapApiKey') {
       return Keys.googleMapApiKey;
