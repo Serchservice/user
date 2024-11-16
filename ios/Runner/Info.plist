@@ -48,7 +48,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.serch.user</string>
+			<string>com.serchservice.user</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>app</string>

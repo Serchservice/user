@@ -1,9 +1,9 @@
 name: user
-description: "A new Flutter project."
+description: "The mobile application that runs the user interface for user and guest categories in Serchservice."
 
 publish_to: 'none'
 
-version: 1.0.1+6
+version: 1.0.1+7
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -59,12 +59,13 @@ dependencies:
   stream_video_push_notification: ^0.5.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  pull_to_refresh: ^2.0.0
   in_app_review: ^2.0.9
   flutter_timezone: ^3.0.1
   webview_flutter_android: any
   webview_flutter_wkwebview: any
   map_launcher: ^3.5.0
+  device_safety_info: ^0.0.9
+  in_app_update: ^4.2.3
   flutter_svg:
 
   connectify_flutter:

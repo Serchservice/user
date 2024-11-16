@@ -25,13 +25,19 @@ class FirebaseConfiguration {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+              'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+              'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
+              'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
         throw UnsupportedError(
@@ -41,48 +47,29 @@ class FirebaseConfiguration {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBXEVNFK-llInR-yknHMvVuRFM_thHYrCc',
-    appId: '1:825589816078:web:72b283dd61f9afe3bc955f',
-    messagingSenderId: '825589816078',
-    projectId: 'serch-service',
-    authDomain: 'serch-service.firebaseapp.com',
-    storageBucket: 'serch-service.appspot.com',
-    measurementId: 'G-CXL7JSZRPT',
+    apiKey: 'AIzaSyChFIF0mTVUS8YqT_22CQtQxN0sSu1rYyI',
+    appId: '1:1009108172645:web:28555d52abf0fa9bb66b8c',
+    messagingSenderId: '1009108172645',
+    projectId: 'user-serch',
+    authDomain: 'user-serch.firebaseapp.com',
+    storageBucket: 'user-serch.firebasestorage.app',
+    measurementId: 'G-17DFZSBN2D',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBOhFkCTnEtO2ZOVasbeiTbLByQbgv5Omk',
-    appId: '1:825589816078:android:eac9de002f6546e2bc955f',
-    messagingSenderId: '825589816078',
-    projectId: 'serch-service',
-    storageBucket: 'serch-service.appspot.com',
+    apiKey: 'AIzaSyBB6aWh2uE4k5md237CAPzX37M5H-EDAWg',
+    appId: '1:1009108172645:android:2d249d3a6fb25708b66b8c',
+    messagingSenderId: '1009108172645',
+    projectId: 'user-serch',
+    storageBucket: 'user-serch.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAtyJkqPDkl2FwJNuTwXFr1TUDwEo1-Ouk',
-    appId: '1:825589816078:ios:65e73b58258302ebbc955f',
-    messagingSenderId: '825589816078',
-    projectId: 'serch-service',
-    storageBucket: 'serch-service.appspot.com',
-    iosBundleId: 'com.serch.user',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAtyJkqPDkl2FwJNuTwXFr1TUDwEo1-Ouk',
-    appId: '1:825589816078:ios:65e73b58258302ebbc955f',
-    messagingSenderId: '825589816078',
-    projectId: 'serch-service',
-    storageBucket: 'serch-service.appspot.com',
-    iosBundleId: 'com.serch.user',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBXEVNFK-llInR-yknHMvVuRFM_thHYrCc',
-    appId: '1:825589816078:web:318513b950fbbefdbc955f',
-    messagingSenderId: '825589816078',
-    projectId: 'serch-service',
-    authDomain: 'serch-service.firebaseapp.com',
-    storageBucket: 'serch-service.appspot.com',
-    measurementId: 'G-Y3YD7863BH',
+    apiKey: 'AIzaSyCAFKc0nlO-xX9uufML2oqSHP9r8AAIhOM',
+    appId: '1:1009108172645:ios:f27b824b049cbb91b66b8c',
+    messagingSenderId: '1009108172645',
+    projectId: 'user-serch',
+    storageBucket: 'user-serch.firebasestorage.app',
+    iosBundleId: 'com.serchservice.user',
   );
 }

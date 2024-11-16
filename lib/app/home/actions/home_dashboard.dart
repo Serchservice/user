@@ -48,5 +48,4 @@ class HomeDashboard implements HomeDashboardService {
       notify.error(message: response.message);
     }
   }
-
 }

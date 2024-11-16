@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class AppInformationController extends GetxController {
     state.appPackage.value = packageInfo.packageName;
     state.appVersion.value = packageInfo.version;
     state.appBuildNumber.value = packageInfo.buildNumber;
+
     super.onInit();
   }
 
@@ -44,7 +46,12 @@ class AppInformationController extends GetxController {
   }
 
   void _appStoreReview() async {
-    inAppReview.openStoreListing(appStoreId: Keys.appStore);
+    bool isAvailable = await inAppReview.isAvailable();
+    if(isAvailable) {
+      await inAppReview.requestReview();
+    } else {
+      notify.tip(message: "Unable to use in-app rating at the moment. Try again later");
+    }
   }
 
   void openRating() {
@@ -54,11 +61,11 @@ class AppInformationController extends GetxController {
         header: "In-App Rating",
         index: 0
       ),
-      // ButtonView(
-      //   index: 1,
-      //   icon: Platform.isAndroid ? Icons.play_arrow : Icons.apple,
-      //   header: "${ Platform.isIOS ? "App Store" : "Google Playstore" } rating"
-      // )
+      ButtonView(
+        index: 1,
+        icon: Platform.isAndroid ? Icons.play_arrow : Icons.apple,
+        header: "${ Platform.isIOS ? "App Store" : "Play Store" } rating"
+      )
     ];
 
     Navigate.bottomSheet(
