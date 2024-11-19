@@ -275,7 +275,7 @@ class RequestActionLayout extends GetResponsiveView<RequestActionController> {
               onChanged: controller.seek,
               activeColor: Theme.of(context).primaryColorLight,
               inactiveColor: CommonColors.shimmerBase.withOpacity(.48),
-              thumbColor: Theme.of(context).appBarTheme.backgroundColor,
+              thumbColor: Theme.of(context).appBarTheme.backgroundColor?.withOpacity(.18),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

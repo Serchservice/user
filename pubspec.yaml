@@ -3,7 +3,7 @@ description: "The mobile application that runs the user interface for user and g
 
 publish_to: 'none'
 
-version: 1.0.1+7
+version: 1.0.1+8
 
 environment:
   sdk: '>=3.3.0 <4.0.0'

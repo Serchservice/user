@@ -25,9 +25,11 @@ class Connect<T> implements ConnectService<T> {
       },
       headers: Database.preference.active == Database.guest.id ? {
         'Content-Type': 'application/json',
-        'X-Serch-Guest-Api-Key': Keys.apiKey,
-        'X-Serch-Guest-Secret-Key': Keys.secretKey,
-      } : null,
+        'X-Serch-Guest-Api-Key': Keys.guestApiKey,
+        'X-Serch-Guest-Secret-Key': Keys.guestSecretKey,
+      } : {
+        'X-Serch-Signed': Keys.signature
+      },
     ));
   }
 

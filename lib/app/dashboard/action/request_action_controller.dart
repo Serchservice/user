@@ -162,6 +162,14 @@ class RequestActionController extends GetxController {
       state.showKeyboard.value = false;
       startTimer();
     }
+
+    if(state.isRecording.isFalse) {
+      notify.tip(
+        message: "Trying to record but no response? Use the text option. Recording might not be supported for your device.",
+        color: CommonColors.allday,
+        duration: 30
+      );
+    }
   }
 
   void startTimer() {

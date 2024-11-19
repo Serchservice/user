@@ -16,7 +16,7 @@ class Preference {
   final ScheduleTime scheduleTime;
   final bool warnMeOnPersonalInformationSharing;
   final SecurityType security;
-  final bool hasRequestedCountry;
+  final bool hasGrantedPermissions;
   final bool remember;
   final String active;
   final bool skipLocationCheck;
@@ -35,7 +35,7 @@ class Preference {
     this.theme = ThemeType.light,
     this.warnMeOnPersonalInformationSharing = true,
     this.security = SecurityType.none,
-    this.hasRequestedCountry = false,
+    this.hasGrantedPermissions = false,
     this.remember = false,
     this.active = "",
     this.skipLocationCheck = false,
@@ -68,7 +68,7 @@ class Preference {
     bool? warnMeOnPersonalInformationSharing,
     ScheduleTime? scheduleTime,
     SecurityType? security,
-    bool? hasRequestedCountry,
+    bool? hasGrantedPermissions,
     bool? remember,
     bool? skipLocationCheck,
     String? active,
@@ -87,7 +87,7 @@ class Preference {
       scheduleTime: scheduleTime ?? this.scheduleTime,
       warnMeOnPersonalInformationSharing: warnMeOnPersonalInformationSharing ?? this.warnMeOnPersonalInformationSharing,
       security: security ?? this.security,
-      hasRequestedCountry: hasRequestedCountry ?? this.hasRequestedCountry,
+      hasGrantedPermissions: hasGrantedPermissions ?? this.hasGrantedPermissions,
       remember: remember ?? this.remember,
       active: active ?? this.active,
       skipLocationCheck: skipLocationCheck ?? this.skipLocationCheck,
@@ -127,7 +127,7 @@ class Preference {
       warnMeOnPersonalInformationSharing: map["warn_me_on_personal_information_sharing"] ?? false,
       remember: map["remember"] ?? false,
       skipLocationCheck: map["skip_location_check"] ?? false,
-      hasRequestedCountry: map["has_requested_country"] ?? false,
+      hasGrantedPermissions: map["has_granted_permissions"] ?? false,
       active: map["active"] ?? "",
       useLastLoggedInAccountAsDefault: map["use_last_logged_in_account_as_default"] ?? false,
       isAuthenticated: map["is_authenticated"] ?? false
@@ -147,7 +147,7 @@ class Preference {
     "theme": theme.type,
     "security": security.type,
     "remember": remember,
-    "has_requested_country": hasRequestedCountry,
+    "has_granted_permissions": hasGrantedPermissions,
     "skip_location_check": skipLocationCheck,
     "active": active,
     "use_last_logged_in_account_as_default": useLastLoggedInAccountAsDefault,

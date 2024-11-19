@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -72,17 +69,13 @@ extension on AuthResponse {
 
 Future<void> launchDevice() async {
   final AppService appService = AppImplementation();
-  final FolderService folderService = FolderImplementation();
+  final AccessService accessService = AccessImplementation();
 
-  appService.buildDeviceInformation(onSuccess: (device) {
+  appService.buildDeviceInformation(onSuccess: (device) async {
     Database.saveDevice(device);
-    requestAccess(device.sdk, onSuccess: () async {
-      try {
-        MainConfiguration.data.cameras.value = await availableCameras();
-      } catch (_) {}
-
-      await folderService.createOrGetFolders();
-    });
+    if(!Database.preference.hasGrantedPermissions || !await accessService.hasLocation()) {
+      PermissionSheet.open(sdk: device.sdk);
+    }
 
     AnalyticsEngine.logEvent("DEVICE_INFORMATION", parameters: device.toJson());
   });
@@ -95,21 +88,6 @@ Future<void> launchDevice() async {
       }
     }
   );
-}
-
-Future<void> requestAccess(int sdk, {Function()? onSuccess}) async {
-  final AccessService accessService = AccessImplementation();
-  bool hasAccess = await accessService.requestPermissions(sdk);
-  if(hasAccess) {
-    if(Platform.isAndroid || Platform.isIOS) {
-      onSuccess?.call();
-      return;
-    } else {
-      throw SerchException("Unsupported platform", isPlatformNotSupported: true);
-    }
-  } else {
-    requestAccess(sdk, onSuccess: onSuccess);
-  }
 }
 
 bool isCurrentRoute(String route) => Get.currentRoute == route;
