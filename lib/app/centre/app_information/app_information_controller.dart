@@ -46,7 +46,6 @@ class AppInformationController extends GetxController {
   }
 
   void _appStoreReview() async {
-    PermissionSheet.open(sdk: 29);
     bool isAvailable = await inAppReview.isAvailable();
     if(isAvailable) {
       await inAppReview.requestReview();

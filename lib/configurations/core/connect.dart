@@ -27,6 +27,7 @@ class Connect<T> implements ConnectService<T> {
         'Content-Type': 'application/json',
         'X-Serch-Guest-Api-Key': Keys.guestApiKey,
         'X-Serch-Guest-Secret-Key': Keys.guestSecretKey,
+        'X-Serch-Signed': Keys.signature
       } : {
         'X-Serch-Signed': Keys.signature
       },

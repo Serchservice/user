@@ -46,7 +46,13 @@ class PermissionSheet extends StatelessWidget {
                       size: Sizing.font(12),
                       color: Theme.of(context).primaryColor,
                     ),
-                    ...["Photo", "Location", "Camera", "Microphone", "and others"].map((item) {
+                    ...[
+                      "Photo",
+                      "Location",
+                      "Camera",
+                      "Microphone",
+                      "and others"
+                    ].map((item) {
                       return SText(
                         text: "* $item",
                         size: Sizing.font(12),
