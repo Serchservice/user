@@ -208,7 +208,8 @@ class ShopView extends StatelessWidget {
   static void open({required SearchShopResponse shop, required Address pickup, required String category}) {
     Navigate.bottomSheet(
       sheet: ShopView(shop: shop, pickup: pickup, category: category),
-      route: "/dashboard/request/result/view?shop=${shop.shop.id}"
+      route: "/dashboard/request/result/view?shop=${shop.shop.id}",
+      isScrollable: true
     );
   }
 }

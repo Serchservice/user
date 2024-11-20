@@ -49,8 +49,15 @@ class AppInformationController extends GetxController {
     bool isAvailable = await inAppReview.isAvailable();
     if(isAvailable) {
       await inAppReview.requestReview();
+      notify.tip(
+        message: "If you don't see the rating dialog, please use the in-app rating.",
+        color: CommonColors.allday
+      );
     } else {
-      notify.tip(message: "Unable to use in-app rating at the moment. Try again later");
+      notify.tip(
+        message: "Unable to use in-app rating at the moment. Try again later",
+        color: CommonColors.allday
+      );
     }
   }
 
