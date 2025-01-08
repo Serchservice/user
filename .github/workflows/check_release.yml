@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  check:
+  check_main:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -25,16 +25,17 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'
+          flutter-version: '3.27.1'
           channel: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
+        working-directory: main
 
       - name: Get version from pubspec.yaml
         id: get_version
         run: |
-          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          VERSION=$(grep '^version:' main/pubspec.yaml | sed 's/version: //')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Check for existing tag

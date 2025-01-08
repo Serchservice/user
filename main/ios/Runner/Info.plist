@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Serch</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>user</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>www.serchservice.com/app/join/user</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>https</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>www.serchservice.com/service/verify</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>https</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.serchservice.user</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>app</string>
+					<string>http</string>
+					<string>https</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>serchservice.com/app/join/user</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>https</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>serchservice.com/service/verify</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>https</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>user.serchservice.com</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>https</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>MBXAccessToken</key>
+		<string>pk.eyJ1Ijoic2VyY2hzZXJ2aWNlIiwiYSI6ImNsdzFxbnBhZTBmcjIycWw4dWRka2dmbWsifQ.EIqUz6qUNyaokgIfwKTcYQ</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>Bluetooth access needed - Serch</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>Bluetooth access needed - Serch</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Camera access needed - Serch</string>
+		<key>NSContactsUsageDescription</key>
+		<string>Contact access needed - Serch</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Face ID Authentication - Serch</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Always and when in use! - Serch</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Can I have location always? - Serch</string>
+		<key>NSLocationUsageDescription</key>
+		<string>Older devices need location. - Serch</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Need location when in use - Serch</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Microphone access needed - Serch</string>
+		<key>NSMotionUsageDescription</key>
+		<string>Motion access needed - Serch</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Photos access needed - Serch</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Speech access needed - Serch</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>appTrackingTransparency</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>audio</string>
+			<string>location</string>
+			<string>fetch</string>
+			<string>processing</string>
+			<string>remote-notification</string>
+			<string>voip</string>
+		</array>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>comgooglemaps</string>
+			<string>baidumap</string>
+			<string>iosamap</string>
+			<string>waze</string>
+			<string>yandexmaps</string>
+			<string>yandexnavi</string>
+			<string>citymapper</string>
+			<string>mapswithme</string>
+			<string>osmandmaps</string>
+			<string>dgis</string>
+			<string>qqmap</string>
+			<string>here-location</string>
+			<string>tomtomgo</string>
+			<string>copilot</string>
+			<string>com.sygic.aura</string>
+			<string>nmap</string>
+			<string>kakaomap</string>
+			<string>tmap</string>
+			<string>szn-mapy</string>
+			<string>mappls</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen.storyboard</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UIStatusBarHidden</key>
+		<true/>
+		<key>UIStatusBarStyle</key>
+		<string></string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+	</dict>
+</plist>
