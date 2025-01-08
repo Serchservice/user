@@ -23,6 +23,8 @@ This project relies on several essential Flutter packages and plugins to provide
 - [`get`](https://pub.dev/packages/get)
 - [`firebase_core`](https://pub.dev/packages/firebase_core)
 - [`connectify_flutter`](https://github.com/Serchservice/connectify_flutter) (Custom Serchservice package)
+- [`logger_flutter`](https://github.com/Serchservice/connectify_flutter) (Custom Serchservice package)
+- [`secure_flutter`](https://github.com/Serchservice/connectify_flutter) (Custom Serchservice package)
 
 Make sure to check the `pubspec.yaml` for the full list of dependencies and their versions.
 
@@ -86,7 +88,9 @@ base64 /path/upload-keystore.jks > keystore.base64
 - Automated app bundle generation.
 - Version control checks: make sure the `pubspec.yaml` version is updated for every new release.
 
-## 🤝 Contributing
+This script will build the Flutter web files, switch to the `web` branch (or create it if it doesn't exist), deploy the web files, and then return to the `main` branch.
+
+## 🙏 Contributing
 
 We welcome contributions to the Serchservice User Mobile Application. To contribute, please fork the repository and submit a pull request with your changes. Make sure to update the relevant documentation and follow coding standards.
 
@@ -97,5 +101,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 **Happy coding!** 🎉 If you encounter any issues, feel free to open an issue or reach out to the Serchservice team.
-
-This README includes a detailed project description, setup instructions, package dependencies, and CI/CD guidance, with appropriate emojis to make the content more engaging.
